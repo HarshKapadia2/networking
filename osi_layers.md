@@ -2,13 +2,13 @@
 
 No. | Name | Protocol(s) | Remarks
 --- | ---- | --------- | -------
-7 | Application layer | HTTP | Concerned with headers, cookies, content, etc.
-6 | Presentation layer |  | Concerned with encryption.
-5 | Session layer | | Attach session tag.
-4 | Transport layer | TCP, UDP, SSL, TLS | Attach ports and sequence nos. Each individual part is called a segment.
-3 | Network layer | IP, ICMP, RIP | Attach IP add. Each individual part is called a packet.
-2 | Data link layer | ARP, DHCP | Attach MAC add. Each individual part is called a frame.
-1 | Physical layer | | Data transfer in 1s and 0s.
+7 | Application Layer | HTTP | Concerned with headers, cookies, content, etc.
+6 | Presentation Layer |  | Concerned with encryption.
+5 | Session Layer | | Attach session tag.
+4 | Transport Layer | TCP, UDP, SSL, TLS | Attach ports and sequence nos. Each individual part is called a segment.
+3 | Network Layer | IP, ICMP, RIP | Attach IP add. Each individual part is called a packet.
+2 | Data Link Layer | ARP, DHCP | Attach MAC add. Each individual part is called a frame.
+1 | Physical Layer | | Data transfer in 1s and 0s.
 
 <p align="center">
   <br />
