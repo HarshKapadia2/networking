@@ -68,35 +68,107 @@
 - Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc during the handshake)
 
 
-## TLS 1.2 Handshake
+## TLS 1.2 handshake
 
 > NOTE:
 > - `C` = Client and `S` = Server.
 > - TLS 1.2 takes two roundtrips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake. (TLS 1.3 takes just one roundtip.)
 
+<p align="center">
+  The TLS 1.2 handshake as seen in Wireshark :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102719477-68b48500-4314-11eb-9631-e2806662900d.png" />
+</p>
+
 - TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
-- `C -> S` Client hello
+- `C -> S` Client Hello
   - States max version of TLS supported.
   - Send a random number to prevent Replay attacks.
   - Sends a list of cipher suites that the client supports.
-- `S -> C` Server hello
+
+<p align="center">
+  Client Hello :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721208-71f71f00-431f-11eb-9be9-2d3304b925ee.png" width="50%" />
+  <br />
+  <br />
+  Contents of 'Random' :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721273-c8645d80-431f-11eb-9a74-09c849a63c36.png" width="60%" />
+</p>
+
+- `S -> C` Server Hello
   - Choose TLS version and cipher suite.
   - Send random number again.
   - Send a certificate (with the public key of the server attached to it.)
-  - Server key exchange message (DH)
+  - Server Key Exchange message (DH)
     - It sends params for the Diffie-Hellman (DH) key exchange. (The generator and the huge prime number.)
     - It sends it's generated public part of the key exchange process.
     - Digital signature (a hashed value of some of the previous messages signed by the private key of the server). RSA is used here.
-    - Send 'Server hello done'.
-- `C -> S` Client key exchange message (DH)
+    - Send 'Server Hello Done'.
+
+<p align="center">
+  Server Hello :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721373-66582800-4320-11eb-93c7-42dcff85e0c1.png" width="50%" />
+  <br />
+  <br />
+  Server Key Exchange :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721626-ef239380-4321-11eb-91b7-b0b8da838157.png" width="50%" />
+  <br />
+  <br />
+  Server Key Exchange (contd) :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721653-24c87c80-4322-11eb-8147-3795b2b13d9f.png" width="50%" />
+  <br />
+  Server Hello Done :point_up:
+</p>
+
+- `C -> S` Client Key Exchange message (DH)
   - It sends it's generated public part of the key exchange process.
   - Side note: Both the server and client can now form the pre-master secret by completing the Diffie-Hellman process and then combine them with the random numbers sent in the above messages to make the master secret.
-  - Change cipher spec message. (Says that it is ready to begin encryption.)
+  - Change Cipher Spec message. (Says that it is ready to begin encryption.)
   - Finished message (Contains an encrypted summary of all the messages so far.)
-- `S -> C` Change cipher spec message
+
+<p align="center">
+  Client Key Exchange :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721728-aa4c2c80-4322-11eb-9ea3-21b975a40ad4.png" width="50%" />
+  <br />
+  <br />
+  Change Cipher Spec :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="50%" />
+  <br />
+  <br />
+  Finished :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="50%" />
+</p>
+
+- `S -> C` Change Cipher Spec message
   - Finished message (Contains an encrypted summary of all the messages so far.)
   - Side note: Only if the two finished messages match, will the handshake succeed. This prevents any Man in the Middle attacks.
-- The handshake is complete and the encrypted data is now communicated using the pre-decided cipher as mentioned in the decided cipher suite (eg: AES).
+
+<p align="center">
+  Change Cipher Spec :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="50%" />
+  <br />
+  <br />
+  Finished :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="50%" />
+</p>
+
+- The handshake is complete and the data is now communicated after using using the cipher (mentioned in the chosen cipher suite) to encrypt it (eg: AES).
+ 
+ <p align="center">
+  An overall overview of the TLS 1.2 handshake :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="50%" />
+</p>
 
 
 ## Resources
@@ -122,4 +194,9 @@
 - Digital signatures and certificates
   - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
   - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
+  - [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
   - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
+- Articles
+  - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
+  - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
+  - [SSL/TLS Handshake Explained With Wireshark Screenshot](https://www.linuxbabe.com/security/ssltls-handshake-process-explained-with-wireshark-screenshot)
