@@ -197,7 +197,7 @@
 - Digital signatures and certificates
   - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
   - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
-  - [Shared vs Private Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
+  - [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
 - Picture sources
   - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
   - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
