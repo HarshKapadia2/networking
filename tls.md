@@ -33,7 +33,7 @@
 
 - Type of Public/Asymmetric Key Cryptography.
 - (Secret) Key exchange protocol for a shared secret between two devices who want to start communication.
-- The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Encryption algorithms like AES (because Private Key Cryptography is faster than Public Key Cryptography).
+- The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Cryptography ciphers like AES (because Private Key Cryptography is faster than Public Key Cryptography).
 - Some types
   - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) (Ephemeral implies generating a key every time a conversation takes place, ie, very frequently.)
   - X255i9 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
@@ -56,14 +56,14 @@
 
 ### SHA256
 
-- Hashing algo which is a part of the Secure Hashing Algorithm family. (SHA2 to be specific.)
+- Hashing algorithm which is a part of the Secure Hashing Algorithm family. (SHA2 to be specific.)
 - Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
 
 
 ## Conditions to be fulfilled by a TLS handshake
 
 - What ciphers to be used for normal communication. (Eg: AES)
-- Key exchange algorithm to generate a symmetric key. (Eg: Diffie-Hellman)
+- Key exchange cipher to generate a symmetric key. (Eg: Diffie-Hellman)
 - Authentication (public/asymmetric key cryptography like RSA and verifying with digital signature with certificates)
 - Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc during the handshake)
 
@@ -162,7 +162,7 @@
   <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="50%" />
 </p>
 
-- The handshake is complete and the data is now communicated after using using the cipher (mentioned in the chosen cipher suite) to encrypt it (eg: AES).
+- The handshake is complete. The application data is encrypted using the Private/Symmetric/Secret Key Cryptography cipher mentioned in the **chosen** cipher suite (Eg: AES) and both machines can now communicate with encryption and authenticity.
  
  <p align="center">
   An overview of the TLS 1.2 handshake :point_down:
@@ -197,7 +197,8 @@
 - Digital signatures and certificates
   - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
   - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
-- Articles
+  - [Shared vs Private Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
+- Picture sources
   - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
   - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
   - [SSL/TLS Handshake Explained With Wireshark Screenshot](https://www.linuxbabe.com/security/ssltls-handshake-process-explained-with-wireshark-screenshot)
