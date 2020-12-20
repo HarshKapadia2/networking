@@ -2,6 +2,7 @@
 
 - The Transport Layer Security (TLS) Protocol helps in encrypting and authenticating the communication between two services.
 - TLS came after the release of SSL 3.0, which did some similar things (TLS 1.0 was also called SSL 3.1) and the current version of TLS is 1.3.
+  - SSL is the older version of TLS.
 - Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP. So the encryption is put in between TCP and HTTP.
 - TLS is not used just in web sites only. It is used for other communication as well.
 - HTTPS is also called 'HTTP over TLS (or SSL)'.
@@ -30,10 +31,10 @@
 
 - Ciphers to be used
 - Key exchange (Secret Key)
-- Authentication (public/asymmetric key cryptography and digital signature with certificates)
+- Authentication (public/asymmetric key cryptography and verifying with digital signature with certificates)
 - Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc)
 
-### Diffie-Hellman
+### Diffie-Hellman (DH)
 
 - Type of Public/Asymmetric Key Cryptography.
 - (Secret) Key exchange protocol for a shared secret between two devices who want to start communication.
@@ -61,7 +62,38 @@
 ### SHA256
 
 - Hashing algo which is a part of the Secure Hashing Algorithm family. (SHA2 to be specific.)
-- Used wherever needed, for eg, to derive a key from the shared scret, in [MAC](https://www.youtube.com/watch?v=wlSG3pEiQdc), etc.
+- Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
+
+
+## TLS 1.2 Handshake
+
+> NOTE:
+> - `C` = Client and `S` = Server.
+> - TLS 1.2 takes two roundtrips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake.
+
+- TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+- `C -> S` Client hello
+  - States max version of TLS supported.
+  - Send a random number to prevent Replay attacks.
+  - Sends a list of cipher suites that the client supports.
+- `S -> C` Server hello
+  - Choose TLS version and cipher suite.
+  - Send random number again.
+  - Send a certificate (with the public key of the server attached to it.)
+  - Server key exchange message (DH)
+    - It sends params for the Diffie-Hellman (DH) key exchange. (The generator and the huge prime number.)
+    - It sends it's generated public part of the key exchange process.
+    - Digital signature (a hashed value of some of the previous messages signed by the private key of the server). RSA is used here.
+    - Send 'Server hello done'.
+- `C -> S` Client key exchange message (DH)
+  - It sends it's generated public part of the key exchange process.
+  - Side note: Both the server and client can now form the pre-master secret by completing the Diffie-Hellman process and then combine them with the random numbers sent in the above messages to make the master secret.
+  - Change cipher spec message. (Says that it is ready to begin encryption.)
+  - Finished message (Contains an encrypted summary of all the messages so far.)
+- `S -> C` Change cipher spec message
+  - Finished message (Contains an encrypted summary of all the messages so far.)
+  - Side note: Only if the two finished messages match, will the handshake succeed. This prevents any Man in the Middle attacks.
+- The handshake is complete and the encrypted data is now communicated using the pre-decided cipher as mentioned in the decided cipher suite (eg: AES).
 
 
 ## Resources
@@ -84,3 +116,7 @@
   - [Hashing Algorithms and Security](https://www.youtube.com/watch?v=b4b8ktEV4Bg)
   - [SHA](https://www.youtube.com/watch?v=DMtFhACPnTY)
   - [SHA1 Problems](https://www.youtube.com/watch?v=f8ZP_1K2Y-U)
+- Digital signatures and certificates
+  - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
+  - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
+  - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
