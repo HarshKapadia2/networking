@@ -29,11 +29,6 @@
 
 ## Cryptography in TLS
 
-- Ciphers to be used
-- Key exchange (Secret Key)
-- Authentication (public/asymmetric key cryptography and verifying with digital signature with certificates)
-- Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc)
-
 ### Diffie-Hellman (DH)
 
 - Type of Public/Asymmetric Key Cryptography.
@@ -65,11 +60,19 @@
 - Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
 
 
+## Conditions to be fulfilled by a TLS handshake
+
+- What ciphers to be used for normal communication. (Eg: AES)
+- Key exchange algorithm to generate a symmetric key. (Eg: Diffie-Hellman)
+- Authentication (public/asymmetric key cryptography like RSA and verifying with digital signature with certificates)
+- Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc during the handshake)
+
+
 ## TLS 1.2 Handshake
 
 > NOTE:
 > - `C` = Client and `S` = Server.
-> - TLS 1.2 takes two roundtrips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake.
+> - TLS 1.2 takes two roundtrips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake. (TLS 1.3 takes just one roundtip.)
 
 - TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
 - `C -> S` Client hello
