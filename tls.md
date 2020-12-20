@@ -33,21 +33,30 @@
 - Authentication (public/asymmetric key cryptography and digital signature with certificates)
 - Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc)
 
-### RSA
-
-### AES
-
 ### Diffie-Hellman
 
-- Type of Public/Asymmetric/Secret Key Cryptography.
+- Type of Public/Asymmetric Key Cryptography.
 - (Secret) Key exchange protocol for a shared secret between two devices who want to start communication.
 - The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Encryption algorithms like AES (because Private Key Cryptography is faster than Public Key Cryptography).
 - Some types
-  - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) (Ephemeral implies generating a key every time a conversation takes place)
-  - X255i9 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519)
-  - P-256
-- Vulnerable to 'Man in the Middle' attack and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
-  - Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if broken, pose a big risk. So, Diffie-Hellman is used as a quicker method (if used a few times) and safety blanket for key exchange, with RSA providing authenticity.
+  - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) (Ephemeral implies generating a key every time a conversation takes place, ie, very frequently.)
+  - X255i9 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
+  - P-256 (A type of curve used in Elliptic Curve Cryptography.)
+- Vulnerable to 'Man in the Middle' attacks and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
+  - Perfect forward secrecy: Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if broken, pose a big risk. So, Diffie-Hellman is used as a quicker method (if used a few times) and safety blanket for key exchange, with RSA providing authenticity.
+
+### RSA
+
+- RSA is the name of the scientists involved.
+- Type of Public/Asymmetric Key Cryptography.
+- Ensures authenticity of sender.
+- Prevents 'Man in the Middle' attacks (as it authenticates the sender).
+
+### AES
+
+- Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography.
+- The shared secret from Diffie-Hellman is used to derive a key.
+- Provides encryption for the data being shared between
 
 ### SHA256
 
@@ -60,4 +69,11 @@
   - [End to End Excryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
   - [Secret Key Exchange (Diffie-Hellman)](https://www.youtube.com/watch?v=NmM9HA2MQGI)
   - [Diffie-Hellman - the Mathematics bit](https://www.youtube.com/watch?v=Yjrfm_oRO0w)
-  - [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE)
+  - [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE) (includes explanation on RSA)
+  - [Elliptic Curves](https://www.youtube.com/watch?v=NF1pwjL9-DE)
+  - [Elliptic Curve Back Door](https://www.youtube.com/watch?v=nybVFJVXbww)
+- AES
+  - [SP Networks](https://www.youtube.com/watch?v=DLjzI5dX8jc)
+  - [Rinjdael algorithm](https://www.youtube.com/watch?v=VYech-c5Dic) (the base of AES)
+  - [AES Explained](https://www.youtube.com/watch?v=O4xNJsjtN6E)
+  - [128 Bit or 256 Bit Encryption?](https://www.youtube.com/watch?v=pgzWxOtk1zg)
