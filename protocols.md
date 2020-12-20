@@ -12,5 +12,5 @@ IP | Internet Protocol | | Network Layer
 RIP | Routing Information Protocol | | Network Layer
 SSL | Secure Sockets Layer | | Transport Layer
 TCP | Transmission Control Protocol | | Transport Layer
-TLS | Transport Layer Security | | Transport Layer | Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP
+TLS | Transport Layer Security | | Transport Layer | [Learn more.](tls.md)
 UDP | User Datagram Protocol | | Transport Layer
