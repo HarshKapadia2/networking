@@ -56,9 +56,12 @@
 
 - Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography.
 - The shared secret from Diffie-Hellman is used to derive a key.
-- Provides encryption for the data being shared between
+- Provides encryption for the data being shared between the two communicating machines.
 
 ### SHA256
+
+- Hashing algo which is a part of the Secure Hashing Algorithm family. (SHA2 to be specific.)
+- Used wherever needed, for eg, to derive a key from the shared scret, in [MAC](https://www.youtube.com/watch?v=wlSG3pEiQdc), etc.
 
 
 ## Resources
@@ -77,3 +80,7 @@
   - [Rinjdael algorithm](https://www.youtube.com/watch?v=VYech-c5Dic) (the base of AES)
   - [AES Explained](https://www.youtube.com/watch?v=O4xNJsjtN6E)
   - [128 Bit or 256 Bit Encryption?](https://www.youtube.com/watch?v=pgzWxOtk1zg)
+- Hashing
+  - [Hashing Algorithms and Security](https://www.youtube.com/watch?v=b4b8ktEV4Bg)
+  - [SHA](https://www.youtube.com/watch?v=DMtFhACPnTY)
+  - [SHA1 Problems](https://www.youtube.com/watch?v=f8ZP_1K2Y-U)
