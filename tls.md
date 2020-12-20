@@ -165,7 +165,7 @@
 - The handshake is complete and the data is now communicated after using using the cipher (mentioned in the chosen cipher suite) to encrypt it (eg: AES).
  
  <p align="center">
-  An overall overview of the TLS 1.2 handshake :point_down:
+  An overview of the TLS 1.2 handshake :point_down:
   <br />
   <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="50%" />
 </p>
@@ -173,8 +173,11 @@
 
 ## Resources
 
-- [TLS Intro](https://www.youtube.com/watch?v=0TLDTodL7Lc)
-- [TLS Handshake](https://www.youtube.com/watch?v=86cQJ0MMses)
+- TLS
+  - [TLS Intro](https://www.youtube.com/watch?v=0TLDTodL7Lc)
+  - [TLS Handshake](https://www.youtube.com/watch?v=86cQJ0MMses)
+  - [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
+  - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
 - Diffie-Hellman
   - [End to End Excryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
   - [Secret Key Exchange (Diffie-Hellman)](https://www.youtube.com/watch?v=NmM9HA2MQGI)
@@ -194,8 +197,6 @@
 - Digital signatures and certificates
   - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
   - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
-  - [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
-  - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
 - Articles
   - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
   - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
