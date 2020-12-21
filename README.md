@@ -8,6 +8,7 @@ A repo to collect my networking knowledge as much as possible.
 - [Protocols](protocols.md)
 - [HTTP](http.md)
 - [TLS](tls.md)
+- [Powers of two](powers_of_two.md)
 
 ## Resources
 
