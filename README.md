@@ -4,17 +4,18 @@ A repo to collect my networking knowledge as much as possible.
 
 ## In this repo
 
-- [OSI Layers](osi_layers.md)
+- [OSI layers](osi_layers.md)
 - [Protocols](protocols.md)
+- [HTTP](http.md)
 - [TLS](tls.md)
 
-## Misc
+## Resources
 
+- College syllabus (Study the topics mentioned in the syllabus on your own. Do not rely on the college.)
 - Networking
   - [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
   - [Network Direction](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
   - [Computerphile](https://www.youtube.com/user/Computerphile)
-
 - Cryptography
   - [Computerphile](https://www.youtube.com/user/Computerphile)
   - [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
