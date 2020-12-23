@@ -200,7 +200,7 @@
   - Send Server Key Exchange.
   - Send Certificate.
   - Send TLS Extensions.
-    - OSCP Stapling (Certificate Verify)
+    - OCSP Stapling (Certificate Verify)
   - Send Finished message.
 
 <p align="center">
