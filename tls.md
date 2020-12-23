@@ -4,7 +4,7 @@
 - TLS came after the release of SSL 3.0, which did some similar things (TLS 1.0 was also called SSL 3.1) and the current version of TLS is 1.3.
   - SSL is the older version of TLS.
 - Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP. So the encryption is put in between TCP and HTTP.
-- TLS is not used just in web sites only. It is used for other communication as well.
+- TLS is not used just in web sites only. It is used for other communication as well, for eg, DBs can use TLS to communicate, TOR browser uses TLS, etc.
 - HTTPS is also called 'HTTP over TLS (or SSL)'.
 
 
@@ -99,7 +99,7 @@
 
 - `S -> C` Server Hello
   - Choose TLS version and cipher suite.
-  - Send random number again.
+  - Send random number.
   - Send a certificate (with the public key of the server attached to it.)
   - Server Key Exchange message (DH)
     - It sends params for the Diffie-Hellman (DH) key exchange. (The generator and the huge prime number.)
@@ -171,11 +171,54 @@
 </p>
 
 
+## TLS 1.3 handshake
+
+> NOTE:
+> - `C` = Client and `S` = Server.
+> - TLS 1.3 takes one roundtrip (`C -> S` and `S -> C`) to complete the handshake. (TLS 1.2 takes two roundtips.)
+
+- TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+- `C -> S` Client Hello
+  - Send list of supported TLS versions.
+  - Send random number.
+  - Send list of supported Cipher Suites.
+  - Send Client Key Exchange.
+  - Send TLS Extensions
+    - SNI or ESNI
+    - ALPN
+
+<p align="center">
+  Client Hello :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102996572-5b341080-4549-11eb-91d1-d2e68f64592b.png" width="50%" />
+</p>
+
+- `S ->  C` Server Hello
+  - Agree on a cipher suite.
+  - Agree on TLS protocol version.
+  - Send random number.
+  - Send Server Key Exchange.
+  - Send Certificate.
+  - Send TLS Extensions.
+    - OSCP Stapling (Certificate Verify)
+  - Send Finished message.
+
+<p align="center">
+  Server Hello :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/102997188-7bb09a80-454a-11eb-9399-0f6c7e5a2dfd.png" width="50%" />
+</p>
+
+- `C -> S` Client sends a Finished message and then encrypted and authenticated communication starts.
+
+
 ## Resources
 
 - TLS
   - [TLS Intro](https://www.youtube.com/watch?v=0TLDTodL7Lc)
   - [TLS Handshake](https://www.youtube.com/watch?v=86cQJ0MMses)
+  - [Illustrated TLS 1.2 Handshake](https://tls.ulfheim.net/)
+  - [Illustrated TLS 1.3 Handshake](https://tls13.ulfheim.net/)
   - [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
   - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
 - Diffie-Hellman
@@ -199,6 +242,8 @@
   - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
   - [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
   - [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
+- [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
+- [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
 - Picture sources
   - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
   - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
