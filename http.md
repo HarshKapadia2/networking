@@ -1,6 +1,6 @@
 # HTTP
 
-- The Hyper Text Transfer Protocol (HTTP) is an Application Layer protocol which operates at port 80 and is the most widely used protocol for data communication over the internet.
+- The Hyper Text Transfer Protocol (HTTP) is a stateless Application Layer protocol which operates at port 80 and is one of the most widely used protocols for data communication over the internet.
 - The Hyper Text Transfer Protocol Secure (HTTPS) is the secure form of HTTP which provides data encryption and authenticity of communication and operates at port 443. The security is provided by [TLS](tls.md).
 - HTTP follows a request-resonpse cycle, where the client requests something for the server (or responding maching) and the server sends back a response.
 - [What is HTTP?](https://www.youtube.com/watch?v=0OrmKCB0UrQ)
