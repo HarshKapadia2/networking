@@ -16,3 +16,7 @@ SSL | Secure Sockets Layer | | Transport Layer
 TCP | Transmission Control Protocol | | Transport Layer
 TLS | Transport Layer Security | | Transport Layer | [Learn more.](tls.md)
 UDP | User Datagram Protocol | | Transport Layer
+
+## Resources
+
+- [Well known port numbers](https://www.meridianoutpost.com/resources/articles/well-known-tcpip-ports.php)
