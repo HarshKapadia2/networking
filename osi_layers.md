@@ -14,6 +14,10 @@ No. | Name | Protocol(s) | Remarks
   <br />
   <br />
   <img src="https://user-images.githubusercontent.com/50140864/101920490-e3352480-3bf1-11eb-8a76-18fc51052498.png" />
-  <br />
-  <a href="https://www.youtube.com/watch?v=7IS7gigunyI"><i>Source</i></a>
 </p>
+
+
+## Resources
+
+- [The OSI Model](https://www.youtube.com/watch?v=7IS7gigunyI)
+- [Encapsulation explained and why Ping (part of ICMP) doesn't work at layer three](https://www.youtube.com/watch?v=2shvrp0-yHw) and even then [ICMP is considered as a layer three protocol](https://serverfault.com/questions/511965/why-is-icmp-categorized-as-a-layer-3-protocol).
