@@ -1,6 +1,7 @@
 # IPSec
 
 - The IP Security (IPSec) Protocol is a Network Layer encryption protocol most commonly used in VPNs (either to securely browse the internet or to securely connect to a remote network).
+- It is used to make a secure tunnel between the client and the server (or target machine).
 - It is supported by both IPv4 and IPv6.
 
 
@@ -40,18 +41,38 @@
 </p>
 
 
+## IKE
+
+- The Internet Key Exchange (IKE) Protocol helps with policy and key management to encrypt data and form security associations (SAs).
+- This protocol runs on port 500 and uses UDP.
+- It is the first step before using either AH or ESP for securing the encapsulation.
+- IKEv1 has 2 phases while IKEv2 has a 1 step negotiation process.
+
+### IKEv1
+
+> NOTE: 'Payload' refers to all the data inside the encapsulation (including the TCP and inner IP info).
+
+- Phase 1
+  - Create an ISAKMP SA. (ISAKMP = Internet Security Association and Key Management Protocol)
+  - Used for management for exchange of info and diagnostics.
+  - Bi-directional SA, as both need to come to an agrement on how to communicate.
+  - Negotiate Policy Set with target machine
+    - Hashing (data integrity)
+    - Authentication (Certificates, etc)
+    - [Diffie-Hellman Group](https://www.omnisecu.com/tcpip/what-is-diffie-hellman-group.php)
+    - Lifetime (How long should the IKE tunnel live for. Shorter the lifetime, more the security, as there will frequently be new keys.)
+    - Encryption (AES, triple DES, etc)
+- Phase 2
+  - Create an IPSec SA.
+  - Each side creates a Transform Set, which decides how each one is going to encrypt the actual data (payload).
+  - One SA is created by each side, so IPSec SAs are uni-directional.
+  - So, two SAs are created in this phase. (Inbound and outbound.)
+  - Each SA will have a SPI (Security Parameter Index - a random 32 bit number) attached to it, so later on while communicating, they can be compared with all the SPIs that the machine has received and on matching with one, the machine can take the steps to decrypt the payload.
+
+
 ## Security protocols
 
-> NOTE:
-> - Internet Key Exchange (IKE/IKEv2) helps with policy and key management to encrypt data and form security associations and this protocol, which runs on port 500, is the first step before using either AH or ESP. IKEv1 has 2 phases while IKEv2 has a 1 step negotiation process.
->   - IKEv1 negotiation in phase 1 to establish a secure channel (IKE SA):
->     - Hashing (data integrity)
->     - Authentication (Certificates, etc)
->     - Group (Diffie-Hellman Group)
->     - Lifetime (How long should the IKE tunnel live for. Shorter the lifetime, more the security, as there will frequently be new keys.)
->     - Encryption (AES, triple DES, etc)
->   - IKEv1 phase 2 establishes a IPSec SA using the IKE SA established in phase 1.
-> - 'Payload' refers to all the data inside the encapsulation (including the TCP and IP info).
+> NOTE: 'Payload' refers to all the data inside the encapsulation (including the TCP and inner IP info).
 
 ### AH
 
@@ -89,7 +110,7 @@
 
 - [VPN & Remote Working](https://www.youtube.com/watch?v=1mtSNVdC7tM)
 - [What is IPSec VPN and How Does it Work?](https://www.youtube.com/watch?v=pphB1pONPPU)
-- [Understanding AH vs ESP and ISKAKMP vs IPSec in VPN tunnels](https://www.youtube.com/watch?v=rwu8__GG_rw)
+- [Understanding AH vs ESP and ISAKMP vs IPSec in VPN tunnels](https://www.youtube.com/watch?v=rwu8__GG_rw)
 - IKE
   - [IKE phase 1 negotiation](https://www.youtube.com/watch?v=_oTcicLqyyY)
   - [Principle of IKEv1 and IKEv2](https://www.youtube.com/watch?v=wM3aIbF1IVs&list=PLzAnmgsb6R14VW6LET39B-pedj6dp5wQw&index=22)
