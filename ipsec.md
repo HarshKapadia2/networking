@@ -55,7 +55,7 @@ The origin machine proposes a connection to the target machine and that proposal
   - Uses UDP on port 500 if NAT is not being used. (If the packet is not originating from a local network, but from a public IP, NAT is not needed.)
   - If no public IP, the UDP is used on port 4500 for NAT.
 - Phase 1.5
-  - Optional negotiations for Extended authentication, Mode Configuration, etc.
+  - Optional negotiations for Extended Authentication (XAUTH), Mode Configuration (mode-config), etc.
 - Phase 2 (Data plane)
   - Main goal: Estabish encrypted tunnel to send user data securely, by negotiating data protection params.
   - Uses the Quick mode and does its work in two messages as a authentication has already been done.
@@ -85,6 +85,43 @@ The origin machine proposes a connection to the target machine and that proposal
   - Uses ESP or AH protocols for transport if NAT is not required.
   - With NAT, ESP over UDP and port 4500 is used.
   - AH is not NAT friendly as it authenticates the outer IP Header as well. (The hash will not match after NAT, so the integrity check will not pass.)
+
+### IKEv2
+
+- Still uses UDP over port 500 or 4500.
+- Runs in one phase as compared to IKEv1 which runs in two phases.
+- Has the same goal as IKEv1.
+- Not backward compatible with IKEv1.
+- Everything that was additionally added to IKEv1 is a part of the [IKEv2 standard](https://tools.ietf.org/html/rfc5996). Some of the IKEv1 additions that are now part of the IKEv2 standard:
+  - ISAKMP
+  - AH/ESP
+  - IPSec DOI
+  - DPD
+  - NAT-T
+  - mode-config
+  - XAUTH
+
+#### Negotiation
+
+ > NOTE: There is only one phase in IKEv2.
+
+- IKE_SA_INIT messages
+  - IKEv2 Security Association (SA) is established.
+  - Proposal selection
+  - Key exchange
+- IKE_AUTH messages
+  - Minimum four message exchanges and can go up to 12-16 depending upon the type of auth being used.
+  - Mutual auth and identity exchange.
+  - Initial IPSec SAs are established.
+  - IKEv2 supports asymmetric peer authentication
+    - Different pre-shared keys (PSKs) on both machines
+    - One side using PSK auth and the other PKI auth (involves a digital certificate).
+  - Optional
+    - Certificate exchange
+    - Configuration exchange
+- Optional messages
+  - CREATE_CHILD_SA
+  - INFORMATIONAL
 
 
 ## Security protocols
@@ -201,6 +238,7 @@ The origin machine proposes a connection to the target machine and that proposal
 - IKE
   - [IKE phase 1 negotiation](https://www.youtube.com/watch?v=_oTcicLqyyY)
   - [Principle of IKEv1 and IKEv2](https://www.youtube.com/watch?v=wM3aIbF1IVs&list=PLzAnmgsb6R14VW6LET39B-pedj6dp5wQw&index=22)
+  - [What is IKEv2?](https://www.youtube.com/watch?v=eO__0SfhU4g)
 - [IPsec VPN Overview](https://www.youtube.com/watch?v=ikSybz2e2RU) (Covers almost everything about IPSec.)
 - [Ports used in IPSec](https://www.speedguide.net/port.php?port=4500)
 - Sources for pictures
