@@ -244,3 +244,25 @@ The origin machine proposes a connection to the target machine and that proposal
 - Sources for pictures
   - [Understanding VPN IPSec Tunnel Mode and IPSec Transport Mode](http://www.firewall.cx/networking-topics/protocols/870-ipsec-modes.html)
   - [An answer in the Cisco Community](https://community.cisco.com/t5/vpn/how-nat-t-works-with-ipsec/m-p/1528921/highlight/true#M41422)
+- Some Cryptography resources
+  - Diffie-Hellman
+    - [End to End Excryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
+    - [Secret Key Exchange (Diffie-Hellman)](https://www.youtube.com/watch?v=NmM9HA2MQGI)
+    - [Diffie-Hellman - the Mathematics bit](https://www.youtube.com/watch?v=Yjrfm_oRO0w)
+    - [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE) (includes explanation on RSA)
+    - [Elliptic Curves](https://www.youtube.com/watch?v=NF1pwjL9-DE)
+    - [Elliptic Curve Back Door](https://www.youtube.com/watch?v=nybVFJVXbww)
+  - AES
+    - [SP Networks](https://www.youtube.com/watch?v=DLjzI5dX8jc)
+    - [Rinjdael algorithm](https://www.youtube.com/watch?v=VYech-c5Dic) (the base of AES)
+    - [AES Explained](https://www.youtube.com/watch?v=O4xNJsjtN6E)
+    - [128 Bit or 256 Bit Encryption?](https://www.youtube.com/watch?v=pgzWxOtk1zg)
+  - Hashing
+    - [Hashing Algorithms and Security](https://www.youtube.com/watch?v=b4b8ktEV4Bg)
+    - [SHA](https://www.youtube.com/watch?v=DMtFhACPnTY)
+    - [SHA1 Problems](https://www.youtube.com/watch?v=f8ZP_1K2Y-U)
+  - Digital signatures and certificates
+    - [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
+    - [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
+    - [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
+    - [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
