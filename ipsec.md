@@ -17,6 +17,9 @@
 - Confidentiality
 
 
+> NOTE: Resources for ciphers (AES, RSA, DES, etc), hashes (MD5, SHA1, SHA256, etc) and key exchange methods (Diffie-Hellman) can be found in the [resources](#resources) section at the end.
+
+
 ## IKE
 
 - The Internet Key Exchange (IKE) Protocol helps with policy and key management to encrypt data and form security associations (SAs).
