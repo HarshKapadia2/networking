@@ -29,6 +29,13 @@
 
 ## Cryptography in TLS
 
+Some common terms seen in the pictures above
+
+- Diffie-Hellman (EDCHE, X25519, P-256, etc)
+- RSA
+- AES
+- SHA256
+
 ### Diffie-Hellman (DH)
 
 - Type of Public/Asymmetric Key Cryptography.
@@ -36,7 +43,7 @@
 - The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Cryptography ciphers like AES (because Private Key Cryptography is faster than Public Key Cryptography).
 - Some types
   - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) (Ephemeral implies generating a key every time a conversation takes place, ie, very frequently.)
-  - X255i9 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
+  - X25519 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
   - P-256 (A type of curve used in Elliptic Curve Cryptography.)
 - Vulnerable to 'Man in the Middle' attacks and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
   - Perfect forward secrecy: Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if broken, pose a big risk. So, Diffie-Hellman is used as a quicker method (if used a few times) and safety blanket for key exchange, with RSA providing authenticity.
