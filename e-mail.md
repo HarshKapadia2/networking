@@ -2,10 +2,12 @@
 
 ## Protocols
 
+### e-mail transfer protocols
+
 - Send e-mail: SMTP
 - Receive e-mail: POP3, IMAP
 
-### SMTP
+#### SMTP
 
 - SMTP: Simple Mail Transfer Protocol
 - OSI Layer: Application Layer
@@ -17,7 +19,7 @@
 - It is a 'Push Protocol' as it is used to send data.
 - Uses TCP, so it is a connection oriented protocol.
 
-### POP3
+#### POP3
 
 - POP3: Post Office Protocol 3
 - OSI Layer: Application Layer
@@ -29,7 +31,7 @@
 - Does not provide synchronization of e-mails and folders.
 - One e-mail delivered to one of receiver's devices, the e-mail is deleted from the server. (It can be configured to prevent this though.)
 
-### IMAP
+#### IMAP
 
 - IMAP: Internet Message Access Protocol
 - OSI Layer: Application Layer
@@ -42,11 +44,22 @@
 - The e-mail is kept on the server and local copies are cached on devices as well.
 
 
+### e-mail security protocols
+
+#### PGP
+
+- PGP: Pretty Good Privacy
+- Provides
+  - Authentication (using digital signature)
+  - Confidentiality (using a combo of symmetric/conventional and asymmetric key cryptography)
+- It uses the decentralized 'Web of Trust' to verify the identity of users.
+
+
 ## Resources
 
 - Working of e-mail infrastructure
   - [How Email Works](https://www.youtube.com/watch?v=x28ciavQ4mI&list=PLzQX06Oo2BXS4JsXtPuy6tmKyApQlAuS1&index=13)
-  - [Mail terminology: MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
+  - [Mail terminology (infrastructure and authentication): MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
   - [See a full e-mail header (Gmail)](https://support.google.com/mail/answer/29436?hl=en)
 - SMTP
   - [How SMTP Works](https://www.youtube.com/watch?v=RdNErie6dKU) (Hindi)
@@ -55,3 +68,10 @@
 - POP3 and IMAP
   - [POP3 vs IMAP](https://www.youtube.com/watch?v=SBaARws0hy4)
   - [Email Protocols - POP3, SMTP and IMAP Tutorial](https://www.siteground.com/tutorials/email/protocols-pop3-smtp-imap/)
+- e-mail security
+  - [Basic e-mail security](https://www.youtube.com/watch?v=6ezYWDUON6o&list=PLzQX06Oo2BXS4JsXtPuy6tmKyApQlAuS1&index=14)
+  - PGP
+     - [Intro to PGP](https://www.youtube.com/watch?v=WTwQd7ovAqY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=63)
+     - [PGP and the Web of Trust](https://www.youtube.com/watch?v=H5-lipH1KwQ)
+     - [A Pretty Good Introduction to Pretty Good Privacy](https://www.youtube.com/watch?v=Lq-yKJFHJpk)
+  - [Mail terminology (infrastructure and authentication): MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
