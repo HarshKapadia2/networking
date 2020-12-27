@@ -9,7 +9,7 @@
 
 - SMTP: Simple Mail Transfer Protocol
 - OSI Layer: Application Layer
-- Port: 25 (default, insecure), 2525 (insecure) & 465 (secure with TLS)
+- Port: 25 (default, insecure), 2525 (insecure), 587 (secure with [TLS](tls.md)) & 465 (deprecated, secure with TLS)
 - TCP/UDP: TCP
 - Only used to send e-mails
   - from sender to sender's mail server
@@ -44,8 +44,14 @@
 
 ## Resources
 
-- [How SMTP Works](https://www.youtube.com/watch?v=RdNErie6dKU) (Hindi)
-- [What is SMTP](https://www.youtube.com/watch?v=PJo5yOtu7o8)
-- [POP3 vs IMAP](https://www.youtube.com/watch?v=SBaARws0hy4)
-- [Email Protocols - POP3, SMTP and IMAP Tutorial](https://www.siteground.com/tutorials/email/protocols-pop3-smtp-imap/)
-- [Mail terminology](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc) (MTA MUA MSA MDA SMTP DKIM SPF DMARC)
+- Working of e-mail infrastructure
+  - [How Email Works](https://www.youtube.com/watch?v=x28ciavQ4mI&list=PLzQX06Oo2BXS4JsXtPuy6tmKyApQlAuS1&index=13)
+  - [Mail terminology: MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
+  - [See a full e-mail header (Gmail)](https://support.google.com/mail/answer/29436?hl=en)
+- SMTP
+  - [How SMTP Works](https://www.youtube.com/watch?v=RdNErie6dKU) (Hindi)
+  - [What is SMTP](https://www.youtube.com/watch?v=PJo5yOtu7o8)
+  - [What SMTP Port Should I Use?](https://www.sparkpost.com/blog/what-smtp-port/)
+- POP3 and IMAP
+  - [POP3 vs IMAP](https://www.youtube.com/watch?v=SBaARws0hy4)
+  - [Email Protocols - POP3, SMTP and IMAP Tutorial](https://www.siteground.com/tutorials/email/protocols-pop3-smtp-imap/)
