@@ -1,6 +1,6 @@
 # Protocols
 
-Abbr. | Name | Port | TCP/UDP | OSI Layer | Remarks
+Abbr. | Name | Port(s) | TCP/UDP | OSI Layer | Remarks
 ----- | ---- | ---- | ------- | --------- | -------
 AH | Authentication Header | | | Network Layer | [Learn more.](ipsec.md#ah)
 ARP | Address Resolution Protocol | | | Data Link Layer
@@ -18,7 +18,7 @@ ISAKMP | Internet Security Association and Key Management Protocol | 500 (w/o NA
 OCSP | Online Certificate Status Protocol | | | Transport Layer | TLS extension
 POP3 | Post Office Protocol 3 | 110 (insecure) & 995 (secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#pop3)
 RIP | Routing Information Protocol | | | Network Layer
-SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure) & 465 (secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#smtp)
+SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure), 587 (secure with TLS) & 465 (deprecated, secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#smtp)
 SNI | Server Name Indication | | | Transport Layer | TLS extension
 SSL | Secure Sockets Layer | | | Transport Layer | Almost replaced by TLS.
 TCP | Transmission Control Protocol | | - | Transport Layer
