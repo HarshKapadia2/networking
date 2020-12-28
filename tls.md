@@ -27,6 +27,9 @@
 ![](https://user-images.githubusercontent.com/50140864/102624503-1cc5dc80-416a-11eb-8240-0a5219c2bc2b.png)
 
 
+> **NOTE: Resources for everything written below can be found in the '[Resources](#resources)' section at the end of this file.**
+
+
 ## Cryptography in TLS
 
 Some common terms seen in the pictures above
