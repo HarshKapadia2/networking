@@ -10,9 +10,10 @@ A repo to collect my networking knowledge as much as possible.
 - [TLS](tls.md)
 - [IPSec](ipsec.md)
 - [e-mail](e-mail.md)
+- [Cryptography](cryptography.md) (ciphers)
 - [Powers of two](powers_of_two.md)
 
-## Resources
+## Main resources
 
 - College syllabus (Study the topics mentioned in the syllabus on your own. Do not rely on the college.)
 - Networking
