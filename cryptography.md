@@ -44,6 +44,41 @@
   - http://wesecure.net/learn/index.html
 
 
+## Key exchange
+
+### Diffie-Hellman
+
+- Key exchange algorithm
+- [End to End Excryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
+- [Secret Key Exchange (Diffie-Hellman)](https://www.youtube.com/watch?v=NmM9HA2MQGI)
+- [Diffie-Hellman - the Mathematics bit](https://www.youtube.com/watch?v=Yjrfm_oRO0w)
+- [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE) (includes explanation on RSA)
+- [Elliptic Curves](https://www.youtube.com/watch?v=NF1pwjL9-DE)
+- [Elliptic Curve Back Door](https://www.youtube.com/watch?v=nybVFJVXbww)
+
+## Hashing
+
+- [Hashing Algorithms and Security](https://www.youtube.com/watch?v=b4b8ktEV4Bg)
+
+### SHA
+
+- Secure Hashing Algorithm
+- [SHA](https://www.youtube.com/watch?v=DMtFhACPnTY)
+- [SHA1 Problems](https://www.youtube.com/watch?v=f8ZP_1K2Y-U)
+
+
+## Digital signatures
+
+- [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
+
+
+## Digital certificates
+
+- [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
+- [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
+- [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
+
+
 ## More resources
 
 - [Computerphile](https://www.youtube.com/user/Computerphile)
