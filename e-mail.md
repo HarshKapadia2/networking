@@ -107,6 +107,7 @@
     - [Intro to PGP](https://www.youtube.com/watch?v=WTwQd7ovAqY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=63)
     - [PGP and the Web of Trust](https://www.youtube.com/watch?v=H5-lipH1KwQ)
     - [A Pretty Good Introduction to Pretty Good Privacy](https://www.youtube.com/watch?v=Lq-yKJFHJpk)
+    - [End-to-End Encryption in the Browser Impossible?](https://www.youtube.com/watch?v=DM1tPmxGY7Y)
   - S/MIME
     - [MIME](https://www.youtube.com/watch?v=Ta8r_I7-wrw&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=65) (Hindi)
     - [S/MIME](https://www.youtube.com/watch?v=Ta8r_I7-wrw&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=66) (Hindi)
