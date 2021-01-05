@@ -213,7 +213,7 @@ The origin machine proposes a connection to the target machine and that proposal
   <br />
   Overview of IPSec operation modes :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/103147149-3e315480-4778-11eb-9696-4fead37110ea.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/103147149-3e315480-4778-11eb-9696-4fead37110ea.png" />
 </p>
 
 
