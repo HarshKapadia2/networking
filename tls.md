@@ -16,15 +16,15 @@
 
 *https://github.com* :point_down:
 
-![](https://user-images.githubusercontent.com/50140864/102624600-3c5d0500-416a-11eb-9893-0b7ea946c2ba.png)
+<img src="https://user-images.githubusercontent.com/50140864/102624600-3c5d0500-416a-11eb-9893-0b7ea946c2ba.png" width="80%" />
 
 *https://otc.zulipchat.com* :point_down:
 
-![](https://user-images.githubusercontent.com/50140864/102624926-bc836a80-416a-11eb-9a12-237e2af7a694.png)
+<img src="https://user-images.githubusercontent.com/50140864/102624926-bc836a80-416a-11eb-9a12-237e2af7a694.png" width="80%" />
 
 [*Source*](https://youtu.be/86cQJ0MMses?t=65) :point_down:
 
-![](https://user-images.githubusercontent.com/50140864/102624503-1cc5dc80-416a-11eb-8240-0a5219c2bc2b.png)
+<img src="https://user-images.githubusercontent.com/50140864/102624503-1cc5dc80-416a-11eb-8240-0a5219c2bc2b.png" width="90%" />
 
 
 > **NOTE: Resources for everything written below can be found in the '[Resources](#resources)' section at the end of this file.**
@@ -87,7 +87,7 @@ Some common terms seen in the pictures above
 <p align="center">
   The TLS 1.2 handshake as seen in Wireshark :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102719477-68b48500-4314-11eb-9631-e2806662900d.png" />
+  <img src="https://user-images.githubusercontent.com/50140864/102719477-68b48500-4314-11eb-9631-e2806662900d.png" width="100%" />
 </p>
 
 - TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
@@ -99,12 +99,12 @@ Some common terms seen in the pictures above
 <p align="center">
   Client Hello :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721208-71f71f00-431f-11eb-9be9-2d3304b925ee.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721208-71f71f00-431f-11eb-9be9-2d3304b925ee.png" width="80%" />
   <br />
   <br />
   Contents of 'Random' :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721273-c8645d80-431f-11eb-9a74-09c849a63c36.png" width="60%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721273-c8645d80-431f-11eb-9a74-09c849a63c36.png" width="80%" />
 </p>
 
 - `S -> C` Server Hello
@@ -120,17 +120,17 @@ Some common terms seen in the pictures above
 <p align="center">
   Server Hello :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721373-66582800-4320-11eb-93c7-42dcff85e0c1.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721373-66582800-4320-11eb-93c7-42dcff85e0c1.png" width="80%" />
   <br />
   <br />
   Server Key Exchange :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721626-ef239380-4321-11eb-91b7-b0b8da838157.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721626-ef239380-4321-11eb-91b7-b0b8da838157.png" width="80%" />
   <br />
   <br />
   Server Key Exchange (contd) :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721653-24c87c80-4322-11eb-8147-3795b2b13d9f.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721653-24c87c80-4322-11eb-8147-3795b2b13d9f.png" width="80%" />
   <br />
   Server Hello Done :point_up:
 </p>
@@ -144,17 +144,17 @@ Some common terms seen in the pictures above
 <p align="center">
   Client Key Exchange :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721728-aa4c2c80-4322-11eb-9ea3-21b975a40ad4.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721728-aa4c2c80-4322-11eb-9ea3-21b975a40ad4.png" width="80%" />
   <br />
   <br />
   Change Cipher Spec :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="80%" />
   <br />
   <br />
   Finished :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="80%" />
 </p>
 
 - `S -> C` Change Cipher Spec message
@@ -164,12 +164,12 @@ Some common terms seen in the pictures above
 <p align="center">
   Change Cipher Spec :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="80%" />
   <br />
   <br />
   Finished :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="80%" />
 </p>
 
 - The handshake is complete. The application data is encrypted using the Private/Symmetric/Secret Key Cryptography cipher mentioned in the **chosen** cipher suite (Eg: AES) and both machines can now communicate with encryption and authenticity.
@@ -177,7 +177,7 @@ Some common terms seen in the pictures above
  <p align="center">
   An overview of the TLS 1.2 handshake :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="80%" />
 </p>
 
 
@@ -200,7 +200,7 @@ Some common terms seen in the pictures above
 <p align="center">
   Client Hello :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102996572-5b341080-4549-11eb-91d1-d2e68f64592b.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102996572-5b341080-4549-11eb-91d1-d2e68f64592b.png" width="80%" />
 </p>
 
 - `S ->  C` Server Hello
@@ -216,7 +216,7 @@ Some common terms seen in the pictures above
 <p align="center">
   Server Hello :point_down:
   <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102997188-7bb09a80-454a-11eb-9399-0f6c7e5a2dfd.png" width="50%" />
+  <img src="https://user-images.githubusercontent.com/50140864/102997188-7bb09a80-454a-11eb-9399-0f6c7e5a2dfd.png" width="80%" />
 </p>
 
 - `C -> S` Client sends a Finished message and then encrypted and authenticated communication starts.
