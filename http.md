@@ -8,7 +8,7 @@
 - [HTTP crash course.](https://www.youtube.com/watch?v=iYM2zFP3Zn0)
 
 
-## Common HTTP methods
+## HTTP methods
 
 HTTP provides certain request methods to the client to state the action of their request on the server.
 
@@ -36,7 +36,20 @@ HTTP provides certain request methods to the client to state the action of their
 
 ### OPTIONS
 
-- Used in the preflight request in `fetch` by the browser to ask the server what options are allowed (allowed headers and their options, methods, etc).
+- It is used in the preflight request in `fetch` by the browser to ask the server what options are allowed (allowed headers and their options, methods, etc).
+
+### CONNECT
+
+- Starts a two-way tunnel with the target. It can be used to open a tunnel.
+
+### TRACE
+
+- It performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism. (Source: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/TRACE))
+
+### HEAD
+
+- It requests the headers that would be returned if the HEAD request's URL was instead requested with the GET method.
+- A response to a HEAD method should not have a body. If it has one anyway, that body must be ignored. (Source: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD))
 
 
 ## Common HTTP status codes
