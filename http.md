@@ -15,12 +15,12 @@ HTTP provides certain request methods to the client to state the action of their
 ### GET
 
 - Get/fetch data from server.
-- Exposes data in the URL.
+- Do not use it to send data to the server, as it exposes the data (request params) in the URL.
 
 ### POST
 
-- Add data
-- Secure as it does not expose data in the URL.
+- Add data (Send data to the server.)
+- Secure as it does not expose data (request params) in the URL like [GET](#get).
 
 ### PUT
 
@@ -48,7 +48,7 @@ HTTP provides certain request methods to the client to state the action of their
 
 ### HEAD
 
-- It requests the headers that would be returned if the HEAD request's URL was instead requested with the GET method.
+- It requests the headers that would be returned if the HEAD request's URL was instead requested with the [GET method](#get).
 - A response to a HEAD method should not have a body. If it has one anyway, that body must be ignored. (Source: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD))
 
 
@@ -77,7 +77,7 @@ HTTP provides certain request methods to the client to state the action of their
 - 307 Temporary Redirect
    - The target resource resides temporarily under a different URI and the user agent MUST NOT change the request method if it performs an automatic redirection to that URI.
 
-### Client Errors
+### Client errors
 
 - 400 Bad Request
    - Indicates that there was a client error like a malformed request syntax, an invalid request message framing or a deceptive request routing.
@@ -88,7 +88,7 @@ HTTP provides certain request methods to the client to state the action of their
 - 429 Too Many Requests
    - The user has sent too many requests in a given amount of time (rate limiting).
 
-### Server Errors
+### Server errors
 
 - 500 Internal Server Error
 - 502 Bad Gateway
