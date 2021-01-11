@@ -16,11 +16,13 @@ HTTP provides certain request methods to the client to state the action of their
 
 - Get/fetch data from server.
 - Do not use it to send data to the server, as it exposes the data (request params) in the URL.
+- Limitation on size of data that can be sent.
 
 ### POST
 
 - Add data (Send data to the server.)
 - Secure as it does not expose data (request params) in the URL like [GET](#get).
+- No limitation on th size of data.
 
 ### PUT
 
@@ -36,20 +38,24 @@ HTTP provides certain request methods to the client to state the action of their
 
 ### OPTIONS
 
-- It is used in the preflight request in `fetch` by the browser to ask the server what options are allowed (allowed headers and their options, methods, etc).
+- It is used to ask the server the options that are allowed (allowed headers and their options, methods, etc).
+- It is used in the preflight request in `fetch` by the browser.
 
 ### CONNECT
 
 - Starts a two-way tunnel with the target. It can be used to open a tunnel.
+- This method converts the request connection to a transparent TCP/IP tunnel, usually to facilitate TLS encrypted communication (HTTPS) through an unencrypted HTTP proxy. (Source: TechMax)
 
 ### TRACE
 
 - It performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism. (Source: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/TRACE))
+   - It echoes the received request and the client can check if any changes have been made to it by intermediate servers. (Source: TechMax)
 
 ### HEAD
 
 - It requests the headers that would be returned if the HEAD request's URL was instead requested with the [GET method](#get).
 - A response to a HEAD method should not have a body. If it has one anyway, that body must be ignored. (Source: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD))
+- It is useful for retrieving meta-information written in response headers, without having to transport the content. (Source: TechMax)
 
 
 ## Common HTTP status codes
