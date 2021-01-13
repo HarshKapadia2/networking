@@ -21,16 +21,23 @@
 
 ### AES
 
+- AES: Advanced Encryption Standard
+- Block size: 128 bits
+- Key size: 128, 192 or 256 bits
+- No. of rounds: 10, 12 and 14 rounds for 128, 192 and 256 bits key size respectively)
 - [SP Networks](https://www.youtube.com/watch?v=DLjzI5dX8jc)
 - [Rinjdael algorithm](https://www.youtube.com/watch?v=VYech-c5Dic) (the base of AES)
 - [AES Explained](https://www.youtube.com/watch?v=O4xNJsjtN6E)
 - [128 Bit or 256 Bit Encryption?](https://www.youtube.com/watch?v=pgzWxOtk1zg)
 - [In depth working of AES](https://www.youtube.com/watch?v=YVT4fcW7sI8&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=26) (Hindi)
 
-### DES
+### DES, 2DES, 3DES
 
-- Key length: 56 (64 in reality)
+- DES: Data Encryption Standard
+- Block size: 64 bits
+- Key size: 56 bits (64 bits in reality)
   - The 64 bit key is made of eight chunks of eight bits each. The eighth bit in each chunk is a parity bit (and is thus discarded). **So, the actual key length is 64 - 8 = 56.**
+- No. of rounds: 16
 - Prerequisite
   - [Feistel Cipher](#feistel)
 - Hindi
@@ -42,6 +49,20 @@
   - [DES Weaknesses](https://www.youtube.com/watch?v=4Uo7kivJ0EQ&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=23)
 - English
   - http://wesecure.net/learn/index.html
+
+### Blowfish
+
+- Block size: 64 bits (Twofish has a block size of 128 bits.)
+- Key size: 32 to 448 bits (The default is 128 bits.)
+- No. of rounds: 16
+- [Blowfish Explained](https://www.youtube.com/watch?v=gz8AV0bPaOU)
+
+### RC5
+
+- RC: Rivest/Ron's Cipher
+- Block size: 32, 64 or 128 bits
+- Key size: 0 to 2040 bits
+- No. of rounds: 0 to 255
 
 
 ## Key exchange
@@ -56,6 +77,7 @@
 - [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE) (includes explanation on RSA)
 - [Elliptic Curves](https://www.youtube.com/watch?v=NF1pwjL9-DE)
 - [Elliptic Curve Back Door](https://www.youtube.com/watch?v=nybVFJVXbww)
+- 'Ephemeral' means something short lasting.
 
 ## Hashing
 
