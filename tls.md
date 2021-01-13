@@ -49,7 +49,7 @@ Some common terms seen in the pictures above
   - X25519 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
   - P-256 (A type of curve used in Elliptic Curve Cryptography.)
 - Vulnerable to 'Man in the Middle' attacks and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
-  - Perfect forward secrecy: Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if broken, pose a big risk. So, Diffie-Hellman is used as a quicker method (if used a few times) and safety blanket for key exchange, with RSA providing authenticity.
+  - Perfect Forward Secrecy (PFS): Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if leaked, pose a big risk. So, Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as it generates keys independently of RSA and after every session (if the ephemeral version of DH is used) and the communication will not be compromised even if the RSA private key is leaked.
 
 ### RSA
 
@@ -234,6 +234,8 @@ Some common terms seen in the pictures above
 - [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 - [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
 - [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital signatures and Digital certificates resources)
+- [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
+  - [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
 - Picture sources
   - [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
   - [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
