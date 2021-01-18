@@ -1,11 +1,14 @@
 # TLS
 
-- The Transport Layer Security (TLS) Protocol helps in encrypting and authenticating the communication between two services.
-- TLS came after the release of SSL 3.0, which did some similar things (TLS 1.0 was also called SSL 3.1) and the current version of TLS is 1.3.
-  - SSL is the older version of TLS.
-- Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP. So the encryption is put in between TCP and HTTP.
-- TLS is not used just in web sites only. It is used for other communication as well, for eg, DBs can use TLS to communicate, TOR browser uses TLS, etc.
-- HTTPS is also called 'HTTP over TLS (or SSL)'.
+- The Transport Layer Security (TLS) protocol helps in encrypting and authenticating the communication between two services.
+- It is a Transport Layer protocol as per the [OSI Model](osi_layers.md).
+- It is the better version of the Secure Sockets Layer (SSL) protocol. (The last SSL version was 3.0.)
+  - TLS 1.0 was also called SSL 3.1.
+- The latest version of TLS is 1.3.
+- It is placed between TCP and [HTTP](http.md).
+  - Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP.
+  - Thus, HTTPS is also called 'HTTP over TLS (or SSL)'.
+- It is not just used in web sites. It is used for other communication as well, for eg, DB communication, browsing on TOR browser, etc.
 
 
 ## Examples
@@ -41,41 +44,53 @@ Some common terms seen in the pictures above
 
 ### Diffie-Hellman (DH)
 
-- Type of Public/Asymmetric Key Cryptography.
-- (Secret) Key exchange protocol for a shared secret between two devices who want to start communication.
+- It is a part of Public/Asymmetric Key Cryptography.
+- It is a Key Exchange Protocol for a shared secret between two devices who want to start communication.
 - The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Cryptography ciphers like AES (because Private Key Cryptography is faster than Public Key Cryptography).
-- Some types
-  - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) (Ephemeral implies generating a key every time a conversation takes place, ie, very frequently.)
-  - X25519 (A type of Elliptic Curve Diffie-Hellman that uses Curve25519.)
-  - P-256 (A type of curve used in Elliptic Curve Cryptography.)
+- Some types of DH
+  - ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)
+    - Ephemeral means 'something that lasts for a short time' and here it implies that a new key is generated every time a conversation takes place, ie, very frequently.
+  - X25519
+    - A type of Elliptic Curve Diffie-Hellman that uses Curve25519.
+  - P-256
+    - A type of curve used in Elliptic Curve Cryptography.
 - Vulnerable to 'Man in the Middle' attacks and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
-  - Perfect Forward Secrecy (PFS): Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if leaked, pose a big risk. So, Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as it generates keys independently of RSA and after every session (if the ephemeral version of DH is used) and the communication will not be compromised even if the RSA private key is leaked.
+  - Perfect Forward Secrecy (PFS)
+    - Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if leaked, pose a big risk.
+    - So, Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as it generates keys independently of RSA and after every session (if the ephemeral version of DH is used) and the communication will not be compromised even if the RSA private key is leaked.
 
 ### RSA
 
-- RSA is the name of the scientists involved.
-- Type of Public/Asymmetric Key Cryptography.
+- Type of Public/Asymmetric Key Cryptography cipher.
+- The name 'RSA' is an acronym of the scientists involved in making the cipher.
+  - The scientists in order: Ron Rivest, Adi Shamir and Leonard Adleman.
 - Ensures authenticity of sender.
-- Prevents 'Man in the Middle' attacks (as it authenticates the sender).
+- Prevents 'Man in the Middle' attacks, as it authenticates the sender.
 
 ### AES
 
-- Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography.
+- Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography cipher.
 - The shared secret from Diffie-Hellman is used to derive a key.
 - Provides encryption for the data being shared between the two communicating machines.
 
 ### SHA256
 
-- Hashing algorithm which is a part of the Secure Hashing Algorithm family. (SHA2 to be specific.)
+- Hashing algorithm which is a part of the Secure Hashing Algorithm (SHA) family. (SHA2 to be specific.)
+- Generates a unique* 256 bit hexadecimal string output called a 'hash', for any length of input.
+  - unique*: Hash collisions are extremely rare.
 - Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
 
 
 ## Conditions to be fulfilled by a TLS handshake
 
-- What ciphers to be used for normal communication. (Eg: AES)
-- Key exchange cipher to generate a symmetric key. (Eg: Diffie-Hellman)
-- Authentication (public/asymmetric key cryptography like RSA and verifying with digital signature with certificates)
-- Robustness (prevent Man in the Middle attacks, Replay attacks, Downgrade attacks, etc during the handshake)
+- What ciphers to be used for normal communication.
+  - Eg: AES
+- Key exchange cipher to generate a symmetric key.
+  - Eg: Diffie-Hellman
+- Authentication
+  - Public/Asymmetric Key Cryptography like RSA and verifying with digital signature with certificates.
+- Robustness
+  - Prevent Man in the Middle Attacks, Replay Attacks, Downgrade Attacks, etc during the handshake.
 
 
 ## TLS 1.2 handshake
