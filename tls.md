@@ -236,6 +236,16 @@ Some common terms seen in the pictures above
 
 - `C -> S` Client sends a Finished message and then encrypted and authenticated communication starts.
 
+<p align="center">
+  An overview of the TLS 1.3 handshake (as a cURL request) :point_down:
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/105168866-bbb26f80-5b40-11eb-94f9-1f87c3c8fbde.png" width="80%" />
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/105169280-527f2c00-5b41-11eb-9b65-c75b2e1dc765.png" width="80%" />
+  <br />
+  <img src="https://user-images.githubusercontent.com/50140864/105169404-81959d80-5b41-11eb-82af-3df69445ab26.png" width="80%" />
+</p>
+
 
 ## Resources
 
@@ -245,6 +255,7 @@ Some common terms seen in the pictures above
   - [Illustrated TLS 1.2 Handshake](https://tls.ulfheim.net/)
   - [Illustrated TLS 1.3 Handshake](https://tls13.ulfheim.net/)
   - [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
+  - [cURL Verbose Mode Explained](https://www.youtube.com/watch?v=PVm0YEEuS8s)
   - [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
 - [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 - [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
