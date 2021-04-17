@@ -23,4 +23,6 @@ A repo to collect my networking knowledge as much as possible.
 - Cryptography
   - [Computerphile](https://www.youtube.com/user/Computerphile)
   - [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
+  - [Eddie Woo](https://www.youtube.com/watch?v=6xDGSalpPXk&list=PL5KkMZvBpo5CdoOxa3dqll2n6KsXqerYO)
   - [Abhishek Sharma](https://www.youtube.com/watch?v=9X1rSWLFhLY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8) (Hindi)
+  - [Crypto 101](https://www.crypto101.io/)
