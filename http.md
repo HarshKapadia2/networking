@@ -8,7 +8,7 @@
 - [HTTP crash course.](https://www.youtube.com/watch?v=iYM2zFP3Zn0)
 
 
-## HTTP methods
+## HTTP Request Methods/Verbs
 
 HTTP provides certain request methods to the client to state the action of their request on the server.
 
@@ -58,7 +58,7 @@ HTTP provides certain request methods to the client to state the action of their
 - It is useful for retrieving meta-information written in response headers, without having to transport the content. (Source: TechMax)
 
 
-## Common HTTP status codes
+## HTTP Response Status Codes
 
 - HTTP provides certain response codes to the server (or respoding machine) to explain the condition of the response, be it good or bad.
 - HTTP status codes are made up of 3 digits that fall into 5 categories, with each category representing a certain class of code. ([Source](https://pythonise.com/series/learning-flask/flask-http-methods)) <br /> The first digit is the category and the 5 categories correspond to the following classes:
