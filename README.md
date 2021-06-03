@@ -1,4 +1,4 @@
-# networking
+# Networking
 
 A repo to collect my networking knowledge as much as possible.
 
