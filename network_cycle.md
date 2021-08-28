@@ -9,6 +9,7 @@
   - [HSTS and TLS Stripping](https://www.youtube.com/watch?v=kYhMnw4aJTw)
   - [HTTP](http.md)
   - Proxy or load balancer
+    - [The Anatomy of a Proxy Server](https://www.youtube.com/watch?v=B2G49HZxnRE)
     - [Proxy vs Reverse Proxy](https://www.youtube.com/watch?v=SqqrOspasag)
     - [Reverse Proxy vs Load Balancer](https://www.youtube.com/watch?v=S8J2fkN2FeI)
     - [Layer 4 vs Layer 7 Load Balancer](https://www.youtube.com/watch?v=aKMLgFVxZYk)
