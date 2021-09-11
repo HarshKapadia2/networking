@@ -35,7 +35,7 @@
     -   Name/Host
         -   The host name of the record.
         -   Also called 'hostname.'
-        -   Eg values: `@` (blank), `www`, a subdomain (`blog`, `links`, etc.), `*` (wildcard), etc.
+        -   Eg values: `@` (blank), a subdomain (`www`, `blog`, `links`, etc.), `*` (wildcard), etc.
         -   Eg usage
             -   If the host value is `www` for the domain `harshkapadia.me`, then the record is pertaining to `www.harshkapadia.me`.
             -   Similarly, if the host value is `@` (blank) for the domain `harshkapadia.me`, then the record is pertaining to `harshkapadia.me`, ie, the base domain itself, so the output will have `@` replaced by `harshkapadia.me.`.
@@ -152,4 +152,4 @@
 -   [What is a DNS SRV Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-srv-record)
 -   Why is there a period (`.`) after the domain name?
     -   [Why Does Putting a Dot After the URL Remove Login Information?](https://superuser.com/questions/1467958/why-does-putting-a-dot-after-the-url-remove-login-information)
-    -   [Should I append a dot (.) at the end of my DNS urls?](https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls)
+    -   [Should I Append a Dot (.) at the End of my DNS URLs?](https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls)
