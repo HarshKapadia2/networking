@@ -5,6 +5,7 @@ Abbr. | Name | Port(s) | TCP/UDP | OSI Layer | Remarks
 AH | Authentication Header | | | Network Layer | [Learn more.](ipsec.md#ah)
 ALPN | Application Layer Protocol Negotiation | | | Transport Layer | TLS extention.
 ARP | Address Resolution Protocol | | | Data Link Layer
+BGP | Border Gateway Protocol | 179 | TCP | Network Layer | Discoverability and reachability
 DHCP | Dynamic Host Configuration Protocol | | | Data Link Layer
 DNS | Domain Name Server | 53
 ESP | Encapsulating Security Payload | | | Network Layer | [Learn more.](ipsec.md#esp)
