@@ -2,29 +2,34 @@
 
 Abbr. | Name | Port(s) | TCP/UDP | OSI Layer | Remarks
 ----- | ---- | ---- | ------- | --------- | -------
-AH | Authentication Header | | | Network Layer | [Learn more.](ipsec.md#ah)
+AH | Authentication Header | | | Network Layer | [Learn more](ipsec.md#ah)
 ALPN | Application Layer Protocol Negotiation | | | Transport Layer | TLS extention.
 ARP | Address Resolution Protocol | | | Data Link Layer
 BGP | Border Gateway Protocol | 179 | TCP | Network Layer | Discoverability and reachability
 DHCP | Dynamic Host Configuration Protocol | | | Data Link Layer
-DNS | Domain Name Server | 53
-ESP | Encapsulating Security Payload | | | Network Layer | [Learn more.](ipsec.md#esp)
-HTTP | Hyper Text Transfer Protocol | 80 | | Application Layer | [Learn more.](http.md)
+DNS | Domain Name System | 53 | [Mainly UDP, but can be TCP](https://stackoverflow.com/a/40063445/11958552) | Application Layer | [Learn more.](dns.md) DNSSEC and [DOH](https://www.youtube.com/watch?v=SudCPE1Cn6U) are enhancements.
+EIGRP | Enhanced Interior Gateway Routing Protocol | | | Network Layer
+ESP | Encapsulating Security Payload | | | Network Layer | [Learn more](ipsec.md#esp)
+HTTP | Hyper Text Transfer Protocol | 80 | | Application Layer | [Learn more](http.md)
 HTTPS | Hyper Text Transfer Protocol Secure | 443 | | Application Layer | [Learn more.](http.md) Also called 'HTTP over TLS (or SSL)'
 ICMP | Internet Control Message Protocol | | | Network Layer
-IKE | Internet Key Exchange | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more.](ipsec.md#ike)
-IMAP | Internet Message Access Protocol | 143 (insecure) & 993 (secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#imap)
+IGRP | Interior Gateway Routing Protocol | | | Network Layer
+IKE | Internet Key Exchange | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more](ipsec.md#ike)
+IMAP | Internet Message Access Protocol | 143 (insecure) & 993 (secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#imap)
 IP | Internet Protocol | | | Network Layer
-IPSec | Internet Protocol Security | | | Network Layer | [Learn more.](ipsec.md)
-ISAKMP | Internet Security Association and Key Management Protocol | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more.](ipsec.md#ikev1)
+IPSec | Internet Protocol Security | | | Network Layer | [Learn more](ipsec.md)
+ISAKMP | Internet Security Association and Key Management Protocol | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more](ipsec.md#ikev1)
+IS-IS | Intermediate System To Intermediate System | | | Network Layer
+NAT | Network Address Translation | | | Network Layer
 OCSP | Online Certificate Status Protocol | | | Transport Layer | TLS extension.
-POP3 | Post Office Protocol 3 | 110 (insecure) & 995 (secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#pop3)
+OSPF | Open Shortest Path First | | | Network Layer
+POP3 | Post Office Protocol 3 | 110 (insecure) & 995 (secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#pop3)
 RIP | Routing Information Protocol | | | Network Layer
-SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure), 587 (secure with TLS) & 465 (deprecated, secure with TLS) | TCP | Application Layer | [Learn more.](e-mail.md#smtp)
+SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure), 587 (secure with TLS) & 465 (deprecated, secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#smtp)
 SNI | Server Name Indication | | | Transport Layer | TLS extension.
-SSL | Secure Sockets Layer | | | Transport Layer | Almost replaced by TLS.
+SSL | Secure Sockets Layer | | | Transport Layer | Almost replaced by [TLS](tls.md).
 TCP | Transmission Control Protocol | | - | Transport Layer
-TLS | Transport Layer Security | | | Transport Layer | [Learn more.](tls.md)
+TLS | Transport Layer Security | | | Transport Layer | [Learn more](tls.md)
 UDP | User Datagram Protocol | | - | Transport Layer
 
 ## Resources
