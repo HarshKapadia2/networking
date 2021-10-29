@@ -1,5 +1,7 @@
 # DNS
 
+([Back to Home](README.md))
+
 ## Table of Contents
 
 -   [What is DNS and Why is DNS Needed?](#what-is-dns-and-why-is-dns-needed)

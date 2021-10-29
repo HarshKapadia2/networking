@@ -1,5 +1,7 @@
 # What happens on hitting enter on a link in the browser?
 
+([Back to Home](README.md))
+
 -   Prerequisites
     -   [Networking fundamentals](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
     -   [OSI layers](osi_layers.md)
