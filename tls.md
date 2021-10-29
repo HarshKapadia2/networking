@@ -209,8 +209,8 @@ Some common terms seen in the pictures above
   - Send list of supported Cipher Suites.
   - Send Client Key Exchange.
   - Send TLS Extensions
-    - SNI or ESNI
-    - ALPN
+    - [SNI or ESNI](https://www.youtube.com/watch?v=t0zlO5-NWFU)
+    - [ALPN](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 
 <p align="center">
   Client Hello :point_down:
