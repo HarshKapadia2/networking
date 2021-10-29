@@ -2,11 +2,11 @@
 
 No. | Name | Protocol(s) | Remarks
 --- | ---- | --------- | -------
-7 | Application Layer | DNS, HTTP, HTTPS, IMAP, POP3, SMTP | Concerned with headers, cookies, content, etc.
+7 | Application Layer | [DNS](dns.md), [HTTP](http.md), [HTTPS](http.md), [IMAP](e-mail.md#imap), [POP3](e-mail.md#pop3), [SMTP](e-mail.md#smtp) | Concerned with headers, cookies, content, etc.
 6 | Presentation Layer |  | Concerned with encryption.
 5 | Session Layer | | Attach session tag.
-4 | Transport Layer | ALPN, OCSP, SNI, SSL, TCP, TLS, UDP | Attach ports and sequence nos. Each individual part is called a segment.
-3 | Network Layer | AH, BGP, EIGRP, ESP, ICMP, IGRP, IKE, IP, IPSEC, ISAKMP, IS-IS, OSPF, RIP | Attach IP add. Each individual part is called a packet.
+4 | Transport Layer | [ALPN](tls.md/#:~:text=alpn), OCSP, [SNI](tls.md/#:~:text=sni), [SSL](tls.md), TCP, [TLS](tls.md), UDP | Attach ports and sequence nos. Each individual part is called a segment.
+3 | Network Layer | [AH](ipsec.md#ah), BGP, EIGRP, ESP, ICMP, IGRP, [IKE](ipsec.md#ike), IP, [IPSEC](ipsec.md), ISAKMP, IS-IS, OSPF, RIP | Attach IP add. Each individual part is called a packet.
 2 | Data Link Layer | ARP, DHCP | Attach MAC add. Each individual part is called a frame.
 1 | Physical Layer | | Data transfer in 1s and 0s.
 
