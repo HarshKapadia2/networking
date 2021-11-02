@@ -5,6 +5,7 @@
 - Cryptology is the scientific study of cryptography and cryptanalysis.
 - Cryptography is the practice and study of techniques for secure communication in the presence of third parties called adversaries.
 - Cryptanalysis is used to breach cryptographic security systems and gain access to the contents of encrypted messages, even if the cryptographic key is unknown.
+- [7 Cryptography Concepts EVERY Developer Should Know](https://www.youtube.com/watch?v=NuyzuNBFWxQ)
 
 ## Types
 
