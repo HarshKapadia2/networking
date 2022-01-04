@@ -21,6 +21,7 @@ A repo to collect my networking knowledge as much as possible.
 -   Networking
     -   [Network Direction](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
     -   [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
+    -   [Explained from first principles: The Internet](https://explained-from-first-principles.com/internet)
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   [Computer Networks by Andrew Tanenbaum (5th Edition)](https://github.com/gsahinpi/acm361/blob/master/Computer%20Networks%20-%20A%20Tanenbaum%20-%205th%20edition.pdf)
 -   Cryptography
