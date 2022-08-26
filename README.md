@@ -1,23 +1,22 @@
 # Networking
 
-A repo to collect my networking knowledge as much as possible.
+A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking knowledge.
 
-## In this repo
-
--   [OSI layers](osi_layers.md)
--   [Protocols](protocols.md)
--   [HTTP](http.md)
 -   [TLS](tls.md)
 -   [DNS](dns.md)
--   [What happens on hitting enter on a link in the browser?](network_cycle.md)
 -   [IPSec](ipsec.md)
+-   [HTTP](http.md)
+-   [OSI layers](osi_layers.md)
+-   [Protocols](protocols.md)
+-   [What happens on hitting enter on a link in the browser?](network_cycle.md)
 -   [e-mail](e-mail.md)
 -   [Cryptography](cryptography.md) (ciphers, hashing, key exchange, digital signatures, digital certificates, etc)
 -   [Powers of two](powers_of_two.md)
 
 ## Main resources
 
--   College syllabus (Study the topics mentioned in the syllabus on your own. Do not rely on the college.)
+-   College syllabus
+    -   Study the topics mentioned in the syllabus on your own.
 -   Networking
     -   [Network Direction](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
     -   [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
