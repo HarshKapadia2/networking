@@ -21,8 +21,8 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
     -   [Explained from First Principles: The Internet](https://explained-from-first-principles.com/internet)
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   Books
-        -   [Computer Networks by Tanenbaum (5th Edition)](computer-networks-tanenbaum-5th-edition.pdf)
-        -   [Computer Networking - A Top Down Approach (8th Edition)](computer-networking-a-top-down-approach-8th-edition.pdf)
+        -   [Computer Networks by Tanenbaum (5th Edition)](books/computer-networks-tanenbaum-5th-edition.pdf)
+        -   [Computer Networking - A Top Down Approach (8th Edition)](books/computer-networking-a-top-down-approach-8th-edition.pdf)
 -   Cryptography
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
