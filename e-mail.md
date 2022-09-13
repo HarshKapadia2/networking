@@ -89,7 +89,7 @@
 
 ## Resources
 
--   [Explained from first principles: e-mail](https://explained-from-first-principles.com/email)
+-   [Explained from First Principles: e-mail](https://explained-from-first-principles.com/email)
 -   Working of e-mail infrastructure
     -   [How Email Works](https://www.youtube.com/watch?v=x28ciavQ4mI&list=PLzQX06Oo2BXS4JsXtPuy6tmKyApQlAuS1&index=13)
     -   [Mail terminology (infrastructure and authentication): MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
