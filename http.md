@@ -109,3 +109,7 @@ HTTP provides certain request methods to the client to state the action of their
 -   [Chrome DevTools Network Tab - HTTP/1.1, HTTP/2 and HTTP/3 in action](https://www.youtube.com/watch?v=LBgfSwX4GDI)
 -   [More on the QUIC protocol used in HTTP/3](https://docs.google.com/document/d/1gY9-YNDNAB1eip-RTPbqphgySwSNSDHLq9D5Bty4FSU/edit)
 -   [HTTP crash course - Status codes, methods, headers and hands on with Node.js](https://www.youtube.com/watch?v=iYM2zFP3Zn0)
+
+## Misc
+
+-   [The Weirdest Valid URL You Would Have Seen](https://www.youtube.com/watch?v=7eMBQEXdles)
