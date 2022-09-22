@@ -115,3 +115,6 @@
         -   [S/MIME](https://www.youtube.com/watch?v=Ta8r_I7-wrw&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=66) (Hindi)
     -   [Mail terminology (infrastructure and authentication): MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
     -   [Learn and Test DMARC](https://www.learndmarc.com)
+-   Misc
+    -   [After self-hosting my email for twenty-three years I have thrown in the towel. The oligopoly has won.](https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html)
+        -   [Self-Hosted email is the hardest it's ever been, but also the easiest.](https://vadosware.io/post/its-never-been-easier-or-harder-to-self-host-email)
