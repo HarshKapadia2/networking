@@ -18,7 +18,7 @@
         -   [Layer 4 vs Layer 7 Load Balancer](https://www.youtube.com/watch?v=aKMLgFVxZYk)
         -   [L4 vs L7 LB use cases](https://www.youtube.com/watch?v=kOEw75j9zdI)
     -   [TCP](https://www.youtube.com/watch?v=qqRYkcta6IE&list=PLQnljOFTspQX_Zkt_8teMRsdY4sNt4BX6)
-    -   [TLS, ALPN, SNI, etc...](tls.md)
+    -   [TLS, ALPN, SNI, OCSP, etc...](tls.md)
     -   [HTTP GET](http.md#get)
     -   [HTTP/2 and HTTP/3 working](http.md#http-versions)
 -   [What happens when (you) type google.com into your browser address box and hit enter?](https://www.youtube.com/watch?v=dh406O2v_1c)

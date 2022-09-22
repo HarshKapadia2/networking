@@ -224,7 +224,7 @@ Some common terms seen in the pictures above
     -   Send Server Key Exchange.
     -   Send Certificate.
     -   Send TLS Extensions.
-        -   OCSP Stapling (Certificate Verify)
+        -   [OCSP](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) Stapling (Certificate Verify)
     -   Send Finished message.
 
 <p align="center">
@@ -258,7 +258,7 @@ Some common terms seen in the pictures above
     -   https://badssl.com
 -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 -   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
--   [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital signatures and Digital certificates resources)
+-   [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital Signatures, Digital Certificates, CRL, OCSP, etc resources)
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
     -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)

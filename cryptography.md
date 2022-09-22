@@ -95,17 +95,23 @@
 
 -   [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
 
-## Digital Certificates
+## Digital Certificates and Certificate Revocation (OCSP and CRL)
 
 -   [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
 -   [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
--   [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates/)
+-   [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates)
+-   [No More Extended Validation Certificate Overhead from Chrome 106](https://blog.webpagetest.org/posts/eliminating-ev-certificate-performance-overhead)
+-   [Revocation checking and Google Chrome CRLSet](https://www.imperialviolet.org/2012/02/05/crlsets.html)
+-   [Revocation Doesn't Work](https://www.imperialviolet.org/2011/03/18/revocation.html)
+-   [The Impact of SSL Certificate Revocation on Web Performance](https://nooshu.com/blog/2020/01/26/the-impact-of-ssl-certificate-revocation-on-web-performance)
+-   [A no-bull technical guide to EV HTTPS](https://expeditedsecurity.com/blog/are-ev-ssl-certificates-worth-it)
+-   [PKI information and X.509 certificate extensions](http://www.pkiglobe.org)
 
 ## More Resources
 
 -   [Computerphile](https://www.youtube.com/user/Computerphile)
 -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
 -   [Abhishek Sharma](https://www.youtube.com/watch?v=9X1rSWLFhLY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8) (Hindi)
--   [Gideon Samid](https://www.youtube.com/user/GideonTheTeacher/videos) (http://wesecure.net/)
+-   [Gideon Samid](https://www.youtube.com/user/GideonTheTeacher/videos) (http://wesecure.net)
 -   Misc
-    -   [Cryptology, Cryptography, and Cryptanalysis – Get your Vocabulary Straight!](https://qvault.io/2019/12/16/cryptology-cryptography-and-cryptanalysis-get-your-vocabulary-straight/)
+    -   [Cryptology, Cryptography, and Cryptanalysis – Get your Vocabulary Straight!](https://qvault.io/2019/12/16/cryptology-cryptography-and-cryptanalysis-get-your-vocabulary-straight)
