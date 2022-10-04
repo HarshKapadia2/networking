@@ -113,3 +113,4 @@ HTTP provides certain request methods to the client to state the action of their
 ## Misc
 
 -   [The Weirdest Valid URL You Would Have Seen](https://www.youtube.com/watch?v=7eMBQEXdles)
+-   [HTTP Authentication Schemes (`WWW-Authenticate` header)](http://frontier.userland.com/stories/storyReader$2159)
