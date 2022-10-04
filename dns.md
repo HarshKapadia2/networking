@@ -244,7 +244,8 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   BIND (Berkeley Internet Name Domain)
     -   [https://ns1.com/resources/bind-dns-pros-cons-and-alternatives](https://ns1.com/resources/bind-dns-pros-cons-and-alternatives)
     -   [http://jdebp.info./FGA/bind-big-picture.html](http://jdebp.info./FGA/bind-big-picture.html)
+-   Anycast
 -   `.in-addr.arpa`
     -   Check the `nslookup` Wireshark images in the [`Period (.) After Domain Name in FQDN` section](#period--after-domain-name-in-fqdn) for usage.
     -   Reverse DNS (rDNS): [https://phoenixnap.com/kb/reverse-dns-lookup](https://phoenixnap.com/kb/reverse-dns-lookup)
-    -   [https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg/?utm_source=share&utm_medium=web2x&context=3](https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg/?utm_source=share&utm_medium=web2x&context=3)
+    -   [https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg](https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg)
