@@ -19,7 +19,9 @@
     -   [SRV Record](#srv-record)
     -   [CERT Record](#cert-record)
     -   [SOA Record](#soa-record)
+-   [Period (`.`) After Domain Name in FQDN](#period--after-domain-name-in-fqdn)
 -   [Resources](#resources)
+-   [To Do](#to-do)
 
 ## What is DNS and Why is DNS Needed?
 
@@ -52,7 +54,7 @@ Example domain: `foo.bar.harshkapadia.me.`
 -   Client ([DNS Stub Resolver](https://unix.stackexchange.com/questions/500536/what-are-dns-server-resolver-and-stub-resolver))
     -   One's local machine (laptop, desktop, etc.) that asks the questions to get domain names or IP address answers.
     -   It goes to a DNS Resolver to do the actual grunt work of getting the answer/IP address.
--   DNS (Recursive or Iterative) Resolver
+-   DNS (Recursive or Iterative) Resolver (Local DNS Server)
     -   It actually finds the answer/IP address that the client asked for, through an [iterative or recursive process](https://www.slashroot.in/difference-between-iterative-and-recursive-dns-query) and sends the answers back to the client.
     -   It goes to the DNS Root Nameserver if it does not have the answer to the question cached.
 
@@ -71,14 +73,19 @@ Example domain: `foo.bar.harshkapadia.me.`
     -   Iterative resolution: It will answer with the IP address of the DNS TLD Nameserver with the `.me` answers that the resolver can query to get its answer or be redirected to another DNS Server.
     -   Recursive resolution: It will itself send a request to the DNS TLD Nameserver with the `.me` answers and eventually get back with the answer to the question.
 -   DNS Top Level Domain (TLD) Nameserver
-    -   Top Level Domains: `.com`, `.edu`, `.me`, `.in`, etc.
+    -   TLD types
+        -   Generic Top Level Domains (gTLDs): `.com`, `.edu`, `.org`, `.me`, `.xyz`, etc.
+        -   Country Code Top Level Domains (ccTLDs): `.in`, `.uk`, etc.
+        -   Sponsored Top Level Domains (sTLDs): `.app` (sponsored by Google), `.gov` (sponsored by the General Services Administration), etc.
+        -   Reserved Top Level Domains: `.localhost`, `.example`, etc.
+        -   Infrastructural Top Level Domains: `.arpa`
     -   In this example case it will be one of the many `.me` DNS TLD Nameservers.
-    -   It will search for the IP address of the DNS Authoritative Nameserver for `harshkapadia`.
-    -   Iterative resolution: It will answer with the IP address of the DNS Authoritative Nameserver with the `harshkapadia` answers that the resolver can query to get its answer or be redirected to another DNS Server.
-    -   Recursive resolution: It will itself send a request to the DNS Authoritative Nameserver with the `harshkapadia` answers and eventually get back with the answer to the question.
+    -   It will search for the IP address of the DNS Authoritative Nameserver for `.harshkapadia`.
+    -   Iterative resolution: It will answer with the IP address of the DNS Authoritative Nameserver with the `.harshkapadia` answers that the resolver can query to get its answer or be redirected to another DNS Server.
+    -   Recursive resolution: It will itself send a request to the DNS Authoritative Nameserver with the `.harshkapadia` answers and eventually get back with the answer to the question.
 -   DNS Authoritative Nameserver
     -   This server is the authority that guarantees that the domain that one wants to contacted is located at a particular server by providing its name/IP address.
-    -   If in this example case the domain was only `harshkapadia.me.`, then this would've been the end of the DNS resolution, but in this example case, further resolution is required to resolve `bar`, so this DNS Authoritative Nameserver for `harshkapadia` will redirect to the IP address of the DNS Authoritative Nameserver of `bar`, which will in turn redirect to the DNS Authoritative Nameserver of `foo` to finally get the name/IP address of the server that hosts the requested type of data for `foo.bar.harshkapadia.me.`.
+    -   If in this example case the domain was only `harshkapadia.me.`, then this would've been the end of the DNS resolution, but in this example case, further resolution is required to resolve `.bar`, so this DNS Authoritative Nameserver for `.harshkapadia` will redirect to the IP address of the DNS Authoritative Nameserver of `.bar`, which will in turn redirect to the DNS Authoritative Nameserver of `foo` to finally get the name/IP address of the server that hosts the requested type of data for `foo.bar.harshkapadia.me.`.
 
 ## Common DNS Records
 
@@ -192,11 +199,36 @@ Example domain: `foo.bar.harshkapadia.me.`
 -   'SOA' stands for 'Start Of Authority.'
 -   It appears at the beginning of a DNS Zone File and indicates the Authoritative Name Server for the current DNS zone, contact details for the Domain Administrator, Domain Serial Number and information on how frequently DNS information for the zone should be refreshed.
 
+## Period (`.`) After Domain Name in FQDN
+
+Example domain: `foo.bar.harshkapadia.me.`
+
+-   The above domain is an Absolute FQDN and not a Regular FQDN, due to the period (`.`) at the end of the domain.
+-   FQDN = Fully-qualified Domain Name
+
+In the Absolute FQDN, why is there a period (`.`) after the domain name?
+
+-   [The heading 'Practical differences' in this answer.](https://superuser.com/a/1468139)
+-   [Why Does Putting a Dot After the URL Remove Login Information?](https://superuser.com/questions/1467958/why-does-putting-a-dot-after-the-url-remove-login-information)
+-   [Should I Append a Dot (.) at the End of my DNS URLs?](https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls)
+-   An `nslookup` query to the domain `www.mit.edu` (NO period at the end of the FQDN) leads to requests to local suffices first (`www.mit.edu.ht.home` in this case, as seen in packet no. 3 and 5 of the image below) and as it was not found locally (as seen in packet no. 4 and 6 of the image below), finally to the actual `www.mit.edu` domain (as seen in packet no. 146 and 148 of the image below).
+
+<p align="center">
+    <img src="./img/dns/wireshark-dns-1-mit.edu.png" />
+</p>
+
+-   However, an `nslookup` query to the domain `www.mit.edu.` (ADDED period at the end of the FQDN) leads to requests directly to the actual `www.mit.edu` domain (as seen in packet no. 7 and 9 of the image below).
+
+<p align="center">
+    <img src="./img/dns/wireshark-dns-2-mit.edu.png" />
+</p>
+
 ## Resources
 
 -   [What is DNS? How DNS Works.](https://www.cloudflare.com/learning/dns/what-is-dns)
 -   [DNS Server Types](https://www.cloudflare.com/learning/dns/dns-server-types)
 -   [Difference Between Iterative and Recursive DNS Queries](https://www.slashroot.in/difference-between-iterative-and-recursive-dns-query)
+-   [What is a Top-level Domain? (+ Types of TLDs)](https://www.cloudflare.com/learning/dns/top-level-domain)
 -   [DNS Records Explained.](https://ns1.com/resources/dns-records-explained)
 -   [DNS Records: A Beginner’s Guide.](https://www.godaddy.com/garage/dns-records-a-beginners-guide)
 -   [DNS: Types of DNS Records, DNS Servers and DNS Query Types](https://ns1.com/resources/dns-types-records-servers-and-queries)
@@ -206,7 +238,13 @@ Example domain: `foo.bar.harshkapadia.me.`
 -   [What is a DNS TXT Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-txt-record)
 -   [CAA Records](https://support.dnsimple.com/articles/caa-record)
 -   [What is a DNS SRV Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-srv-record)
--   Why is there a period (`.`) after the domain name?
-    -   [The heading 'Practical differences' in this answer.](https://superuser.com/a/1468139)
-    -   [Why Does Putting a Dot After the URL Remove Login Information?](https://superuser.com/questions/1467958/why-does-putting-a-dot-after-the-url-remove-login-information)
-    -   [Should I Append a Dot (.) at the End of my DNS URLs?](https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls)
+
+## To Do
+
+-   BIND (Berkeley Internet Name Domain)
+    -   [https://ns1.com/resources/bind-dns-pros-cons-and-alternatives](https://ns1.com/resources/bind-dns-pros-cons-and-alternatives)
+    -   [http://jdebp.info./FGA/bind-big-picture.html](http://jdebp.info./FGA/bind-big-picture.html)
+-   `.in-addr.arpa`
+    -   Check the `nslookup` Wireshark images in the [`Period (.) After Domain Name in FQDN` section](#period--after-domain-name-in-fqdn) for usage.
+    -   Reverse DNS (rDNS): [https://phoenixnap.com/kb/reverse-dns-lookup](https://phoenixnap.com/kb/reverse-dns-lookup)
+    -   [https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg/?utm_source=share&utm_medium=web2x&context=3](https://www.reddit.com/r/pfBlockerNG/comments/p9txzs/comment/ha0iigg/?utm_source=share&utm_medium=web2x&context=3)
