@@ -79,7 +79,9 @@
 -   [Key Exchange Problems](https://www.youtube.com/watch?v=vsXMMT2CqqE) (includes explanation on RSA)
 -   [Elliptic Curves](https://www.youtube.com/watch?v=NF1pwjL9-DE)
 -   [Elliptic Curve Back Door](https://www.youtube.com/watch?v=nybVFJVXbww)
--   'Ephemeral' means something short lasting.
+-   'Ephemeral' means 'something that is short lasting'.
+-   ECDH = Elliptic Curve Diffie-Hellman
+-   [ECDH in SSH](https://youtu.be/0Sffl7YO0aY?t=361)
 
 ## Hashing
 

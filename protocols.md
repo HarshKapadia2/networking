@@ -2,7 +2,7 @@
 
 ([Back to Home](README.md))
 
-Abbr. | Name | Port(s) | TCP/UDP | OSI Layer | Remarks
+Abbr. | Name | Default Port(s) | TCP/UDP (Default) | OSI Layer | Remarks
 ----- | ---- | ---- | ------- | --------- | -------
 AH | Authentication Header | | | Network Layer | [Learn more](ipsec.md#ah)
 ALPN | Application Layer Protocol Negotiation | | | Transport Layer | TLS extention.
@@ -27,13 +27,17 @@ OCSP | Online Certificate Status Protocol | | | Transport Layer | TLS extension.
 OSPF | Open Shortest Path First | | | Network Layer
 POP3 | Post Office Protocol 3 | 110 (insecure) & 995 (secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#pop3)
 RIP | Routing Information Protocol | | | Network Layer
+SCP | Secure Copy | 22
+SFTP | Secure/SSH File Transfer Protocol | 22
 SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure), 587 (secure with TLS) & 465 (deprecated, secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#smtp)
 SNI | Server Name Indication | | | Transport Layer | TLS extension.
+SSH | Secure Shell | 22 | TCP | Application Layer | [Learn more](./ssh.md)
 SSL | Secure Sockets Layer | | | Transport Layer | Almost replaced by [TLS](tls.md).
-TCP | Transmission Control Protocol | | - | Transport Layer
+TCP | Transmission Control Protocol | | - | Transport Layer | [Learn more](./tcp.md)
 TLS | Transport Layer Security | | | Transport Layer | [Learn more](tls.md)
-UDP | User Datagram Protocol | | - | Transport Layer
+UDP | User Datagram Protocol | | - | Transport Layer | [Learn more](https://hpbn.co/building-blocks-of-udp)
 
 ## Resources
 
-- [Well known port numbers](https://www.meridianoutpost.com/resources/articles/well-known-tcpip-ports.php)
+-   [Well known port numbers](https://www.meridianoutpost.com/resources/articles/well-known-tcpip-ports.php)
+-   [List of network protocols (OSI model)](https://en.wikipedia.org/wiki/List_of_network_protocols_(OSI_model))

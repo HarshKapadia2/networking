@@ -2,10 +2,12 @@
 
 A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking knowledge.
 
+-   [SSH](./ssh.md)
+-   [DNS](./dns.md)
 -   [TLS](tls.md)
 -   [IPSec](ipsec.md)
--   [DNS](dns.md)
 -   [HTTP](http.md)
+-   [TCP](./tcp.md)
 -   [OSI layers](osi_layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network_cycle.md)
@@ -24,6 +26,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
         -   [Computer Networking - A Top Down Approach (8th Edition)](./books/computer-networking-a-top-down-approach-8th-edition.pdf)
         -   [Computer Networks by Tanenbaum (5th Edition)](./books/computer-networks-tanenbaum-5th-edition.pdf)
     -   [Wireshark](https://www.wireshark.org)
+    -   RFCs ([rfc-editor.org](https://www.rfc-editor.org), [rfcs.io](https://rfcs.io), etc.)
 -   Cryptography
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
