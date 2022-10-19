@@ -7,6 +7,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
 -   [TLS](tls.md)
 -   [IPSec](ipsec.md)
 -   [HTTP](http.md)
+-   [IP](./ip.md)
 -   [TCP](./tcp.md)
 -   [OSI layers](osi_layers.md)
 -   [Protocols](protocols.md)

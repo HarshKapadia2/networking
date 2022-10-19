@@ -18,7 +18,7 @@ ICMP | Internet Control Message Protocol | | | Network Layer
 IGRP | Interior Gateway Routing Protocol | | | Network Layer
 IKE | Internet Key Exchange | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more](ipsec.md#ike)
 IMAP | Internet Message Access Protocol | 143 (insecure) & 993 (secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#imap)
-IP | Internet Protocol | | | Network Layer
+IP | Internet Protocol | | | Network Layer | [Learn more](./ip.md)
 IPSec | Internet Protocol Security | | | Network Layer | [Learn more](ipsec.md)
 ISAKMP | Internet Security Association and Key Management Protocol | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more](ipsec.md#ikev1)
 IS-IS | Intermediate System To Intermediate System | | | Network Layer
