@@ -23,7 +23,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
     -   [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
     -   [Explained from First Principles: The Internet](https://explained-from-first-principles.com/internet)
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
-    -   [Technical Guftgu](https://www.youtube.com/playlist?list=PLBGx66SQNZ8ZvdIoctCTWB3ApXQpQGEin)
+    -   [Technical Guftgu](https://www.youtube.com/playlist?list=PLBGx66SQNZ8ZvdIoctCTWB3ApXQpQGEin) (Hindi)
     -   Books
         -   [Computer Networking - A Top Down Approach (8th Edition)](./books/computer-networking-a-top-down-approach-8th-edition.pdf)
         -   [Computer Networks by Tanenbaum (5th Edition)](./books/computer-networks-tanenbaum-5th-edition.pdf)
