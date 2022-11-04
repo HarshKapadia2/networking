@@ -44,7 +44,7 @@ Example domain: `foo.bar.harshkapadia.me.`
 > -   FQDN = Fully-qualified Domain Name
 
 <p align="center">
-    <img src="./img/dns/fqdn-components.jpg" />
+    <img src="./files/img/dns/fqdn-components.jpg" />
     <br />
     <sub>
         <a href="https://cloudinfrastructureservices.co.uk/what-is-dns-hierarchy" rel="noreferrer" target="_blank">FQDN Components Image Source</a>
@@ -59,7 +59,7 @@ Example domain: `foo.bar.harshkapadia.me.`
     -   It goes to the DNS Root Nameserver if it does not have the answer to the question cached.
 
 <p align="center">
-    <img src="./img/dns/dns-hierarchy.png" />
+    <img src="./files/img/dns/dns-hierarchy.png" />
     <br />
     <sub>
         <a href="http://www.eitc.org/research-opportunities/future-internet-and-optical-quantum-communications/the-internet-ecosystem-and-dns/the-domain-name-system-architecture" rel="noreferrer" target="_blank">DNS Hierarchy Image Source</a>
@@ -214,13 +214,13 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   An `nslookup` query to the domain `www.mit.edu` (NO period at the end of the FQDN) leads to requests to local suffices first (`www.mit.edu.ht.home` in this case, as seen in packet no. 3 and 5 of the image below) and as it was not found locally (as seen in packet no. 4 and 6 of the image below), finally to the actual `www.mit.edu` domain (as seen in packet no. 146 and 148 of the image below).
 
 <p align="center">
-    <img src="./img/dns/wireshark-dns-1-mit.edu.png" />
+    <img src="./files/img/dns/wireshark-dns-1-mit.edu.png" />
 </p>
 
 -   However, an `nslookup` query to the domain `www.mit.edu.` (ADDED period at the end of the FQDN) leads to requests directly to the actual `www.mit.edu` domain (as seen in packet no. 7 and 9 of the image below).
 
 <p align="center">
-    <img src="./img/dns/wireshark-dns-2-mit.edu.png" />
+    <img src="./files/img/dns/wireshark-dns-2-mit.edu.png" />
 </p>
 
 ## Resources
