@@ -9,7 +9,7 @@
 -   [IPv4, CIDR, NAT and VPC subnets](https://www.youtube.com/watch?v=z07HTSzzp3o)
 
     <p align="center">
-    <img src="./img/ip/ip-cidr-subnet.png" alt="Additional explanation for https://www.youtube.com/watch?v=z07HTSzzp3o as a comment on the video. Author of comment: Harsh Kapadia" loading="lazy" />
+    <img src="./files/img/ip/ip-cidr-subnet.png" alt="Additional explanation for https://www.youtube.com/watch?v=z07HTSzzp3o as a comment on the video. Author of comment: Harsh Kapadia" loading="lazy" />
     </p>
 
 -   [Classless inter-domain routing (CIDR)](https://study-ccna.com/cidr-classless-inter-domain-routing)

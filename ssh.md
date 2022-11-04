@@ -32,13 +32,13 @@
 -   Password
 
     <p align="center">
-    <img src="./img/ssh/c-ssh-pwd-example.png" alt="SSH Client Password Connection Example" loading="lazy" />
+    <img src="./files/img/ssh/c-ssh-pwd-example.png" alt="SSH Client Password Connection Example" loading="lazy" />
     </p>
 
 -   Public-private key pair
 
     <p align="center">
-    <img src="./img/ssh/c-ssh-key-example.png" alt="SSH Client Key Connection Example" loading="lazy" />
+    <img src="./files/img/ssh/c-ssh-key-example.png" alt="SSH Client Key Connection Example" loading="lazy" />
     </p>
 
 -   Host-based (`known_host` file)
@@ -100,7 +100,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   A TCP handshake takes place between the client and the server to establish an underlying connection.
 
     <p align="center">
-    <img src="./img/ssh/tcp-handshake.png" alt="Wireshark: TCP Handshake" loading="lazy" />
+    <img src="./files/img/ssh/tcp-handshake.png" alt="Wireshark: TCP Handshake" loading="lazy" />
     </p>
 
 ### Initialization
@@ -115,7 +115,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/c-s-identification.png" alt="Wireshark: SSH Client to Server Identification" loading="lazy" />
+    <img src="./files/img/ssh/c-s-identification.png" alt="Wireshark: SSH Client to Server Identification" loading="lazy" />
     </p>
 
 -   `S -> C`: Identification String Message
@@ -128,7 +128,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/s-c-identification.png" alt="Wireshark: SSH Server to Client Identification" loading="lazy" />
+    <img src="./files/img/ssh/s-c-identification.png" alt="Wireshark: SSH Server to Client Identification" loading="lazy" />
     </p>
 
 ### Algorithm Negotiation
@@ -154,7 +154,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/c-s-kexinit.png" alt="Wireshark: SSH Client to Server Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/c-s-kexinit.png" alt="Wireshark: SSH Client to Server Key Exchange Initialization" loading="lazy" />
     </p>
 
 -   `S -> C`: Key Exchange Initialization (`KEXINIT`)
@@ -165,7 +165,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/s-c-kexinit.png" alt="Wireshark: SSH Server to Client Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/s-c-kexinit.png" alt="Wireshark: SSH Server to Client Key Exchange Initialization" loading="lazy" />
     </p>
 
 -   If both, the client and the server, are able to find common grounds for each type of algorithm, the connection can move to the next phase or else it will fail.
@@ -182,7 +182,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/c-s-ssh-msg-kex-ecdh-init.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/c-s-ssh-msg-kex-ecdh-init.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
     </p>
 
 -   `S -> C`: Elliptic Curve Diffie-Hellman Key Exchange Reply (`SSH_MSG_KEX_ECDH_REPLY`)
@@ -196,7 +196,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/s-c-ssh-msg-kex-ecdh-reply-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/s-c-ssh-msg-kex-ecdh-reply-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
     </p>
 
 ### End of Key Exchange
@@ -206,13 +206,13 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   `S -> C` (Packet no. 31 in the image below.)
 
     <p align="center">
-    <img src="./img/ssh/s-c-ssh-msg-kex-ecdh-reply-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/s-c-ssh-msg-kex-ecdh-reply-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
     </p>
 
 -   `C -> S` (Packet no. 32 in the image below.)
 
     <p align="center">
-    <img src="./img/ssh/c-s-ssh-msg-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/c-s-ssh-msg-newkeys.png" alt="Wireshark: SSH Client to Server ECDH Key Exchange Initialization" loading="lazy" />
     </p>
 
 ### Subsequent Encrypted Communication
@@ -225,7 +225,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   In the image below, a connection with `csa3.bu.edu` is established, the `ls` command is run on the remote instance and then the `exit` command is run on the remote instance to gracefully end the connection.
 
     <p align="center">
-    <img src="./img/ssh/c-ssh-pwd-example.png" alt="SSH Client Password Connection Example" loading="lazy" />
+    <img src="./files/img/ssh/c-ssh-pwd-example.png" alt="SSH Client Password Connection Example" loading="lazy" />
     </p>
 
 -   The above exchange was analysed using Wireshark.
@@ -235,7 +235,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
     <p align="center">
     <br />
-    <img src="./img/ssh/c-s-ssh-ls.png" alt="Wireshark: SSH Client-Server 'ls' command request-response" loading="lazy" />
+    <img src="./files/img/ssh/c-s-ssh-ls.png" alt="Wireshark: SSH Client-Server 'ls' command request-response" loading="lazy" />
     </p>
 
 -   Breaking down the exchange for the `ls` command. (As shown in the two images above.)
@@ -252,7 +252,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   A TCP `FIN` segment is exchanged to terminate the connection to the remote instance. (Packet no. 253 in the image below.)
 
     <p align="center">
-    <img src="./img/ssh/c-s-tcp-rst.png" alt="Wireshark: Client to Server TCP Connection Termination" loading="lazy" />
+    <img src="./files/img/ssh/c-s-tcp-rst.png" alt="Wireshark: Client to Server TCP Connection Termination" loading="lazy" />
     </p>
 
 ## Resources
