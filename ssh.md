@@ -149,7 +149,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
         -   Eg: Zlib, etc.
 -   `C -> S`: Key Exchange Initialization (`KEXINIT`)
 
-    -   The client sends the server all the algorithms it supports. (Packet nos. 27and 28 in the image below.)
+    -   The client sends the server all the algorithms it supports. (Packet nos. 27 and 28 in the image below.)
     -   The list is in order of preference. The ones at the start/top of the list are more preferred by the client than the ones below it.
 
     <p align="center">
@@ -159,7 +159,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
 -   `S -> C`: Key Exchange Initialization (`KEXINIT`)
 
-    -   The client sends the server all the algorithms it supports. (Packet no. 29 in the image below.)
+    -   The server sends the client all the algorithms it supports. (Packet no. 29 in the image below.)
     -   The list is in order of preference. The ones at the start/top of the list are more preferred by the client than the ones below it.
     -   The server acknowledges the previous `C -> S` `KEXINIT` message (`ACK` flag set) along with sending its own `KEXINIT` message in the same TCP segment (`PSH` push flag set). (This can be verified using the Wireshark Trace files given in the ['Resources' section](#resources) below.)
 
