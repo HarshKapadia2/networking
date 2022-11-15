@@ -100,6 +100,7 @@
 ## Digital Certificates and Certificate Revocation (OCSP and CRL)
 
 -   [SSL/TLS Certificates](https://www.youtube.com/watch?v=r1nJT63BFQ0)
+-   [Compressing Certificates in TLS](https://www.youtube.com/watch?v=Ael488F_peM)
 -   [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
 -   [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates)
 -   [No More Extended Validation Certificate Overhead from Chrome 106](https://blog.webpagetest.org/posts/eliminating-ev-certificate-performance-overhead)
