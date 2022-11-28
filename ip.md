@@ -17,5 +17,6 @@
 -   [Understanding CIDR Ranges and dividing networks](https://www.youtube.com/watch?v=MmA0-978fSk)
 -   [IP Subnetting from CIDR Notations](https://www.youtube.com/watch?v=POPoAjWFkGg)
 -   [GENI/Cloudlab: Designing Subnets](https://witestlab.poly.edu/blog/designing-subnets)
+-   Summary: [How IP Addresses work](https://www.youtube.com/watch?v=ANZJkxiOSRg)
 -   [Do DHCP and DNS Servers Communicate? (With Wireshark)](https://www.youtube.com/watch?v=FYcO4ZshG8Q)
 -   [IPSec](./ipsec.md)
