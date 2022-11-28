@@ -181,8 +181,11 @@
 -   TCP Illinois
 -   TCP SACK
 
+and more...
+
 ### TCP Tahoe
 
+-   A Loss-based Congestion Control Algorithm.
 -   Congestion Control algorithms used
     -   [Slow Start (SS)](#slow-start-ss)
     -   [Congestion Avoidance](#congestion-avoidance)
@@ -195,6 +198,7 @@
 
 ### TCP Reno
 
+-   A Loss-based Congestion Control Algorithm.
 -   Congestion Control algorithms used
     -   [Slow Start (SS)](#slow-start-ss)
     -   [Congestion Avoidance (AIMD)](#congestion-avoidance)
@@ -211,15 +215,22 @@
 
 ### TCP CUBIC
 
+-   A Loss-based Congestion Control Algorithm.
 -   Similar to TCP Reno, but has changes in the Congestion Avoidance phase.
 
 ### TCP Vegas
 
--   Employs Delay-based Congestion Control and compares the current Throughput with Throughput when the link was uncongested, and decides the current sending rate based on that.
+-   A Delay-based Congestion Control Algorithm.
+-   It compares the current Throughput with Throughput when the link was uncongested, and decides the current sending rate based on that.
+-   [More info](http://intronetworks.cs.luc.edu/1/html/newtcps.html#tcp-vegas)
 
 ### TCP BBR
+
+-   [TCP BBR - Exploring TCP congestion control](https://toonk.io/tcp-bbr-exploring-tcp-congestion-control)
 
 ## Resources
 
 -   [github.com/HarshKapadia2/tcp-version-performance-comparison](https://github.com/HarshKapadia2/tcp-version-performance-comparison)
+-   [TCP Congestion Control](https://en.wikipedia.org/wiki/TCP_congestion_control)
+-   [Newer TCP Implementations](http://intronetworks.cs.luc.edu/1/html/newtcps.html)
 -   [github.com/AlimuddinKhan/TCP_Protocol_Comparison](https://github.com/AlimuddinKhan/TCP_Protocol_Comparison)
