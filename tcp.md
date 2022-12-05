@@ -98,6 +98,8 @@
 -   Fast Retransmit
 -   Fast Recovery
 
+> Read from [Section 3.6](https://networking.harshkapadia.me/files/books/computer-networking-a-top-down-approach-8th-edition.pdf#page=266) and [Section 3.7](https://networking.harshkapadia.me/files/books/computer-networking-a-top-down-approach-8th-edition.pdf#page=274) of the 'Computer Networking - A Top-Down Approach' book.
+
 ### Slow Start (SS)
 
 -   Exponential growth (Doubling) to rapidly increase sending rate
@@ -217,6 +219,7 @@ and more...
 
 -   A Loss-based Congestion Control Algorithm.
 -   Similar to TCP Reno, but has changes in the Congestion Avoidance phase.
+-   [More info](http://intronetworks.cs.luc.edu/1/html/newtcps.html#tcp-cubic)
 
 ### TCP Vegas
 
@@ -226,6 +229,7 @@ and more...
 
 ### TCP BBR
 
+-   [BBR: Congestion-Based Congestion Control](https://queue.acm.org/detail.cfm?id=3022184) (Research paper)
 -   [TCP BBR - Exploring TCP congestion control](https://toonk.io/tcp-bbr-exploring-tcp-congestion-control)
 
 ## Resources
