@@ -2,13 +2,13 @@
 
 A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking knowledge.
 
+-   [TCP](./tcp.md)
 -   [SSH](./ssh.md)
 -   [DNS](./dns.md)
 -   [TLS](tls.md)
 -   [IPSec](ipsec.md)
 -   [HTTP](http.md)
 -   [IP](./ip.md)
--   [TCP](./tcp.md)
 -   [OSI layers](osi_layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network_cycle.md)
