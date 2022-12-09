@@ -33,8 +33,9 @@
     -   Implementing Stop-and-Wait (Alternating-Bit) Protocol, Selective-Repeat Protocol (with Cumulative Acknowledgements) and Go-Back-N Protocol (with Selective Acknowledgements).
     -   [Sample Output Trace](files/tcp/reliable-transport-protocols-sample-output-trace.pdf)
     -   [github.com/HarshKapadia2/reliable-transport-protocol](https://github.com/HarshKapadia2/reliable-transport-protocol) (Private repo)
--   Comparing the performance of various versions of TCP
-    -   [github.com/HarshKapadia2/tcp-version-performance-comparison](https://github.com/HarshKapadia2/tcp-version-performance-comparison)
+-   Performance Comparison of TCP Versions
+    -   [Report comparing TCP Reno, TCP CUBIC, TCP Vegas and TCP BBR](https://github.com/HarshKapadia2/tcp-version-performance-comparison/blob/main/report.pdf)
+    -   [github.com/HarshKapadia2/tcp-version-performance-comparison](https://github.com/HarshKapadia2/tcp-version-performance-comparison) (Public repo)
 
 ## Reliable Communication Mechanisms
 
