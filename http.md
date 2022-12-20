@@ -68,6 +68,7 @@ HTTP provides certain request methods to the client to state the action of their
     -   3xx: Redirection
     -   4xx: Client errors
     -   5xx: Server errors
+-   [Every Important HTTP Status Code Explained](https://blog.webdevsimplified.com/2022-12/http-status-codes)
 -   A comprehensive list (with meanings) can be found on [Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) and on [httpstatuses.com](https://httpstatuses.com/).
 
 ### Success
