@@ -103,6 +103,7 @@
 -   [Compressing Certificates in TLS](https://www.youtube.com/watch?v=Ael488F_peM)
 -   [Certificate Revocation Techniques (CRL, OCSP, OCSP Stapling)](https://www.youtube.com/watch?v=g08Omc1wi0s)
 -   [Shared vs Private SSL/TLS Certificates](https://www.ssldragon.com/blog/difference-between-shared-and-private-ssl-certificates)
+-   [The SSL Certificate Issuer Field is a Lie](https://www.agwa.name/blog/post/the_certificate_issuer_field_is_a_lie) ([Credits](https://twitter.com/hnasr/status/1615758928398389248))
 -   [No More Extended Validation Certificate Overhead from Chrome 106](https://blog.webpagetest.org/posts/eliminating-ev-certificate-performance-overhead)
 -   [Revocation checking and Google Chrome CRLSet](https://www.imperialviolet.org/2012/02/05/crlsets.html)
 -   [Revocation Doesn't Work](https://www.imperialviolet.org/2011/03/18/revocation.html)
