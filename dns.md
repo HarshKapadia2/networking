@@ -239,6 +239,12 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [CAA Records](https://support.dnsimple.com/articles/caa-record)
 -   [What is a DNS SRV Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-srv-record)
 -   [Do DHCP and DNS Servers Communicate? (With Wireshark)](https://www.youtube.com/watch?v=FYcO4ZshG8Q)
+-   DNS-0x20 Encoding
+    -   [Your DNS queries will eventually look like this](https://www.youtube.com/watch?v=OL5mLcJPWVY) (`gOoGLe.cOM`)
+    -   [If your DNS queries LoOk liKE tHIs, it's not a ransom note, it's a security improvement](https://www.theregister.com/2023/01/19/google_dns_queries)
+    -   [An Illustrated Guide to the Kaminsky DNS Vulnerability](http://unixwiz.net/techtips/iguide-kaminsky-dns-vuln.html) (DNS Cache Poisoning Attack)
+    -   [Increased DNS Forgery Resistance Through 0x20-Bit Encoding](https://astrolavos.gatech.edu/articles/increased_dns_resistance.pdf)
+    -   [Use of Bit 0x20 in DNS Labels to Improve Transaction Identity](https://datatracker.ietf.org/doc/html/draft-vixie-dnsext-dns0x20-00) (RFC)
 
 ## To Do
 
