@@ -14,6 +14,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
 -   [What happens on hitting enter on a link in the browser?](network_cycle.md)
 -   [e-mail](e-mail.md)
 -   [Cryptography](cryptography.md) (ciphers, hashing, key exchange, digital signatures, digital certificates, etc)
+-   [BGP](bgp.md)
 -   [Powers of two](powers_of_two.md)
 
 ## Resources

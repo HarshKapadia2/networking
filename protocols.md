@@ -6,8 +6,8 @@ Abbr. | Name | Default Port(s) | TCP/UDP (Default) | OSI Layer | Remarks
 ----- | ---- | ---- | ------- | --------- | -------
 AH | Authentication Header | | | Network Layer | [Learn more](ipsec.md#ah)
 ALPN | Application Layer Protocol Negotiation | | | Transport Layer | TLS extention.
-ARP | Address Resolution Protocol | | | Data Link Layer
-BGP | Border Gateway Protocol | 179 | TCP | Network Layer | Discoverability and reachability
+ARP | Address Resolution Protocol | | | Data Link Layer | [Learn more](https://www.varonis.com/blog/arp-poisoning)
+BGP | Border Gateway Protocol | 179 | TCP | Network Layer | [Learn more](bgp.md)
 DHCP | Dynamic Host Configuration Protocol | | | Data Link Layer
 DNS | Domain Name System | 53 | [Mainly UDP, but can be TCP](https://stackoverflow.com/a/40063445/11958552) | Application Layer | [Learn more.](dns.md) DNSSEC and [DOH](https://www.youtube.com/watch?v=SudCPE1Cn6U) are enhancements.
 EIGRP | Enhanced Interior Gateway Routing Protocol | | | Network Layer
