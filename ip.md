@@ -1,5 +1,7 @@
 # Internet Protocol (IP)
 
+([Back to Home](README.md))
+
 -   [Classes of IP addresses](https://study-ccna.com/classes-of-ip-addresses)
 -   [Private IP addresses](https://study-ccna.com/private-ip-addresses-explained)
     -   Private IP address ranges:
