@@ -74,7 +74,7 @@
 ### Diffie-Hellman
 
 -   Key exchange algorithm
--   [End to End Excryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
+-   [End to End Encryption (E2EE)](https://www.youtube.com/watch?v=jkV1KEJGKRA)
     -   Side note: [End-to-End Encryption in the Browser Impossible?](https://www.youtube.com/watch?v=DM1tPmxGY7Y)
 -   [Secret Key Exchange (Diffie-Hellman)](https://www.youtube.com/watch?v=NmM9HA2MQGI)
 -   [Diffie-Hellman - the Mathematics bit](https://www.youtube.com/watch?v=Yjrfm_oRO0w)
@@ -97,7 +97,10 @@
 
 ## Digital Signatures
 
+-   Help in establishing message integrity, i.e., proving that a particular person/origin sent the data.
+-   Message Authentication Codes (MACs) are symmetric key protocols, while Digital Signatures are asymmetric/public key protocols.
 -   [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
+-   [Digital Signatures: What They Are & How They Work](https://sectigo.com/resource-library/how-digital-signatures-work)
 
 ## Digital Certificates and Certificate Revocation (OCSP and CRL)
 
