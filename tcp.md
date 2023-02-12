@@ -23,7 +23,9 @@
 ## Introduction
 
 -   [Building Blocks of TCP](https://hpbn.co/building-blocks-of-tcp)
--   [SYN packet handling in the wild](https://blog.cloudflare.com/syn-packet-handling-in-the-wild)
+-   Understanding the hardware Network stack architecture in Linux
+    -   [Queueing in the Linux Network Stack](https://www.coverfire.com/articles/queueing-in-the-linux-network-stack)
+    -   [SYN packet handling in the wild](https://blog.cloudflare.com/syn-packet-handling-in-the-wild)
 -   [Threads and Connections](https://www.youtube.com/watch?v=CZw57SIwgiE)
 -   [Socket Programming: Echo Server, and RTT and Throughput Measurement](./files/bu-grs-cs-655/assignments/socket-echo-rtt-tput-instructions.pdf)
     -   Exercise and good resources to get introduced to socket programming.
