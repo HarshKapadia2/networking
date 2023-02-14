@@ -6,6 +6,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
 -   [SSH](./ssh.md)
 -   [DNS](./dns.md)
 -   [TLS](tls.md)
+-   [Homa](homa.md)
 -   [IPSec](ipsec.md)
 -   [HTTP](http.md)
 -   [IP](./ip.md)
