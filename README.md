@@ -27,6 +27,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   Books
         -   [Computer Networking - A Top Down Approach (8th Edition)](files/books/computer-networking-a-top-down-approach-8th-edition.pdf)
+            -   [Videos, notes and other material](https://gaia.cs.umass.edu/kurose_ross/lectures.php)
         -   [Computer Networks by Tanenbaum (5th Edition)](files/books/computer-networks-tanenbaum-5th-edition.pdf)
         -   [Computer Networking: Principles, Protocols and Practice, by Olivier Bonaventure](https://www.computer-networking.info)
     -   [Wireshark](https://www.wireshark.org)
