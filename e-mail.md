@@ -87,6 +87,23 @@
     -   Digital signature (authentication and non-repudiation)
     -   Encryption (integrity and confidentiality)
 
+## Sending an Encrypted and Signed e-mail
+
+> NOTE:
+>
+> -   Instructions in [the e-mail assignment](files/bu-cas-cs-558/assignments/e-mail-arp-bgp.html).
+> -   Read about [PGP in cryptography.md](cryptography.md#pgp).
+
+-   Tools
+    -   Gmail
+    -   GPG (command line)
+-   Plan of action
+    -   Generate a keypair that will be used for encryption and signing.
+    -   Import the other person's public key into GPG.
+    -   Prepare plaintext data.
+    -   Sign and encrypt the plaintext data to get the signed ciphertext.
+    -   Send the signed ciphertext and your public key in the e-mail to the other person (the receiver).
+
 ## Resources
 
 -   [Explained from First Principles: e-mail](https://explained-from-first-principles.com/email)

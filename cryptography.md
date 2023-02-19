@@ -2,6 +2,27 @@
 
 ([Back to Home](README.md))
 
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [Types of Cryptography](#types-of-cryptography)
+-   [Ciphers](#ciphers)
+    -   [Feistel](#feistel)
+    -   [AES](#aes)
+    -   [DES, 2DES, 3DES](#des-2des-3des)
+    -   [Blowfish](#blowfish)
+    -   [RC5](#rc5)
+-   [Key Exchange](#key-exchange)
+    -   [Diffie-Hellman](#diffie-hellman)
+-   [Hashing](#hashing)
+    -   [SHA](#sha)
+-   [Digital Signatures](#digital-signatures)
+-   [Digital Certificates and Certificate Revocation (OCSP and CRL)](#digital-certificates-and-certificate-revocation-ocsp-and-crl)
+-   [PGP](#pgp)
+-   [Resources](#resources)
+
+## Introduction
+
 -   Cryptology is the scientific study of Cryptography and Cryptanalysis.
 -   Cryptography is the practice and study of techniques for secure communication in the presence of third parties called adversaries.
 -   Cryptanalysis is used to breach cryptographic security systems and gain access to the contents of encrypted messages, even if the cryptographic key is unknown.
@@ -9,7 +30,7 @@
 -   [Security Pitfalls in Cryptography](https://www.schneier.com/essays/archives/1998/01/security_pitfalls_in.html)
 -   [Why Cryptography Is Harder Than It Looks](https://www.schneier.com/essays/archives/1997/01/why_cryptography_is.html)
 
-## Types
+## Types of Cryptography
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/50140864/103271702-f19c8200-49e0-11eb-9605-4d75c41f1c7c.png" />
@@ -116,7 +137,26 @@
 -   [A no-bull technical guide to EV HTTPS](https://expeditedsecurity.com/blog/are-ev-ssl-certificates-worth-it)
 -   [PKI information and X.509 certificate extensions](http://www.pkiglobe.org)
 
-## More Resources
+## PGP
+
+-   PGP: [Pretty Good Privacy](https://en.wikipedia.org/wiki/Pretty_Good_Privacy)
+-   [OpenPGP](https://www.openpgp.org)
+    -   Standard for PGP software
+-   GPG/GnuPG: [GNU Privacy Guard](https://gnupg.org)
+    -   Tool to use PGP
+    -   GNU: GNU's Not Unix
+-   [OpenPGP, PGP, and GPG: What is the Difference?](https://www.goanywhere.com/blog/openpgp-pgp-gpg-whats-the-difference)
+-   [Security basics with GPG, OpenSSH, OpenSSL and Keybase](https://www.integralist.co.uk/posts/security-basics)
+-   [Creating the Perfect GPG Keypair](https://alexcabal.com/creating-the-perfect-gpg-keypair)
+-   [Does OpenPGP key expiration add to security?](https://security.stackexchange.com/a/79386)
+    -   Very good answer for understanding expiry date shenanigans of subkeys and the secret (private) key, and about the revocation certificate.
+-   [How To Use GPG to Encrypt and Sign Messages](https://www.digitalocean.com/community/tutorials/how-to-use-gpg-to-encrypt-and-sign-messages)
+-   [Digitally Signing and Encrypting Messages](https://support.mozilla.org/en-US/kb/digitally-signing-and-encrypting-messages)
+-   [Guidelines for strong passwords](https://en.wikipedia.org/wiki/Password_strength#Guidelines_for_strong_passwords)
+-   [Why should one not use the same asymmetric key for encryption as they do for signing?](https://security.stackexchange.com/questions/1806/why-should-one-not-use-the-same-asymmetric-key-for-encryption-as-they-do-for-sig)
+-   Exercise: [Sending an Encrypted and Signed e-mail](e-mail.md#sending-an-encrypted-and-signed-e-mail)
+
+## Resources
 
 -   [Computerphile](https://www.youtube.com/user/Computerphile)
 -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
