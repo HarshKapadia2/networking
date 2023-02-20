@@ -73,11 +73,7 @@
 #### PGP
 
 -   PGP: Pretty Good Privacy
--   Provides
-    -   Authentication (using the Web of Trust - importing the receiver's public key into the sender's key ring)
-    -   Confidentiality (using a combo of symmetric/conventional and asymmetric key cryptography)
--   Used for signing, encrypting and decrypting e-mails, files, directories, disks, etc.
--   It uses the decentralized 'Web of Trust' to verify the identity of users. (Key rings and graphs)
+-   [Read more](cryptography.md#pgp)
 
 #### S/MIME
 
@@ -121,17 +117,13 @@
     -   [Email Protocols - POP3, SMTP and IMAP Tutorial](https://www.siteground.com/tutorials/email/protocols-pop3-smtp-imap/)
 -   e-mail security
     -   [Basic e-mail security](https://www.youtube.com/watch?v=6ezYWDUON6o&list=PLzQX06Oo2BXS4JsXtPuy6tmKyApQlAuS1&index=14)
-    -   PGP
-        -   [Intro to PGP](https://www.youtube.com/watch?v=WTwQd7ovAqY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=63)
-        -   [PGP and GPG difference](https://askubuntu.com/questions/186805/difference-between-pgp-and-gpg)
-        -   [PGP and the Web of Trust](https://www.youtube.com/watch?v=H5-lipH1KwQ)
-        -   [A Pretty Good Introduction to Pretty Good Privacy](https://www.youtube.com/watch?v=Lq-yKJFHJpk)
-        -   [End-to-End Encryption in the Browser Impossible?](https://www.youtube.com/watch?v=DM1tPmxGY7Y)
+    -   [PGP](cryptography.md#pgp)
     -   S/MIME
         -   [MIME](https://www.youtube.com/watch?v=Ta8r_I7-wrw&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=65) (Hindi)
         -   [S/MIME](https://www.youtube.com/watch?v=Ta8r_I7-wrw&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=66) (Hindi)
     -   [Mail terminology (infrastructure and authentication): MTA, MUA, MSA, MDA, SMTP, DKIM, SPF and DMARC](https://afreshcloud.com/sysadmin/mail-terminology-mta-mua-msa-mda-smtp-dkim-spf-dmarc)
     -   [Learn and Test DMARC](https://www.learndmarc.com)
+    -   [Mess with DNS](https://messwithdns.net) (The e-mail experiments)
 -   Misc
     -   [After self-hosting my email for twenty-three years I have thrown in the towel. The oligopoly has won.](https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html)
         -   [Self-Hosted email is the hardest it's ever been, but also the easiest.](https://vadosware.io/post/its-never-been-easier-or-harder-to-self-host-email)

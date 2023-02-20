@@ -145,6 +145,16 @@
 -   GPG/GnuPG: [GNU Privacy Guard](https://gnupg.org)
     -   Tool to use PGP
     -   GNU: GNU's Not Unix
+-   Provides
+    -   Authentication (using the Web of Trust - importing the receiver's public key into the sender's key ring)
+    -   Confidentiality (using a combo of symmetric/conventional and asymmetric key cryptography)
+-   Used for signing, encrypting and decrypting e-mails, files, directories, disks, etc.
+-   It uses the decentralized 'Web of Trust' to verify the identity of users. (Key rings and graphs)
+-   [Intro to PGP](https://www.youtube.com/watch?v=WTwQd7ovAqY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8&index=63)
+-   [PGP and GPG difference](https://askubuntu.com/questions/186805/difference-between-pgp-and-gpg)
+-   [PGP and the Web of Trust](https://www.youtube.com/watch?v=H5-lipH1KwQ)
+-   [A Pretty Good Introduction to Pretty Good Privacy](https://www.youtube.com/watch?v=Lq-yKJFHJpk)
+-   [End-to-End Encryption in the Browser Impossible?](https://www.youtube.com/watch?v=DM1tPmxGY7Y)
 -   [OpenPGP, PGP, and GPG: What is the Difference?](https://www.goanywhere.com/blog/openpgp-pgp-gpg-whats-the-difference)
 -   [Security basics with GPG, OpenSSH, OpenSSL and Keybase](https://www.integralist.co.uk/posts/security-basics)
 -   [Creating the Perfect GPG Keypair](https://alexcabal.com/creating-the-perfect-gpg-keypair)
