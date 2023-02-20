@@ -20,6 +20,9 @@
     -   [CERT Record](#cert-record)
     -   [SOA Record](#soa-record)
 -   [Period (`.`) After Domain Name in FQDN](#period--after-domain-name-in-fqdn)
+-   [(Distributed) Denial of Service](#distributed-denial-of-service)
+-   [DNS Cache Poisoning/DNS Spoofing](#dns-cache-poisoningdns-spoofing)
+-   [DNS-0x20 Encoding](#dns-0x20-encoding)
 -   [Resources](#resources)
 -   [To Do](#to-do)
 
@@ -223,8 +226,36 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
     <img src="./files/img/dns/wireshark-dns-2-mit.edu.png" />
 </p>
 
+## (Distributed) Denial of Service
+
+-   DoS/DDoS
+-   [The DDoS That Almost Broke the Internet](https://blog.cloudflare.com/the-ddos-that-almost-broke-the-internet)
+-   Chromium search query DNS bug
+    -   Not exactly DDoS, but funnily almost that, due to the sheer scale.
+    -   [A Major Bug In Google Chrome Is Causing A Massive Load On Global Root DNS Servers](https://www.digitalinformationworld.com/2020/08/a-major-bug-in-google-chrome-is-causing-a-massive-load-on-global-root-dns-servers.html)
+    -   [Chromium's impact on root DNS traffic](https://blog.apnic.net/2020/08/21/chromiums-impact-on-root-dns-traffic)
+-   Amplification Attacks
+    -   [An Amplification Attack is a type of a Reflection Attack in which the response is larger than the request.](https://security.stackexchange.com/a/181123)
+    -   [Amplification Hell: Revisiting Network Protocols for DDoS Abuse](https://christian-rossow.de/publications/amplification-ndss2014.pdf)
+    -   [Reflections on reflection (attacks)](https://blog.cloudflare.com/reflections-on-reflections)
+
+## DNS Cache Poisoning/DNS Spoofing
+
+-   [What is DNS cache poisoning? (DNS spoofing)](https://www.cloudflare.com/learning/dns/dns-cache-poisoning)
+-   [An Illustrated Guide to the Kaminsky DNS Vulnerability](http://unixwiz.net/techtips/iguide-kaminsky-dns-vuln.html)
+-   [DNS Nameserver Spoofability Test](https://www.grc.com/dns/dns.htm)
+
+## DNS-0x20 Encoding
+
+-   Improves security over and above DNS port and query ID randomization.
+-   [Your DNS queries will eventually look like this](https://www.youtube.com/watch?v=OL5mLcJPWVY) (`gOoGLe.cOM`)
+-   [If your DNS queries LoOk liKE tHIs, it's not a ransom note, it's a security improvement](https://www.theregister.com/2023/01/19/google_dns_queries)
+-   [Increased DNS Forgery Resistance Through 0x20-Bit Encoding](https://astrolavos.gatech.edu/articles/increased_dns_resistance.pdf)
+-   [Use of Bit 0x20 in DNS Labels to Improve Transaction Identity](https://datatracker.ietf.org/doc/html/draft-vixie-dnsext-dns0x20-00) (RFC)
+
 ## Resources
 
+-   [Mess with DNS](https://messwithdns.net)
 -   [What is DNS? How DNS Works.](https://www.cloudflare.com/learning/dns/what-is-dns)
 -   [DNS Server Types](https://www.cloudflare.com/learning/dns/dns-server-types)
 -   [Difference Between Iterative and Recursive DNS Queries](https://www.slashroot.in/difference-between-iterative-and-recursive-dns-query)
@@ -239,12 +270,6 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [CAA Records](https://support.dnsimple.com/articles/caa-record)
 -   [What is a DNS SRV Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-srv-record)
 -   [Do DHCP and DNS Servers Communicate? (With Wireshark)](https://www.youtube.com/watch?v=FYcO4ZshG8Q)
--   DNS-0x20 Encoding
-    -   [Your DNS queries will eventually look like this](https://www.youtube.com/watch?v=OL5mLcJPWVY) (`gOoGLe.cOM`)
-    -   [If your DNS queries LoOk liKE tHIs, it's not a ransom note, it's a security improvement](https://www.theregister.com/2023/01/19/google_dns_queries)
-    -   [An Illustrated Guide to the Kaminsky DNS Vulnerability](http://unixwiz.net/techtips/iguide-kaminsky-dns-vuln.html) (DNS Cache Poisoning Attack)
-    -   [Increased DNS Forgery Resistance Through 0x20-Bit Encoding](https://astrolavos.gatech.edu/articles/increased_dns_resistance.pdf)
-    -   [Use of Bit 0x20 in DNS Labels to Improve Transaction Identity](https://datatracker.ietf.org/doc/html/draft-vixie-dnsext-dns0x20-00) (RFC)
 
 ## To Do
 
