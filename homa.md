@@ -6,9 +6,9 @@
 
 -   [Introduction](#introduction)
 -   [The Data Center Environment](#the-data-center-environment)
-    <!-- -   [Workload Types](#workload-types)
     -   [Topology](#topology)
-    -   [Network Requirements](#network-requirements) -->
+    <!-- -   [Workload Types](#workload-types) -->
+    -   [Network Requirements](#network-requirements)
     -   [Protocol Requirements](#protocol-requirements)
 -   [Problems with TCP](#problems-with-tcp)
 -   [Homa's Features](#homas-features)
@@ -22,11 +22,18 @@
 
 ## The Data Center Environment
 
-<!-- ### Workload Types
-
 ### Topology
 
-### Network Requirements -->
+-   Data Center -> Clusters -> Racks (with a Top of Rack [ToR] switch) -> Machines
+<!-- -   Fat-Tree
+-   Leaf-Spine -->
+
+<!-- ### Workload Types -->
+
+### Network Requirements
+
+-   Very high bandwidth
+-   Very low latency
 
 ### Protocol Requirements
 
@@ -78,6 +85,7 @@ The following features of TCP cause it problems in the Data Center:
     -   Homa exposes discrete messages to transport, letting multiple threads read from a single socket without worrying about getting a message from a different connection (as in the TCP world).
     -   This is disadvantageous in the sense that longer messages will have a higher latency, because every message will have to be delivered in its entirety, as these are not streams.
         -   This can be overcome by sending multiple messages in parallel, so essentially the data is being broken into multiple messages. (This is so much like TCP though and won't this need re-ordering and state maintenance, which is what Homa wanted to avoid?)
+    -   Removing streams also gets rid of the [TCP Head of Line Blocking](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue) problem.
 -   Connectionless protocol
     -   It reduces connection setup overhead.
     -   An application can use a single socket to manage any number of concurrent RPCs with any number of peers.
@@ -104,4 +112,6 @@ The following features of TCP cause it problems in the Data Center:
 -   [Directed Study application](files/homa/directed-study-application.pdf)
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
+    -   [Datacenter Traffic Control: Understanding Techniques and Tradeoffs](files/homa/research-papers/data-center-traffic-control-understanding-techniques-and-tradeoffs.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8207422))
+-   [Discussing the Homa paper - Replacing TCP for the Datacenter](https://www.youtube.com/watch?v=nEFOni_87Yw)
 -   [Transmission Control Protocol (TCP)](tcp.md)
