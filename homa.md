@@ -115,3 +115,4 @@ The following features of TCP cause it problems in the Data Center:
     -   [Datacenter Traffic Control: Understanding Techniques and Tradeoffs](files/homa/research-papers/data-center-traffic-control-understanding-techniques-and-tradeoffs.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8207422))
 -   [Discussing the Homa paper - Replacing TCP for the Datacenter](https://www.youtube.com/watch?v=nEFOni_87Yw)
 -   [Transmission Control Protocol (TCP)](tcp.md)
+-   [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc)

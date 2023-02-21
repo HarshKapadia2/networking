@@ -2,6 +2,17 @@
 
 ([Back to Home](README.md))
 
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [HTTP Request Methods/Verbs](#http-request-methodsverbs)
+-   [HTTP Response Status Codes](#http-response-status-codes)
+-   [HTTP Versions](#http-versions)
+-   [REST vs RPC](#rest-vs-rpc)
+-   [Miscellaneous](#miscellaneous)
+
+## Introduction
+
 -   The Hyper Text Transfer Protocol (HTTP) is a stateless Application Layer protocol which operates at port 80 and is one of the most widely used protocols for data communication over the internet.
 -   The Hyper Text Transfer Protocol Secure (HTTPS) is the secure form of HTTP which provides data encryption and authenticity of communication and operates at port 443. The security is provided by [TLS](tls.md).
 -   HTTP follows a request-response cycle, where the client requests something for the server (or responding maching) and the server sends back a response.
@@ -85,7 +96,7 @@ HTTP provides certain request methods to the client to state the action of their
 -   307 Temporary Redirect
     -   The target resource resides temporarily under a different URI and the user agent MUST NOT change the request method if it performs an automatic redirection to that URI.
 
-### Client errors
+### Client Errors
 
 -   400 Bad Request
     -   Indicates that there was a client error like a malformed request syntax, an invalid request message framing or a deceptive request routing.
@@ -96,14 +107,14 @@ HTTP provides certain request methods to the client to state the action of their
 -   429 Too Many Requests
     -   The user has sent too many requests in a given amount of time (rate limiting).
 
-### Server errors
+### Server Errors
 
 -   500 Internal Server Error
 -   502 Bad Gateway
 -   503 Service Unavailable
 -   504 Gateway Timeout
 
-## HTTP versions
+## HTTP Versions
 
 -   [Differences between HTTP 0.9, HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3](https://www.youtube.com/watch?v=Kqgv4Xs8yDI&feature=emb_logo)
 -   [HTTP crash course - HTTP/1.0, HTTP/1.1, HTTP/2 and HTTP/3](https://www.youtube.com/watch?v=0OrmKCB0UrQ)
@@ -111,8 +122,14 @@ HTTP provides certain request methods to the client to state the action of their
 -   [More on the QUIC protocol used in HTTP/3](https://docs.google.com/document/d/1gY9-YNDNAB1eip-RTPbqphgySwSNSDHLq9D5Bty4FSU/edit)
 -   [HTTP crash course - Status codes, methods, headers and hands on with Node.js](https://www.youtube.com/watch?v=iYM2zFP3Zn0)
 
-## Misc
+## REST vs RPC
 
+-   [What is RPC? gRPC Introduction.](https://www.youtube.com/watch?v=gnchfOojMk4)
+-   [Web service differences between REST and RPC](https://stackoverflow.com/questions/26830431/web-service-differences-between-rest-and-rpc)
+-   [gRPC vs REST: Understanding gRPC, OpenAPI and REST and when to use them in API design](https://cloud.google.com/blog/products/api-management/understanding-grpc-openapi-and-rest-and-when-to-use-them)
+
+## Miscellaneous
+
+-   [Head of Line Blocking](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)
 -   [The Weirdest Valid URL You Would Have Seen](https://www.youtube.com/watch?v=7eMBQEXdles)
 -   [HTTP Authentication Schemes (`WWW-Authenticate` header)](http://frontier.userland.com/stories/storyReader$2159)
--   [Head of Line Blocking](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)
