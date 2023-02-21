@@ -241,3 +241,7 @@ and more...
 -   [TCP Congestion Control](https://en.wikipedia.org/wiki/TCP_congestion_control)
 -   [Newer TCP Implementations](http://intronetworks.cs.luc.edu/1/html/newtcps.html)
 -   [github.com/AlimuddinKhan/TCP_Protocol_Comparison](https://github.com/AlimuddinKhan/TCP_Protocol_Comparison)
+-   Research papers
+    -   [Analysis of the Increase and Decrease Algorithms for Congestion Avoidance in Computer Networks](files/tcp/research-papers/analysis-of-the-increase-and-decrease-algorithms-for-congestion-avoidance-in-computer-networks.pdf)
+    -   [Congestion Avoidance and Control](files/tcp/research-papers/congestion-avoidance-and-control.pdf)
+        -   [Congestion Avoidance and Control (Slightly revised)](files/tcp/research-papers/congestion-avoidance-and-control-revised.pdf)

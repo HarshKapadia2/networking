@@ -36,9 +36,6 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
     -   Research papers
         -   [The Internet that Wasn't](files/research-papers/the-internet-that-wasnt.pdf) (OSI)
         -   [The Design Philosophy of the DARPA Internet Protocols](files/research-papers/the-design-philosophy-of-the-darpa-internet-protocols.pdf)
-        -   [Analysis of the Increase and Decrease Algorithms for Congestion Avoidance in Computer Networks](files/research-papers/analysis-of-the-increase-and-decrease-algorithms-for-congestion-avoidance-in-computer-networks.pdf) (TCP, AIMD)
-        -   [Congestion Avoidance and Control](files/research-papers/congestion-avoidance-and-control.pdf) (TCP, original)
-            -   [Congestion Avoidance and Control (Slightly revised)](files/research-papers/congestion-avoidance-and-control-revised.pdf)
 -   Cryptography
     -   [Computerphile](https://www.youtube.com/user/Computerphile)
     -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
