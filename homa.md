@@ -16,6 +16,7 @@
 
 -   [Message vs Packet](#message-vs-packet)
 -   [Problems with TCP](#problems-with-tcp)
+-   [Sender vs Receiver](#sender-vs-receiver)
 -   [Homa Features](#homa-features)
 -   [Homa Design Principles](#homa-design-principles)
 -   [Homa Packet Types](#homa-packet-types)
@@ -107,6 +108,39 @@ The following features of TCP cause it problems **in the Data Center**:
     -   If Packet Spraying is not used and Flow-consistent Routing is used, which fixes links for particular TCP flows, it can cause hot spots for the duration of the connection on particular links if multiple flows get hashed through the same links.
     -   Linux performs Load Balancing at the software level by routing packets through multiple cores for processing and to maintain the order or delivery, all packets have to pass through the same sequence of cores, which can lead to core hot spots as well, if multiple flows get hashed to the same cores. This also increases the tail latency of TCP.
 
+## Sender vs Receiver
+
+-   Client to server communication:
+    -   Sender: Client
+    -   Receiver: Server
+-   Server to client communication:
+    -   Sender: Server
+    -   Receiver: Client
+
+## Homa Packet Types
+
+> NOTE:
+>
+> -   [Message vs Packet](#message-vs-packet)
+> -   [Sender vs Receiver](#sender-vs-receiver)
+
+-   `DATA`
+    -   Sent from sender to receiver.
+    -   Contains a range of bytes within a message, defined by an offset and a length.
+    -   Also indicates the total message length.
+-   `GRANT`
+    -   Sent from receiver to sender.
+    -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
+    -   Also specifies the priority level to use.
+-   `RESEND`
+    -   Sent from receiver to sender.
+    -   Indicates that the sender should re-transmit a given range of bytes within a message.
+-   `BUSY`
+    -   Sent from sender to receiver.
+    -   Indicates that a response to `RESEND` will be delayed.
+        -   The sender might be busy transmitting higher priority messages or an RPC operation is still being executed.
+    -   Used to prevent timeouts.
+
 ## Homa Features
 
 <p align="center">
@@ -154,35 +188,6 @@ The following features of TCP cause it problems **in the Data Center**:
 -   Using in-network priorities
 -   Allocating priorities dynamically at receivers in conjunction with receiver-driven rate control
 -   Controlled over-commitment of receiver downlinks
-
-## Homa Packet Types
-
-> NOTE:
->
-> -   [Message vs Packet](#message-vs-packet)
-> -   Client to server communication:
->     -   Sender: Client
->     -   Receiver: Server
-> -   Server to client communication:
->     -   Sender: Server
->     -   Receiver: Client
-
--   `DATA`
-    -   Sent from sender to receiver.
-    -   Contains a range of bytes within a message, defined by an offset and a length.
-    -   Also indicates the total message length.
--   `GRANT`
-    -   Sent from receiver to sender.
-    -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
-    -   Also specifies the priority level to use.
--   `RESEND`
-    -   Sent from receiver to sender.
-    -   Indicates that the sender should re-transmit a given range of bytes within a message.
--   `BUSY`
-    -   Sent from sender to receiver.
-    -   Indicates that a response to `RESEND` will be delayed.
-        -   The sender might be busy transmitting higher priority messages or an RPC operation is still being executed.
-    -   Used to prevent timeouts.
 
 ## Streaming vs Messages
 
