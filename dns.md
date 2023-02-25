@@ -6,6 +6,7 @@
 
 -   [What is DNS and Why is DNS Needed?](#what-is-dns-and-why-is-dns-needed)
 -   [DNS Infrastructure](#dns-infrastructure)
+    -   [DNS Zones](#dns-zones)
 -   [Common DNS Records](#common-dns-records)
     -   [A Record](#a-record)
     -   [AAAA Record](#aaaa-record)
@@ -19,9 +20,14 @@
     -   [SRV Record](#srv-record)
     -   [CERT Record](#cert-record)
     -   [SOA Record](#soa-record)
+    -   [RRSIG Record](#rrsig-record)
+    -   [DNSKEY Record](#dnskey-record)
+    -   [DS Record](#ds-record)
+    -   [NSEC Record](#nsec-record)
 -   [Period (`.`) After Domain Name in FQDN](#period--after-domain-name-in-fqdn)
 -   [(Distributed) Denial of Service](#distributed-denial-of-service)
 -   [DNS Cache Poisoning/DNS Spoofing](#dns-cache-poisoningdns-spoofing)
+-   [DNSSEC](#dnssec)
 -   [DNS-0x20 Encoding](#dns-0x20-encoding)
 -   [Resources](#resources)
 -   [To Do](#to-do)
@@ -89,6 +95,13 @@ Example domain: `foo.bar.harshkapadia.me.`
 -   DNS Authoritative Nameserver
     -   This server is the authority that guarantees that the domain that one wants to contacted is located at a particular server by providing its name/IP address.
     -   If in this example case the domain was only `harshkapadia.me.`, then this would've been the end of the DNS resolution, but in this example case, further resolution is required to resolve `.bar`, so this DNS Authoritative Nameserver for `.harshkapadia` will redirect to the IP address of the DNS Authoritative Nameserver of `.bar`, which will in turn redirect to the DNS Authoritative Nameserver of `foo` to finally get the name/IP address of the server that hosts the requested type of data for `foo.bar.harshkapadia.me.`.
+
+### DNS Zones
+
+-   DNS zones break up the DNS into a clear hierarchy.
+-   Includes DNS Zone Files and [SOA Records](#soa-record).
+-   [What is a DNS zone?](https://www.cloudflare.com/learning/dns/glossary/dns-zone)
+-   [DNS Zones Explained](https://ns1.com/resources/dns-zones-explained)
 
 ## Common DNS Records
 
@@ -159,11 +172,13 @@ Example domain: `foo.bar.harshkapadia.me.`
 -   If a domain doesn’t have an MX Record, a sending server will attempt to deliver mail to the domain’s A Record instead.
 -   An extra number that sets the priority of this record if multiple mail servers are defined is added to the record. Lower numbers have higher priority.
 -   Eg: `harshkapadia.me. 86400 IN MX 10 site2.smtp.mx.exch580.serverdata.net.` points the domain `harshkapadia.me` to the Mail Server. This implies that an e-mail to `contact@harshkapadia.me` will hit the Mail Server.
+-   [More on e-mail.](e-mail.md)
 
 ### TXT Record
 
 -   Allows the addition of textual data up to 255 characters to a domain or subdomain.
 -   A common usage is for the verification of ownership of domain, e-mail spam prevention or to check running services.
+    -   [e-mail related](e-mail.md): SPF, DMARC, e-mail forwarding rules
 -   Eg: `harshkapadia.me. 86400 IN TXT random_string`
 
 ### PTR Record
@@ -200,7 +215,32 @@ Example domain: `foo.bar.harshkapadia.me.`
 ### SOA Record
 
 -   'SOA' stands for 'Start Of Authority.'
--   It appears at the beginning of a DNS Zone File and indicates the Authoritative Name Server for the current DNS zone, contact details for the Domain Administrator, Domain Serial Number and information on how frequently DNS information for the zone should be refreshed.
+-   It appears at the beginning of a [DNS Zone File](#dns-zones) and indicates the Authoritative Name Server for the current [DNS zone](#dns-zones), contact details for the Domain Administrator, Domain Serial Number and information on how frequently DNS information for the zone should be refreshed.
+
+### RRSIG Record
+
+-   'RRSIG' stands for '[Resource Record Signature](https://datatracker.ietf.org/doc/html/rfc4034#section-3)'.
+-   It is used in [DNSSEC](#dnssec).
+-   It contains the signature of a RRset.
+
+### DNSKEY Record
+
+-   'DNSKEY' stands for '[DNS Public Key](https://datatracker.ietf.org/doc/html/rfc4034#section-2)'.
+-   It is used in [DNSSEC](#dnssec).
+-   It is the RRset of the public ZSK and KSK for a particular [DNS zone](#dns-zones).
+
+### DS Record
+
+-   'DS' stands for '[Delegation Signer](https://datatracker.ietf.org/doc/html/rfc4034#section-5)'.
+-   It is used in [DNSSEC](#dnssec).
+-   It contains the hash of the public KSK of the child zone.
+
+### NSEC Record
+
+-   'NSEC' stands for '[Next Secure](https://datatracker.ietf.org/doc/html/rfc4034#section-4)'.
+-   It is used in [DNSSEC](#dnssec).
+-   It helps in authenticating the denial of existence of a particular domain/subdomain and provides existing domains/subdomains.
+-   [NSEC3](https://datatracker.ietf.org/doc/html/rfc5155#section-3) is another resource record that can be used for the same proof of non-existence purposes.
 
 ## Period (`.`) After Domain Name in FQDN
 
@@ -244,6 +284,16 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [What is DNS cache poisoning? (DNS spoofing)](https://www.cloudflare.com/learning/dns/dns-cache-poisoning)
 -   [An Illustrated Guide to the Kaminsky DNS Vulnerability](http://unixwiz.net/techtips/iguide-kaminsky-dns-vuln.html)
 -   [DNS Nameserver Spoofability Test](https://www.grc.com/dns/dns.htm)
+
+## DNSSEC
+
+-   Domain Name System Security Extensions
+-   [How DNSSEC Works](https://www.cloudflare.com/dns/dnssec/how-dnssec-works)
+-   [The DNSSEC Root Signing Ceremony](https://www.cloudflare.com/dns/dnssec/root-signing-ceremony)
+    -   [Root KSK Ceremony 48](https://www.iana.org/dnssec/ceremonies/48)
+-   [RFC 4033: DNS Security Introduction and Requirements](https://datatracker.ietf.org/doc/html/rfc4033)
+-   [RFC 4034: Resource Records for the DNS Security Extensions](https://datatracker.ietf.org/doc/html/rfc4034)
+-   [DNSViz](https://dnsviz.net): A resource for understanding and troubleshooting deployment of the DNS Security Extensions (DNSSEC).
 
 ## DNS-0x20 Encoding
 
