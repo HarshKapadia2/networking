@@ -87,7 +87,7 @@
 
 > NOTE:
 >
-> -   Instructions in [the e-mail assignment](files/bu-cas-cs-558/assignments/e-mail-arp-bgp.html).
+> -   Instructions in [the e-mail assignment](files/bu-cas-cs-558/assignments/e-mail-arp-bgp/e-mail-arp-bgp.html).
 > -   Read about [PGP in cryptography.md](cryptography.md#pgp).
 
 -   Tools
