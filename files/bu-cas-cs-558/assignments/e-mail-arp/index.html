@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="author" content="Harsh Gaurang Kapadia">
 <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-<title>BGP, Signed and Encrypted e-mail, and ARP Spoofing</title>
+<title>Signed and Encrypted e-mail, and ARP Spoofing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>BGP, Signed and Encrypted e-mail, and ARP Spoofing</h1>
+<h1>Signed and Encrypted e-mail, and ARP Spoofing</h1>
 <div class="details">
 <span id="author" class="author">Harsh Gaurang Kapadia</span><br>
 <span id="email" class="email"><a href="mailto:harshk@bu.edu">harshk@bu.edu</a></span><br>
@@ -448,11 +448,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_1_review_questions">1 Review Questions</a>
+<li><a href="#_review_questions">Review Questions</a>
 <ul class="sectlevel2">
-<li><a href="#_1_1_rpki">1.1 RPKI</a></li>
-<li><a href="#_1_2_encrypt_and_sign_vs_sign_and_encrypt">1.2 Encrypt and Sign vs Sign and Encrypt</a></li>
-<li><a href="#_1_3_reflection_attacks">1.3 Reflection Attacks</a></li>
+<li><a href="#_rpki">RPKI</a></li>
+<li><a href="#_encrypt_and_sign_vs_sign_and_encrypt">Encrypt and Sign vs Sign and Encrypt</a></li>
+<li><a href="#_reflection_attacks">Reflection Attacks</a></li>
 </ul>
 </li>
 <li><a href="#_signed_and_encrypted_e_mail">Signed and Encrypted e-mail</a></li>
@@ -467,28 +467,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>Harsh Gaurang Kapadia</p>
-</div>
-<div class="paragraph">
-<p><a href="mailto:harshk@bu.edu">harshk@bu.edu</a></p>
-</div>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/e-mail-arp-bgp.html" target="_blank" rel="noopener">Assignment Questions</a></p>
-</div>
-</blockquote>
-</div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="_1_review_questions"><a class="anchor" href="#_1_review_questions"></a>1 Review Questions</h2>
+<h2 id="_review_questions"><a class="anchor" href="#_review_questions"></a>Review Questions</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./e-mail-arp.html">Assignment questions/instructions</a>
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="_1_1_rpki"><a class="anchor" href="#_1_1_rpki"></a>1.1 RPKI</h3>
+<h3 id="_rpki"><a class="anchor" href="#_rpki"></a>RPKI</h3>
 <div class="paragraph">
 <p>RPKI consists of cryptographically signing the IP range of a particular Autonomous System (AS). Every AS creates a Route Authorization Object (ROA) which contains the AS Number (ASN), the IP range they can advertise and the extent to which the AS is allowed to announce more specific routes. This ROA is then signed by a chain of trust which includes IANA, the RIRs, ISPs and LSPs (Local Service Providers).</p>
 </div>
@@ -500,7 +495,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_1_2_encrypt_and_sign_vs_sign_and_encrypt"><a class="anchor" href="#_1_2_encrypt_and_sign_vs_sign_and_encrypt"></a>1.2 Encrypt and Sign vs Sign and Encrypt</h3>
+<h3 id="_encrypt_and_sign_vs_sign_and_encrypt"><a class="anchor" href="#_encrypt_and_sign_vs_sign_and_encrypt"></a>Encrypt and Sign vs Sign and Encrypt</h3>
 <div class="paragraph">
 <p>Attacks possible when one encrypts and then signs:
 The receiver of the ciphertext and signature can remove the signature, attach their own signature and then send the ciphertext and signature to someone else, claiming that the message came from them.</p>
@@ -511,7 +506,7 @@ Once the receiver has decrypted the ciphertext, they can encrypt the decrypted m
 </div>
 </div>
 <div class="sect2">
-<h3 id="_1_3_reflection_attacks"><a class="anchor" href="#_1_3_reflection_attacks"></a>1.3 Reflection Attacks</h3>
+<h3 id="_reflection_attacks"><a class="anchor" href="#_reflection_attacks"></a>Reflection Attacks</h3>
 <div class="paragraph">
 <p>Reflection Attacks are more powerful than typical Denial of Service (DoS) Attacks as they make the use of another service in the middle to send out responses to the victim servers for them. This helps in two ways. Not only does it help in masking the real attacker&#8217;s IP address, but it also helps in using more powerful machines which might have larger responses (targeted at the victim servers) than requests (Amplification Attack) and the attacker might not be able to generate a lot of responses of those sizes due to a limit in their bandwidth. Reflection attacks also help an attacker who does not have a lot of resources to attack servers by making use of exploitable services and protocols such as DNS and NTP.</p>
 </div>
@@ -524,6 +519,18 @@ Once the receiver has decrypted the ciphertext, they can encrypt the decrypted m
 <div class="sect1">
 <h2 id="_signed_and_encrypted_e_mail"><a class="anchor" href="#_signed_and_encrypted_e_mail"></a>Signed and Encrypted e-mail</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./e-mail-arp.html">Assignment questions/instructions</a>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>e-mail secret phrase: <code>lime hub stadium</code></p>
 </div>
@@ -543,19 +550,33 @@ Once the receiver has decrypted the ciphertext, they can encrypt the decrypted m
 <p>To send an e-mail to Gabe, I just pasted the ciphertext and my public PGP key in Gmail and sent it to him.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/cryptography#pgp" target="_blank" rel="noopener">My learnings on PGP and the articles I went through</a></p>
+<p><a href="/cryptography#pgp">My learnings on PGP and the articles I went through.</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_arp_spoofing"><a class="anchor" href="#_arp_spoofing"></a>ARP Spoofing</h2>
 <div class="sectionbody">
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/README" target="_blank" rel="noopener">All files</a></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="./e-mail-arp.html">Assignment questions/instructions</a></p>
+</li>
+<li>
+<p><a href="./arp-spoofing">All files</a></p>
+</li>
+</ul>
 </div>
-</blockquote>
+</td>
+</tr>
+</table>
 </div>
 <div class="ulist">
 <ul>
@@ -773,12 +794,17 @@ while(True):
 <div class="paragraph">
 <p>Before understanding the reason, it is important to note that we have a script (<a href="#_task_2_1">Task 2.1</a>) that is maintaining the ARP Spoofing. Now, when the ping is issued, an ARP request is issued to find the MAC address of the receiving host to be able to deliver it packets, if the ARP cache of the sender doesn&#8217;t already have the required MAC address. If the ARP spoof is maintained, then the issued ARP request reaches attacker machine M and does not get a reply (due to the stoppage in IP forwarding), leading to packet loss. But if the ARP cache of the sender expires, it broadcasts an ARP Request. If the script sending packets in the background is not fast enough, the actual receiver might reply and set the correct value in the ARP cache of the sender, leading to correct packet delivery to the receiver. The script is successful in maintaining the spoof for most of the communication duration, which is why there is a very high (&gt; 80%) packet loss.</p>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/2/2.2/telnet-2.2.pcapng" target="_blank" rel="noopener">Wireshark trace</a></p>
-</div>
-</blockquote>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./arp-spoofing/2/2.2/telnet-2.2.pcapng">Wireshark trace</a>
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -801,12 +827,17 @@ while(True):
 <div class="paragraph">
 <p>There is no packet loss because the attacker machine M acts as a IP forwarding machine due to the functionality being enabled. If the script (<a href="#_task_2_1">Task 2.1</a>) is not able to maintain the spoof, then the correct mapping is generated, which allows correct communication. So be it spoofing or not, the packet gets delivered. Only in the case of spoofing, the attacker machine M can snoop on user data.</p>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/2/2.3/telnet-2.3.pcapng" target="_blank" rel="noopener">Wireshark trace</a></p>
-</div>
-</blockquote>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./arp-spoofing/2/2.3/telnet-2.3.pcapng">Wireshark trace</a>
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -919,12 +950,17 @@ frame = sniff(iface = "eth0", lfilter = filter_frame, prn = spoof_pkt)</code></p
 <div class="paragraph">
 <p>When IP forwarding is disabled on the attacker machine M, packets cannot make it through and the sender keeps sending packets to the receiver as it does not get any response. Once the IP forwarding is enabled, only then does the receiver receive the data and display it on its console, as seen in the Machine B image below.</p>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/3/3.2/telnet-3.2.pcapng" target="_blank" rel="noopener">Wireshark trace</a></p>
-</div>
-</blockquote>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./arp-spoofing/3/3.2/netcat-3.2.pcapng">Wireshark trace</a>
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -944,12 +980,17 @@ frame = sniff(iface = "eth0", lfilter = filter_frame, prn = spoof_pkt)</code></p
 <div class="paragraph">
 <p>In this case data reaches machine B from machine A and vice versa. When IP forwarding is enabled on the attacker machine M, it just forwards whatever it receives from A to B and vice versa, acting as an intermediary.</p>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><a href="https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/3/3.3/telnet-3.3.pcapng" target="_blank" rel="noopener">Wireshark trace</a></p>
-</div>
-</blockquote>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<a href="./arp-spoofing/3/3.3/netcat-3.3.pcapng">Wireshark trace</a>
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1053,7 +1094,7 @@ frame = sniff(iface = "eth0", lfilter = filter_frame, prn = spoof_pkt)</code></p
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-28 01:44:46 UTC
+Last updated 2023-02-28 18:49:42 UTC
 </div>
 </div>
 </body>

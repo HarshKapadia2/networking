@@ -87,7 +87,7 @@
 
 > NOTE:
 >
-> -   Instructions in [the e-mail assignment](files/bu-cas-cs-558/assignments/e-mail-arp-bgp/e-mail-arp-bgp.html).
+> -   Instructions in [the e-mail assignment](files/bu-cas-cs-558/assignments/e-mail-arp/e-mail-arp.html).
 > -   Read about [PGP in cryptography.md](cryptography.md#pgp).
 
 -   Tools
@@ -99,6 +99,7 @@
     -   Prepare plaintext data.
     -   Sign and encrypt the plaintext data to get the signed ciphertext.
     -   Send the signed ciphertext and your public key in the e-mail to the other person (the receiver).
+-   [Process writeup](files/bu-cas-cs-558/assignments/e-mail-arp/index.html#_signed_and_encrypted_e_mail)
 
 ## Resources
 

@@ -1,4 +1,4 @@
-= BGP, Signed and Encrypted e-mail, and ARP Spoofing
+= Signed and Encrypted e-mail, and ARP Spoofing
 Harsh Gaurang Kapadia <harshk@bu.edu>
 :toc:					left
 :favicon:				../../../../favicon.ico
@@ -7,15 +7,11 @@ Harsh Gaurang Kapadia <harshk@bu.edu>
 :sectanchors:
 :figure-caption!:
 
-> Harsh Gaurang Kapadia
->
-> harshk@bu.edu
->
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/e-mail-arp-bgp.html[Assignment Questions^]
+== Review Questions
 
-== 1 Review Questions
+NOTE: link:./e-mail-arp.html[Assignment questions/instructions]
 
-=== 1.1 RPKI
+=== RPKI
 
 RPKI consists of cryptographically signing the IP range of a particular Autonomous System (AS). Every AS creates a Route Authorization Object (ROA) which contains the AS Number (ASN), the IP range they can advertise and the extent to which the AS is allowed to announce more specific routes. This ROA is then signed by a chain of trust which includes IANA, the RIRs, ISPs and LSPs (Local Service Providers).
 
@@ -23,7 +19,7 @@ Any AS can advertise a particular IP prefix, but if their ROA is not valid, then
 
 RPKI doesn't validate/authenticate the path taken by an advertisement. It only validates the IP prefix advertised by the origin AS. A rogue AS can use a valid ROA, add their AS Number to the path and advertise that, which makes the wrongly advertised path look like a shorter path to a few local ASes and they will divert traffic to it due to the shorter AS path length (the ROA in the two advertisements is the same, so the prefix specific rule will not apply). Thus, RPKI does not prevent the One-Hop Attack.
 
-=== 1.2 Encrypt and Sign vs Sign and Encrypt
+=== Encrypt and Sign vs Sign and Encrypt
 
 Attacks possible when one encrypts and then signs:
 The receiver of the ciphertext and signature can remove the signature, attach their own signature and then send the ciphertext and signature to someone else, claiming that the message came from them.
@@ -31,13 +27,15 @@ The receiver of the ciphertext and signature can remove the signature, attach th
 Attacks possible when one signs and then encrypts:
 Once the receiver has decrypted the ciphertext, they can encrypt the decrypted message data and signature under another sender's public key and then send it to them, claiming that the original sender sent them a message to carry out a particular action.
 
-=== 1.3 Reflection Attacks
+=== Reflection Attacks
 
 Reflection Attacks are more powerful than typical Denial of Service (DoS) Attacks as they make the use of another service in the middle to send out responses to the victim servers for them. This helps in two ways. Not only does it help in masking the real attacker's IP address, but it also helps in using more powerful machines which might have larger responses (targeted at the victim servers) than requests (Amplification Attack) and the attacker might not be able to generate a lot of responses of those sizes due to a limit in their bandwidth. Reflection attacks also help an attacker who does not have a lot of resources to attack servers by making use of exploitable services and protocols such as DNS and NTP.
 
 Protocols like DNS and NTP have debug commands that generate responses that are larger than requests. This is an Amplification Attack. These protocols run on UDP (which can be spoofed easily) and also respond to anyone asking them for this information (no authentication). The attacker just has to spoof a lot of UDP packets with the source IP as the victim servers' IP addresses and the open DNS and NTP services will flood the victims with loads of huge responses, causing them to get overwhelmed.
 
 == Signed and Encrypted e-mail
+
+NOTE: link:./e-mail-arp.html[Assignment questions/instructions]
 
 e-mail secret phrase: `lime hub stadium`
 
@@ -51,11 +49,15 @@ I generated a PGP keypair using GPG on the command line. I added link:https://cs
 
 To send an e-mail to Gabe, I just pasted the ciphertext and my public PGP key in Gmail and sent it to him.
 
-link:https://networking.harshkapadia.me/cryptography#pgp[My learnings on PGP and the articles I went through^]
+link:/cryptography#pgp[My learnings on PGP and the articles I went through.]
 
 == ARP Spoofing
 
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/README[All files^]
+[NOTE]
+====
+* link:./e-mail-arp.html[Assignment questions/instructions]
+* link:./arp-spoofing[All files]
+====
 
 * Machine A
     ** IP address: `10.9.0.5`
@@ -219,7 +221,7 @@ Both Machine A and B are able to ping each other, but have a very high (> 80%) p
 
 Before understanding the reason, it is important to note that we have a script (link:#_task_2_1[Task 2.1]) that is maintaining the ARP Spoofing. Now, when the ping is issued, an ARP request is issued to find the MAC address of the receiving host to be able to deliver it packets, if the ARP cache of the sender doesn't already have the required MAC address. If the ARP spoof is maintained, then the issued ARP request reaches attacker machine M and does not get a reply (due to the stoppage in IP forwarding), leading to packet loss. But if the ARP cache of the sender expires, it broadcasts an ARP Request. If the script sending packets in the background is not fast enough, the actual receiver might reply and set the correct value in the ARP cache of the sender, leading to correct packet delivery to the receiver. The script is successful in maintaining the spoof for most of the communication duration, which is why there is a very high (> 80%) packet loss.
 
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/2/2.2/telnet-2.2.pcapng[Wireshark trace^]
+NOTE: link:./arp-spoofing/2/2.2/telnet-2.2.pcapng[Wireshark trace]
 
 .Machine A
 image::2/2.2/2.2-a.png[]
@@ -233,7 +235,7 @@ Both Machine A and B are able to ping each other without any packet loss.
 
 There is no packet loss because the attacker machine M acts as a IP forwarding machine due to the functionality being enabled. If the script (link:#_task_2_1[Task 2.1]) is not able to maintain the spoof, then the correct mapping is generated, which allows correct communication. So be it spoofing or not, the packet gets delivered. Only in the case of spoofing, the attacker machine M can snoop on user data.
 
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/2/2.3/telnet-2.3.pcapng[Wireshark trace^]
+NOTE: link:./arp-spoofing/2/2.3/telnet-2.3.pcapng[Wireshark trace]
 
 .Machine A
 image::2/2.3/2.3-a.png[]
@@ -323,7 +325,7 @@ Same as link:#_task_2_1[Task 2.1].
 
 When IP forwarding is disabled on the attacker machine M, packets cannot make it through and the sender keeps sending packets to the receiver as it does not get any response. Once the IP forwarding is enabled, only then does the receiver receive the data and display it on its console, as seen in the Machine B image below.
 
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/3/3.2/telnet-3.2.pcapng[Wireshark trace^]
+NOTE: link:./arp-spoofing/3/3.2/netcat-3.2.pcapng[Wireshark trace]
 
 .Machine A
 image::3/3.2/3.2-a.png[]
@@ -335,7 +337,7 @@ image::3/3.2/3.2-b.png[]
 
 In this case data reaches machine B from machine A and vice versa. When IP forwarding is enabled on the attacker machine M, it just forwards whatever it receives from A to B and vice versa, acting as an intermediary.
 
-> link:https://networking.harshkapadia.me/files/bu-cas-cs-558/assignments/e-mail-arp-bgp/arp-spoofing/3/3.3/telnet-3.3.pcapng[Wireshark trace^]
+NOTE: link:./arp-spoofing/3/3.3/netcat-3.3.pcapng[Wireshark trace]
 
 .Machine A
 image::3/3.3/3.3-a.png[]

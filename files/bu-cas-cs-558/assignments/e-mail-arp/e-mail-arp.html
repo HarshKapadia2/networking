@@ -1,0 +1,277 @@
+<h1 id="usable-security-and-network-security-assignment">
+	Usable Security and Network Security Assignment
+</h1>
+<p>Due: Feb 27th, 2023 @ 9PM Eastern</p>
+<p>Team Size: 2 Students Per Team</p>
+<h2 id="assignment-overview">Assignment Overview</h2>
+<p>
+	This assignment has three main parts: review questions, encrypted email, and
+	the ARP spoofing Lab. You are allowed to work with 1 other student for this
+	work, but you must still each complete each part of the assignment (ie. you
+	must each send me an email). Be sure to put the name of the student you
+	worked with on your submission in gradescope.
+</p>
+<h2 id="tasks">Tasks</h2>
+<h3 id="review-questions-20-points">Review Questions (20 points)</h3>
+<ol type="1">
+	<li>
+		<p>
+			In your own words, why does RPKI prevents sub-prefix hijacking? Why
+			doesnt RPKI prevent the one-hop attack?
+		</p>
+	</li>
+	<li>
+		<p>
+			What attacks are possible when a protocol decides to Encrypt and
+			then Sign messages? What attacks are possible when a protocol
+			decides to Sign and then Encrypt messages?
+		</p>
+	</li>
+	<li>
+		<p>
+			What makes reflection attacks more powerful than a typical denial of
+			service attack, like ping flooding or syn flooding? What about
+			protocols like DNS and NTP facilitate this increased power?
+		</p>
+	</li>
+</ol>
+<h3 id="encrypted-email-40-points">Encrypted Email (40 points)</h3>
+<p>
+	In this assignment you are going to learn to send encrypted email
+	<em>from your BU email address</em>.
+</p>
+<h4 id="keeping-a-diary">Keeping A Diary</h4>
+<p>
+	As part of this experience, you are going to keep a diary to track the
+	things you have tried and learned. Be sure to keep track of everything in an
+	orderly fashion, so you can reflect on the process later (and graders can
+	see what you did). You should keep of the following things in your diary:
+</p>
+<ol type="1">
+	<li>
+		<p>
+			Any searches that you perform and why you decided to search those
+			terms?
+		</p>
+	</li>
+	<li>
+		<p>
+			Any websites (including URLS) that you open and a brief description
+			of what you found there
+		</p>
+	</li>
+	<li>
+		<p>
+			Any tools or software that you installed, and the reason you chose
+			to install it
+		</p>
+	</li>
+	<li>
+		<p>
+			Anything you tried on the tools or software that you installed. What
+			correct or incorrect commands have you tried? What confusions did
+			you experience when using the tool?
+		</p>
+	</li>
+	<li>
+		<p>
+			What steps did you take that actually helped to completing the task?
+		</p>
+	</li>
+</ol>
+<p>
+	Finally, provide 3-to-4 paragraphs (with multiple sentences per-paragraph!)
+	that is a full narrative, from start to end, in completing this task, as if
+	you were relaying the story to someone in a documentary movie entitled “I
+	sent an encrypted email.”
+</p>
+<h4 id="sending-the-encrypted-email">Sending the Encrypted Email</h4>
+<p>
+	Send me an encrypted email <em>from your BU email address</em>! Please send
+	me an encrypted and signed email to <code>kaptchuk@bu.edu</code> with the
+	subject line <code>cs558 - &lt;your name&gt;</code> and the following
+	information
+</p>
+<ol type="1">
+	<li><p>What email client did you use to send this email?</p></li>
+	<li><p>What other clients did you try to use?</p></li>
+	<li>
+		<p>
+			How was your experience? Was it difficult or easy? How long did it
+			take you?
+		</p>
+	</li>
+	<li><p>A PGP public key for your BU email.</p></li>
+</ol>
+<p>My PGP key is below:</p>
+<pre><code>-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+=kOyg
+-----END PGP PUBLIC KEY BLOCK-----</code></pre>
+<p>
+	Once you send me an email, I’ll send you a response, encrypted under the key
+	you provide and sent to the email you provided. It will contain a
+	personalized secret message that you will need to submit through gradescope
+	as part of your assignment. Please give me at least 12 hours to respond to
+	your email before the deadline (Professors are people too).
+</p>
+<h4 id="reflect">Reflect</h4>
+<p>
+	Now that you have had the wonderful experience of sending and receiving an
+	encrypted email, take some time to reflect on the experience. Using you
+	diary, write approx. 500 words summarizing what you did. Be sure to include
+	both things that you tried that didn’t work and the way in which you were
+	eventually successful. Feel free to answer some of the questions below: What
+	were the most helpful things that you read? What were the most confusing
+	things that you experienced. How did your background in crypto, security,
+	and computer science make things harder or easier? How do you think you
+	would explain encrypted email to someone non-technical in your family?
+</p>
+<!-- ### Securing BGP (40 points)
+MOVE TO NEXT HOMEWORK
+
+In this task, you will be charged with developing an upgraded version of BGP to prevent the attacks we discussed in class.  Recall the security improvement we discussed in class: Resource Public Key Infrastructure (RPKI). In order to prevent AS's from announcing prefixes that they do not control, each AS is issued a Route Origination Authorizations (ROA) with the prefixes for which they are allowed to announce.  So for instance, if AS21 is issued a ROA for ```128.220.240.0/24```, they are able to send BGP announcements for that ```/24```.  This means that any BGP announcements that contain any addresses within this ```/24``` will be rejected by routers supporting RPKI, unless the last hop on the path is exactly AS21 for exactly this addresses range.
+
+1. In your own words, describe why RPKI prevents sub-prefix hijacking.  For instance, what if AS35 is malicious and decides to announce the BGP message ```(AS35 128.220.240.0/31)```?
+
+
+2. What happens if AS35 is malicious and, although it has no direct route to AS21, decides to announce the BGP message ```(AS35, AS21, 128.220.240.0/24)```?
+
+3. Draw a graph that shows a "worst case" scenario for this attack (where a high percentage of AS's route their traffic to AS35).  In your graph, let nodes represent autonomous systems and edges representing connections over which BGP announcements will flow.  Be sure to label AS21 and AS35 and where each AS in your graph will route their traffic.
+
+4. Draw a graph that shows a "best case" scenario for this attack (where a low percentage of AS's route their traffic to AS35).  In your graph, let nodes represent autonomous systems and edges representing connections over which BGP announcements will flow.  Be sure to label AS21 and AS35 and where each AS in your graph will route their traffic.
+
+5. Add a broken BGPSec Question.
+
+
+Finally, you are going to design a upgraded version of BGP that prevents this attack.  To facilitate this new protocol, we are going to roll out a public key infrastructure, such that each AS is assigned a signing keypair.  Assume that all AS's correctly validate all signatures.  Design a new version of BGP messages that prevents the attack described above.  Be sure to specify the contents of the messages that AS's sign.  Be sure to specify both how AS's holding a ROA for a prefix make announcements and how AS's forward announcements.  -->
+<h3 id="arp-spoofing-lab-40-pts.">ARP Spoofing lab (40 pts.)</h3>
+<p>(Reminder: DO NOT ATTACK SYSTEMS THAT YOU DO NOT MANAGE!)</p>
+<p>
+	In this task, you are going to be using a lab created by Professor Wenliang
+	Du at Syracuse University. They have developed a bunch of hands-on labs that
+	allow us to do bad network things without getting in trouble. In other
+	words, I know many of you may not be in the position to manage your own
+	networks, so asking you to ARP spoof on a network can be a problem. The SEED
+	Labs environment produced by Syracuse University makes building a virtual
+	environment within which we can launch attacks easy.
+</p>
+<p>
+	We are going to be doing the ARP spoofing lab that they have created. It is
+	available for download
+	<a href="https://seedsecuritylabs.org/Labs_20.04/Networking/ARP_Attack/"
+		>here</a
+	>. You should complete Tasks 1,2, and 3 for full points.
+</p>
+<h4 id="quick-start-instructions">Quick-start Instructions</h4>
+<p>
+	SEED labs has very good, in-depth documentation for setting everything up.
+	For troubleshooting, please refer to their documentation. Below is a
+	quick-start way of setting things up, with some notes of traps that I fell
+	into when setting things up.
+</p>
+<ol type="1">
+	<li>
+		<p>
+			Download VirtualBox. There are problems with using older versions of
+			VirtualBox, so if you have version 5.x lying around on your
+			computer, I suggest updating to 6.x. I have tested on 6.1.16.
+		</p>
+	</li>
+	<li>
+		<p>
+			Download the SEED labs virtual machine image. I got it from
+			<a
+				href="https://drive.google.com/file/d/138fqx0F8bThLm9ka8cnuxmrD6irtz_4m/view?usp=sharing"
+				>here</a
+			>. Be sure to check the MD5 hash of the file (if you don’t practice
+			good computer hygine, who will?) The hash should be
+			<code>f3d2227c92219265679400064a0a1287</code>.
+		</p>
+	</li>
+	<li>
+		<p>
+			Follow the instructions
+			<a
+				href="https://github.com/seed-labs/seed-labs/blob/master/manuals/vm/seedvm-manual.md"
+				>here</a
+			>
+			to create a run a new copy of the VM.
+		</p>
+	</li>
+	<li>
+		<p>
+			Boot into the VM. The password for the user account is
+			<code>dees</code>.
+		</p>
+	</li>
+	<li>
+		<p>
+			Open Firefox within the VM, navigate to
+			<a
+				href="https://seedsecuritylabs.org/Labs_20.04/Networking/ARP_Attack/"
+				>this</a
+			>
+			website and download the Labsetup files.
+		</p>
+	</li>
+	<li>
+		<p>
+			Open a terminal window, navigate to the file with the Lab Setup
+			files and run <code>dcup</code> which is an alias they have created
+			for <code>docker-compose up</code>. This will prepare the network
+			and bring up the docker instances you will need for the lab. Note
+			that when you run <code>dcup</code> it will block, so you can leave
+			that running in the background as you work on the rest of the lab.
+		</p>
+	</li>
+</ol>
+<p>This should take you up to Task 1 in the task list.</p>
+<h2 id="what-to-submit">What to Submit</h2>
+<p>
+	Submit a PDF write-up with your answers to Gradescope. Be sure to mark all
+	of your answers clearly so graders can find your solutions. Be sure your PDF
+	includes (1) answers to the review questions, (2) the narrative of sending
+	an encrypted email and your reflections on the process, and (3) your ARP
+	spoofing lab writeup.
+</p>

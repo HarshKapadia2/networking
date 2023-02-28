@@ -2,20 +2,21 @@
 
 A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking knowledge.
 
+-   [Homa](homa.md)
 -   [TCP](./tcp.md)
 -   [SSH](./ssh.md)
--   [DNS](./dns.md)
 -   [TLS](tls.md)
--   [Homa](homa.md)
+-   [DNS](./dns.md)
 -   [IPSec](ipsec.md)
 -   [HTTP](http.md)
 -   [IP](./ip.md)
+-   [e-mail](e-mail.md)
+-   [BGP](bgp.md)
+-   [ARP Spoofing](files/bu-cas-cs-558/assignments/e-mail-arp/index.html#_arp_spoofing)
+-   [Cryptography](cryptography.md) (ciphers, hashing, key exchange, digital signatures, digital certificates, etc)
 -   [OSI layers](osi_layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network_cycle.md)
--   [e-mail](e-mail.md)
--   [Cryptography](cryptography.md) (ciphers, hashing, key exchange, digital signatures, digital certificates, etc)
--   [BGP](bgp.md)
 -   [Powers of two](powers_of_two.md)
 
 ## Resources
