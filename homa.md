@@ -6,14 +6,11 @@
 
 -   [Introduction](#introduction)
 -   [The Data Center Environment](#the-data-center-environment)
-
     -   [Topology](#topology)
-
-    <!-- -   [Workload Types](#workload-types) -->
-
+    -   [Traffic Properties](#traffic-properties)
+    -   [Traffic Control Challenges](#traffic-control-challenges)
     -   [Network Requirements](#network-requirements)
     -   [Protocol Requirements](#protocol-requirements)
-
 -   [Message vs Packet](#message-vs-packet)
 -   [Problems with TCP](#problems-with-tcp)
 -   [Sender vs Receiver](#sender-vs-receiver)
@@ -43,18 +40,67 @@
 
 -   Data Center -> Clusters -> Racks (with a Top of Rack [ToR] switch) -> Machines
 -   There are multiple structures in which connections can be made between each of the components above, but the usual structure is as he above point.
+-   Common topologies
+    -   Fat-Tree
+    -   Leaf-Spine (or Spine-and-Leaf)
+    -   VL2
+    -   JellyFish
+    -   DCell
+    -   BCube
+    -   Xpander
 
-<!-- -   Fat-Tree
--   Leaf-Spine -->
+### Traffic Properties
 
-<!-- ### Workload Types -->
+-   It is difficult to generalise all Data Center traffic into one certain type, because it is highly dependent on how applications are designed and built.
+-   Depending on the application, there can be thousands of flow arrivals per second.
+-   Flows are unpredictable in types, sizes and burst periods.
+    -   Burstiness can be in terms of traffic in a flow or the number of flows.
+-   Connections can be long-lived as well and need not always be transmitting.
+-   Rough types
+    -   Interactive flows/latency-sensitive flows
+    -   Throughput-sensitive flows
+    -   Deadline-bound flows
+
+### Traffic Control Challenges
+
+-   Unpredictable traffic matrix
+    -   Application dependent
+    -   Most flows are short with just a few packets, but most bytes are delivered by long flows.
+    -   High flow arrival rates with majority being short flows.
+-   Mix of various flow types/sizes
+    -   Application dependent
+    -   Interactive flows (User-initiated queries like web searches) are time-sensitive, latency-sensitive and high priority flows.
+    -   Throughput-sensitive flows (like MapReduce parallel data computing jobs) are not delay-sensitive, but need consistent bandwidth.\
+    -   Deadline-bound flows with soft or hard deadlines can be both Interactive or Throughput-sensitive flows.
+-   Traffic burstiness
+    -   Traffic burstiness causes increased packet losses, increased buffer occupancy, increased queuing delay, decreased throughput, increased flow completion times
+    -   [TCP Slow Start](tcp.md#slow-start-ss) with large window sizes can cause bursty traffic as well.
+-   Packer re-ordering
+    -   At the receiver: Increases latency, Increases CPU utlization and reduces the server's link utilization
+    -   Features such as [Fast Retransmit](tcp.md#fast-retransmit) might mistake re-ordering for loss.
+-   Performance Isolation
+    -   Control has to be developed on multiple layers and on multiple hardware components to prevent misuse and privacy, while keeping Service Level Agreements (SLAs) in mind.
+-   The Incast problem
+    -   Multiple senders sending to one machine causes bottleneck issues.
+-   The Outcast problem
+    -   TCP Outcast is when a port that has many flows and a few flows coming in from different ports, gives priority to the port with many flows, causing Port Blackout for the port with fewer flows. Port Blackout is essentially packets of the fewer flows being dropped, which affects them due to the TCP timeouts it causes.
 
 ### Network Requirements
 
 A Data Center environment should have:
 
 -   Very high bandwidth/capacity/link utilization
+    -   Depends on topology and traffic control measures.
+    -   Aids in having more tenants on the same infrastructure.
 -   Very low latency
+-   Very small flow completion times
+    -   Mainly affected by queuing and packet losses.
+-   Very low deadline miss rate/lateness
+-   High fairness
+    -   Applies to shared resources like link bandwidth and buffer space. (Maybe even to CPU cycles and memory.)
+    -   SLAs should always be met.
+    -   Prevents misuse and starvation.
+-   High energy efficiency
 
 ### Protocol Requirements
 
