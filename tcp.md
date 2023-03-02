@@ -12,6 +12,7 @@
     -   [Congestion Avoidance](#congestion-avoidance)
     -   [Fast Retransmit](#fast-retransmit)
     -   [Fast Recovery](#fast-recovery)
+-   [Explicit Congestion Notification](#explicit-congestion-notification)
 -   [Versions of TCP](#versions-of-tcp)
     -   [TCP Tahoe](#tcp-tahoe)
     -   [TCP Reno](#tcp-reno)
@@ -166,6 +167,13 @@
     -   Fast Recovery now goes to the [Congestion Avoidance](#congestion-avoidance) algorithm, but if a timeout (RTO expiry) occurs, then it goes to the [Slow Start](#slow-start-ss) algorithm.
 -   [More info (RFC 5681, Section 3.2)](https://www.rfc-editor.org/rfc/rfc5681#section-3.2)
 -   [Where is the Slow Start Threshold value set by TCP Reno Fast Recovery used?](https://stackoverflow.com/questions/48689788/where-is-the-slow-start-threshhold-value-set-by-tcp-reno-fast-recovery-used)
+
+## Explicit Congestion Notification
+
+-   ECN: Explicit Congestion Notification
+-   [Section 3.7.2](https://networking.harshkapadia.me/files/books/computer-networking-a-top-down-approach-8th-edition.pdf#page=285) of the 'Computer Networking - A Top-Down Approach' book.
+-   [What is the ECN (Explicit Congestion Notification) flag within a TCP header used for?](https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk40661)
+-   [Explicit Congestion Notification (ECN) Explained](https://networkingharder.wordpress.com/2020/08/29/explicit-congestion-notification-ecn-explained)
 
 ## Versions of TCP
 
