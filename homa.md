@@ -60,6 +60,7 @@
     -   Interactive flows/latency-sensitive flows
     -   Throughput-sensitive flows
     -   Deadline-bound flows
+-   Usually, short flows require low latencies and long flows require high throughput.
 
 ### Traffic Control Challenges
 
@@ -139,6 +140,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   Please refer to [the 'Streaming vs Messages' section](#streaming-vs-messages).
 -   Connection orientation
     -   Connections are not the best inside the Data Center, because each application might have hundreds or thousands of them and that causes overheads in space and time.
+        -   Techniques such as [Delayed ACKs](https://medium.com/@gonzalo.cloud/what-is-delayed-ack-and-how-can-it-be-a-bottleneck-in-your-network-77a7ecf7bb0b) have to be used to reduce packet overheads.
     -   Keeping aside packet buffer space and application level state, 2000 bytes of state data has to be maintained for every TCP socket.
     -   Connection setup takes up one Round Trip Time (RTT).
 -   Bandwidth sharing (Fair scheduling)
@@ -243,7 +245,7 @@ The following features of TCP cause it problems **in the Data Center**:
 
 -   TCP is not aware of the message size. It is only aware of the length of the current packet.
 -   TCP will break up (segment) whatever it receives from the application above it in the OSI stack into packets of 'Maximum Segment Size (MSS) bytes' and send it across. (Streaming)
-    -   It might also wait for MSS to be fulfilled before sending, but that is a setting that can be toggled.
+    -   It might also wait for MSS to be fulfilled before sending (like in [Nagle's Algorithm](https://en.wikipedia.org/wiki/Nagle's_algorithm)), but that is a setting that can be toggled.
 -   This streaming behaviour obviously adds buffering and packet ordering at the receiver, but more importantly the receiver has no knowledge of when it can start processing something or how much data it is going to receive. The sender is thus responsible to not overwhelm the receiver (Flow Control) and the network (Congestion Control).
 -   TCP streaming causes Load Balancing difficulties, because the path of sending data is usually consistent (Flow-consistent routing) and multiple flows on the same paths can cause congestion (hot spots) and HoLB.
 -   Causes an increase in tail latency due to HoLB, where short messages get delayed behind long messages on the same stream.
