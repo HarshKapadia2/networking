@@ -17,6 +17,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
 -   [OSI layers](osi_layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network_cycle.md)
+-   [Hardware](hardware.md)
 -   [Powers of two](powers_of_two.md)
 
 ## Resources
