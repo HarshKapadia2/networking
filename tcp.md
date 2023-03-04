@@ -19,6 +19,7 @@
     -   [TCP CUBIC](#tcp-cubic)
     -   [TCP Vegas](#tcp-vegas)
     -   [TCP BBR](#tcp-bbr)
+    -   [DCTCP](#dctcp)
 -   [Resources](#resources)
 
 ## Introduction
@@ -177,12 +178,12 @@
 
 ## Versions of TCP
 
--   TCP Tahoe
--   TCP Reno
+-   [TCP Tahoe](#tcp-tahoe)
+-   [TCP Reno](#tcp-reno)
 -   TCP NewReno
--   TCP CUBIC
--   TCP Vegas
--   TCP BBR
+-   [TCP CUBIC](#tcp-cubic)
+-   [TCP Vegas](#tcp-vegas)
+-   [TCP BBR](#tcp-bbr) (TCP Bottleneck Bandwidth and RTT)
 -   CTCP (Compound TCP)
 -   FAST TCP (FAST Active Queue Management Scalable TCP)
 -   TCP Veno
@@ -193,6 +194,7 @@
 -   TCP Hybla
 -   TCP Illinois
 -   TCP SACK
+-   [DCTCP](#dctcp) (Data Center TCP)
 
 and more...
 
@@ -243,13 +245,33 @@ and more...
 -   [BBR: Congestion-Based Congestion Control](https://queue.acm.org/detail.cfm?id=3022184) (Research paper)
 -   [TCP BBR - Exploring TCP congestion control](https://toonk.io/tcp-bbr-exploring-tcp-congestion-control)
 
+### DCTCP
+
+-   DCTCP: Data Center TCP
+-   Prerequisite: [Explicit Congestion Notification (ECN)](#explicit-congestion-notification)
+-   DCTCP is a TCP Congestion Control scheme for Data Center traffic.
+-   DCTCP extends ECN processing to estimate the fraction of bytes that encounter congestion rather than simply detecting that some congestion has occurred (as in ECN). DCTCP then scales the CWND based on this estimate.
+-   DCTCP achieves high-burst tolerance, low latency and high throughput.
+-   DCTCP modifies ECN for Congestion Control, but requires standard TCP Congestion Control practices ([Fast Retransmit](#fast-retransmit), [Fast Recovery](#fast-recovery), etc.) for packet losses and timeouts.
+-   DCTCP reacts to congestion at most once per CWND.
+-   The growth of the CWND is handled just like normal TCP, with [Slow Start](#slow-start-ss), [Congestion Avoidance](#congestion-avoidance), etc.
+-   In the absence of ECN, variables like CWND and SS Threshold should be handled like conventional TCP.
+-   RFC 8257: [Data Center TCP (DCTCP): TCP Congestion Control for Data Centers](https://datatracker.ietf.org/doc/html/rfc8257)
+-   Research paper: [Data Center TCP (DCTCP)](files/tcp/research-papers/data-center-tcp-dctcp.pdf)
+-   [Datacenter TCP explained](https://habr.com/en/post/474282)
+-   Enabling DCTCP
+    -   [The Linux Kernel docs on DCTCP](https://docs.kernel.org/networking/dctcp.html)
+    -   [fernandodiacenco/Enabling_DCTCP](https://github.com/fernandodiacenco/Enabling_DCTCP)
+
 ## Resources
 
 -   [github.com/HarshKapadia2/tcp-version-performance-comparison](https://github.com/HarshKapadia2/tcp-version-performance-comparison)
 -   [TCP Congestion Control](https://en.wikipedia.org/wiki/TCP_congestion_control)
 -   [Newer TCP Implementations](http://intronetworks.cs.luc.edu/1/html/newtcps.html)
+-   [Active Queue Management (AQM)](https://tcpcc.systemsapproach.org/aqm.html)
 -   [github.com/AlimuddinKhan/TCP_Protocol_Comparison](https://github.com/AlimuddinKhan/TCP_Protocol_Comparison)
 -   Research papers
     -   [Analysis of the Increase and Decrease Algorithms for Congestion Avoidance in Computer Networks](files/tcp/research-papers/analysis-of-the-increase-and-decrease-algorithms-for-congestion-avoidance-in-computer-networks.pdf)
     -   [Congestion Avoidance and Control](files/tcp/research-papers/congestion-avoidance-and-control.pdf)
         -   [Congestion Avoidance and Control (Slightly revised)](files/tcp/research-papers/congestion-avoidance-and-control-revised.pdf)
+    -   [Data Center TCP (DCTCP)](files/tcp/research-papers/data-center-tcp-dctcp.pdf)
