@@ -20,6 +20,7 @@
     -   [TCP Vegas](#tcp-vegas)
     -   [TCP BBR](#tcp-bbr)
     -   [DCTCP](#dctcp)
+-   [Enabling a TCP Congestion Control Algorithm](#enabling-a-tcp-congestion-control-algorithm)
 -   [Resources](#resources)
 
 ## Introduction
@@ -262,6 +263,81 @@ and more...
 -   Enabling DCTCP
     -   [The Linux Kernel docs on DCTCP](https://docs.kernel.org/networking/dctcp.html)
     -   [fernandodiacenco/Enabling_DCTCP](https://github.com/fernandodiacenco/Enabling_DCTCP)
+    -   [Enabling a TCP Congestion Control Algorithm](#enabling-a-tcp-congestion-control-algorithm)
+
+## Enabling a TCP Congestion Control Algorithm
+
+> Instructions for Linux.
+
+-   Check available TCP Congestion Control algorithms
+
+    ```shell
+    $ sysctl net.ipv4.tcp_available_congestion_control
+    net.ipv4.tcp_available_congestion_control = reno cubic
+    ```
+
+-   Check the current TCP Congestion Control algorithm
+
+    ```shell
+    $ sysctl net.ipv4.tcp_congestion_control
+    net.ipv4.tcp_congestion_control = cubic
+    ```
+
+-   List all available loadable TCP Congestion Control Linux kernel modules
+
+    ```shell
+    $ find /lib/modules/$(uname -r) -type f -name '*.ko*' | grep tcp
+    /lib/modules/4.15.0-169-generic/kernel/net/netfilter/xt_tcpudp.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/netfilter/xt_tcpmss.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/rds/rds_tcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_dctcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_hybla.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_vegas.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_bic.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_nv.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_cdg.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_veno.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_diag.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_bbr.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_illinois.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_westwood.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_yeah.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_probe.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_highspeed.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_scalable.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_htcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/net/ipv4/tcp_lp.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/usb/typec/tcpm.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/atm/atmtcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/rapidio/switches/idtcps.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/scsi/libiscsi_tcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/scsi/iscsi_tcp.ko
+    /lib/modules/4.15.0-169-generic/kernel/drivers/staging/typec/tcpci.ko
+    ```
+
+-   Load the DCTCP Linux kernel module
+
+    ```shell
+    $ sudo modprobe tcp_dctcp
+    ```
+
+-   Check available TCP Congestion Control algorithms again
+
+    ```shell
+    $ sysctl net.ipv4.tcp_available_congestion_control
+    net.ipv4.tcp_available_congestion_control = reno cubic dctcp
+    ```
+
+-   The current TCP Congestion Control algorithm can be changed as well
+
+    ```shell
+    $ sudo vim /etc/sysctl.conf # Add `net.ipv4.tcp_congestion_control=dctcp` to the last line of the file.
+    $ sudo sysctl -p # Load the configuration (from `/etc/sysctl.conf`) to apply the changes
+
+    # OR
+
+    $ sudo sysctl net.ipv4.tcp_congestion_control = dctcp
+    ```
 
 ## Resources
 
@@ -275,3 +351,5 @@ and more...
     -   [Congestion Avoidance and Control](files/tcp/research-papers/congestion-avoidance-and-control.pdf)
         -   [Congestion Avoidance and Control (Slightly revised)](files/tcp/research-papers/congestion-avoidance-and-control-revised.pdf)
     -   [Data Center TCP (DCTCP)](files/tcp/research-papers/data-center-tcp-dctcp.pdf)
+-   [Linux `sysctl` command](https://linuxize.com/post/sysctl-command-in-linux)
+-   [InstaGeni Monitor](https://flsmonitor.fed4fire.eu/genitests)
