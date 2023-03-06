@@ -33,7 +33,7 @@ A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking k
         -   [Computer Networks by Tanenbaum (5th Edition)](files/books/computer-networks-tanenbaum-5th-edition.pdf)
         -   [Computer Networking: Principles, Protocols and Practice, by Olivier Bonaventure](https://www.computer-networking.info)
     -   [Wireshark](https://www.wireshark.org)
-    -   RFCs ([rfc-editor.org](https://www.rfc-editor.org), [rfcs.io](https://rfcs.io), etc.)
+    -   RFCs ([RFC Editor](https://www.rfc-editor.org), [Datatracker](https://datatracker.ietf.org), etc.)
     -   [History of the Internet](https://www.youtube.com/watch?v=9hIQjrMHTv4)
     -   Research papers
         -   [The Internet that Wasn't](files/research-papers/the-internet-that-wasnt.pdf) (OSI)
