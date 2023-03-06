@@ -8,6 +8,7 @@
 -   [Authentication Methods](#authentication-methods)
 -   [The Need for SSH](#the-need-for-ssh)
 -   [Generating Keys](#generating-keys)
+    -   [Sharing Keys with the Server](#sharing-keys-with-the-server)
 -   [Building Blocks of SSH](#building-blocks-of-ssh)
 -   [A SSH Connection](#a-ssh-connection)
     -   [Initialization](#initialization)
@@ -22,7 +23,7 @@
 
 -   Secure SHell (SSH) is a protocol used to securely connect with remote machines and establish secure tunnels to communicate with them.
 -   SSH is a Layer 7 (Application Layer) protocol that operates on port no. 22 by default.
--   `ssh` (using applications like [OpenSSH](https://www.openssh.com) or [PuTTY](https://putty.org)) is the client and `sshd` ([OpenSSH](https://www.openssh.com) Daemon) is the server.
+-   `ssh` (using applications like [OpenSSH](https://www.openssh.com) or [PuTTY](https://putty.org)) is the client and `sshd` (OpenSSH Daemon) is the server.
 -   Basic syntax: `ssh <username>@<hostname_or_IP>`
     -   If the SSH port is not the default (22), then the `-p` flag can be used to specify the port number. Eg: `ssh username@0.0.0.0 -p 8000`
 -   SSH is the secure connection and tunnel for protocols such as [SFTP (Secure/SSH File Transfer Protocol)](https://en.wikipedia.org/wiki/SSH_File_Transfer_Protocol) and [SCP (Secure Copy)](https://en.wikipedia.org/wiki/Secure_copy_protocol).
@@ -41,14 +42,19 @@
     <img src="./files/img/ssh/c-ssh-key-example.png" alt="SSH Client Key Connection Example" loading="lazy" />
     </p>
 
+    -   The server usually sends the client a challenge ciphertext encrypted under the client's public key that the client has to decrypt using their secret key, do some processing and send back to the server to authenticate itself.
+    -   Refer to the [Sharing Keys with the Server](#sharing-keys-with-the-server) section to figure out how the server knows the client's public key.
+
 -   Host-based (`known_host` file)
 
 ## The Need for SSH
 
--   [Telnet](https://rfcs.io/telnet), which was an older way to connect to remote machines, exchanges data in plain text, which is easier for an attacker to snoop on a compromised connection and is vulnerable to MITM (Man-in-the-Middle) attacks. SSH is a secure replacement for Telnet, as it encrypts the connection.
+-   [Telnet](https://en.wikipedia.org/wiki/Telnet), which was an older way to connect to remote machines, exchanges data in plain text, which is easier for an attacker to snoop on a compromised connection and is vulnerable to MITM (Monkey-in-the-Middle) attacks. SSH is a secure replacement for Telnet, as it encrypts the connection.
 -   As mentioned before SSH has the option to use public and private key pairs to communicate. These Cryptographically-generated keys are much more secure than passwords, which can turn out to be relatively simple. ([Rainbow Tables](http://project-rainbowcrack.com/table.htm))
     -   Also, once connections have been made using the public and private keys, the client automatically chooses the appropriate key for a particular connection and the user might not have to enter their password as well, which makes it convenient to connect to the machine, as they don't have to remember their password.
 -   Over time SSH has been used for tunnelling, [forwarding TCP ports](https://www.youtube.com/watch?v=92b-jjBURkw), creating X11 connections, being used as the underlying security protocol for SFTP and SCP, etc.
+-   [OpenSSH features](https://www.openbsd.org/openssh/features.html)
+-   [A brief history of SSH and remote access](https://www.jeffgeerling.com/blog/brief-history-ssh-and-remote-access) (Telnet, rlogin, rsh, rcp, etc.)
 
 ## Generating Keys
 
@@ -63,29 +69,36 @@
 -   Further SSH config, like the `sshd_config` file can be found in `/etc/ssh`.
 -   Keys can themselves be password protected as well.
 
-> NOTE:
->
-> Two ways in which generated SSH keys can be shared with the server:
->
-> -   Log in with a per-configured username and password and manually add the public key (or copy it over directly using something like SCP).
->     -   After the initial use of the password to transfer the public key to the remote server/instance, the password authentication method can be turned off in the remote server/instance settings to improve security and prevent brute force attacks, but if the user loses their private key, they permanently lose access to the remote server/instance.
-> -   A service pre-configures it for the user and just hands them the private key to directly connect with their remote instance.
->     -   Eg: [AWS](https://aws.amazon.com), [GENI](https://www.geni.net), etc.
->     -   The service obviously uses the first method to configure it for the user to reduce the hassle for them and to improve the service's security as well, so that their infrastructure is not vulnerable due to the user's miscalculations (if any).
->     -   If these pre-configured keys are lost though, then it usually results in a permanent loss.
+### Sharing Keys with the Server
+
+The `authorized_keys` file in the `.ssh` directory on the server usually holds all the public keys from clients that are allowed to connect with the server. How do those public keys get there, though?
+
+There are usually two ways to do this:
+
+-   Log in with a pre-configured username and password and manually add the public key (or copy it over directly using something like SCP).
+    -   After the initial use of the password to transfer the public key to the remote server/instance, the password authentication method can be turned off in the remote server/instance settings to improve security and prevent brute force attacks, but if the user loses their private key, they permanently lose access to the remote server/instance.
+-   A service pre-configures it for the user and just hands them the private key to directly connect with their remote instance.
+    -   Eg: [AWS](https://aws.amazon.com), [GENI](https://www.geni.net), etc.
+    -   The service obviously uses the first method to configure it for the user to reduce the hassle for them and to improve the service's security as well, so that their infrastructure is not vulnerable due to the user's miscalculations (if any).
+    -   If these pre-configured keys are lost though, then it usually results in a permanent loss.
 
 ## Building Blocks of SSH
 
-SSH uses an underlying reliable connection protocol or service over which it enables the secure communication and other services. The underlying connection protocol is almost always TCP, but other protocols like [WebSocket](https://en.wikipedia.org/wiki/WebSocket) can theoretically be used as well.
+SSH uses an underlying reliable connection protocol or service over which it enables secure communication and other services. The underlying connection protocol is almost always TCP, but other protocols like [WebSocket](https://en.wikipedia.org/wiki/WebSocket) can theoretically be used as well.
 
 On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the SSH User Authentication Protocol and the SSH Connection Protocol
 
 -   SSH Transport Layer Protocol
-    -   Provides server authentication, and data confidentiality and integrity
+    -   It provides server authentication (Authenticates the server to the client), and data confidentiality and integrity.
+    -   It also provides [Perfect Forward Secrecy (FS or PFS)](https://en.wikipedia.org/wiki/Forward_secrecy) due to the use of the [Diffie-Hellman Key Exchange Algorithm](cryptography.md#diffie-hellman).
+    -   It usually runs on top of TCP, but other reliable data streams can be used as well.
 -   SSH User Authentication Protocol
-    -   Authenticates the user to the server
+    -   It provides user authentication (Authenticates the user/client to the server).
+    -   It runs on top of the SSH Transport Layer Protocol.
+    -   [Why is user/client authentication separate and after server authentication?](#subsequent-encrypted-communication)
 -   SSH Connection Protocol
-    -   Multiplexes multiple logical communication channels (session channel, [Port Forwarding](https://www.youtube.com/watch?v=92b-jjBURkw) channel, etc.) over a single SSH encrypted tunnel connection.
+    -   It multiplexes a single SSH encrypted tunnel into multiple logical communication channels (session channel, [Port Forwarding](https://www.youtube.com/watch?v=92b-jjBURkw) channel, etc.).
+    -   It runs on top of the SSH User Authentication Protocol.
 
 ## A SSH Connection
 
@@ -135,50 +148,56 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
 -   Decisions for the following types of algorithms are made in this stage:
     -   Key Exchange (KEX) Algorithms
-        -   Eg: [Diffie-Hellman](./cryptography.md#diffie-hellman), [Elliptic Curve Diffie-Hellman (ECDH)](./cryptography.md#diffie-hellman), etc.
+        -   To be able to establish a secure channel when the server and client have no pre-decided keys and to facilitate generation of other keys.
+        -   Eg: [Diffie-Hellman](cryptography.md#diffie-hellman), [Elliptic Curve Diffie-Hellman (ECDH)](cryptography.md#diffie-hellman), etc.
     -   Server Host Key Algorithms
         -   Asymmetric/Public Key Cryptography
-        -   For Digital Signature or Digital Certificate
-        -   Eg: RSA [SHA2 512](./cryptography.md#sha), RSA SHA2 256, SSH RSA, Elliptic Curve Digital Signature Algorithm (ECDSA), etc.
+        -   For [Digital Signatures](cryptography.md#digital-signatures) or [Digital Certificates](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) to authenticate the server's identity to the client and later is [one of the ways for clients to authenticate](#authentication-methods) themselves to the server.
+            -   Both `C -> S` and `S -> C` communications use different key pairs.
+        -   Eg: RSA [SHA2 512](cryptography.md#sha), RSA SHA2 256, SSH RSA, Elliptic Curve Digital Signature Algorithm (ECDSA), etc.
     -   Encryption Algorithms
         -   Symmetric/Secret/Private Key Cryptography
-        -   Eg: ChaCha20-Poly1305, [AES 256](./cryptography.md#aes) GCM, AES 128 CTR, etc.
+        -   Eg: ChaCha20-Poly1305, [AES 256](cryptography.md#aes) GCM, AES 128 CTR, etc.
+        -   Fastest for encryption, so arriving to this key through Key exchange and other processes is carried out.
     -   Message Authentication Code (MAC) Algorithms
-        -   Eg: [HMAC](./cryptography.md#feistel) SHA2 256, UMAC 64 ETM, etc.
+        -   Proves integrity (and implicit authentication) of message.
+        -   Also provides [protection against Replay Attacks](https://datatracker.ietf.org/doc/html/rfc4251#section-9.3.3), as the MAC will not be the same for repeated requests. (Every request will have a different sequence number.)
+        -   Eg: [HMAC](cryptography.md#feistel) SHA2 256, UMAC 64 ETM, etc.
     -   Compression Algorithms
         -   Eg: Zlib, etc.
--   `C -> S`: Key Exchange Initialization (`KEXINIT`)
+-   `C -> S`: Key Exchange Initialization (`SSH_MSG_KEXINIT`)
 
     -   The client sends the server all the algorithms it supports. (Packet nos. 27 and 28 in the image below.)
     -   The list is in order of preference. The ones at the start/top of the list are more preferred by the client than the ones below it.
 
     <p align="center">
     <br />
-    <img src="./files/img/ssh/c-s-kexinit.png" alt="Wireshark: SSH Client to Server Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/c-s-ssh-msg-kexinit.png" alt="Wireshark: SSH Client to Server Key Exchange Initialization" loading="lazy" />
     </p>
 
--   `S -> C`: Key Exchange Initialization (`KEXINIT`)
+-   `S -> C`: Key Exchange Initialization (`SSH_MSG_KEXINIT`)
 
     -   The server sends the client all the algorithms it supports. (Packet no. 29 in the image below.)
     -   The list is in order of preference. The ones at the start/top of the list are more preferred by the client than the ones below it.
-    -   The server acknowledges the previous `C -> S` `KEXINIT` message (`ACK` flag set) along with sending its own `KEXINIT` message in the same TCP segment (`PSH` push flag set). (This can be verified using the Wireshark Trace files given in the ['Resources' section](#resources) below.)
+    -   The server acknowledges the previous `C -> S` `SSH_MSG_KEXINIT` message (`ACK` flag set) along with sending its own `SSH_MSG_KEXINIT` message in the same TCP segment (`PSH` push flag set). (This can be verified using the Wireshark Trace files given in the ['Resources' section](#resources) below.)
 
     <p align="center">
     <br />
-    <img src="./files/img/ssh/s-c-kexinit.png" alt="Wireshark: SSH Server to Client Key Exchange Initialization" loading="lazy" />
+    <img src="./files/img/ssh/s-c-ssh-msg-kexinit.png" alt="Wireshark: SSH Server to Client Key Exchange Initialization" loading="lazy" />
     </p>
 
 -   If both, the client and the server, are able to find common grounds for each type of algorithm, the connection can move to the next phase or else it will fail.
 
 ### Key Exchange Phase
 
-> Learn about [Elliptic Curve Diffie-Hellman (ECDH)](./cryptography.md#diffie-hellman).
+> Learn about [Elliptic Curve Diffie-Hellman (ECDH)](cryptography.md#diffie-hellman).
 
 -   `C -> S`: Elliptic Curve Diffie-Hellman Key Exchange Initialization (`SSH_MSG_KEX_ECDH_INIT`)
 
     -   The client sends its ECDH ephemeral public key to the server. (Packet no. 30 in the image below.)
-    -   NOTE: This ECDH key exchange is only to later be securely able to exchange keys of an encryption algorithm.
-    -   Again, this same TCP segment acknowledges the `S -> C` `KEXINIT` message and sends the `SSH_MSG_KEX_ECDH_INIT` data of this message along with it. (`ACK` flag is set along with the `PSH` flag that indicates data being sent.)
+        -   The first half of the Key Exchange process.
+    -   NOTE: This ECDH key exchange is carried out so that keys of an encryption algorithm can be generated/exchanged securely.
+    -   Again, this same TCP segment acknowledges the `S -> C` `SSH_MSG_KEXINIT` message and sends the `SSH_MSG_KEX_ECDH_INIT` data of this message along with it. (`ACK` flag is set along with the `PSH` flag that indicates data being sent.)
 
     <p align="center">
     <br />
@@ -188,9 +207,36 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   `S -> C`: Elliptic Curve Diffie-Hellman Key Exchange Reply (`SSH_MSG_KEX_ECDH_REPLY`)
 
     -   The server sends multiple things to the client. (Packet no. 31 in the image below.)
+
         -   The server's Host (Digital Signature/Certificate) public key
+            -   The authenticity of this public key has to be verified either manually (the fingerprint that SSH asks the user to verify when connecting to a host for the first time) or through some other certificates.
+                -   This fingerprinting process to authenticate a server is a big security problem, as most users don't actually check the fingerprints that the SSH client prompts the user with, which opens up the MITM (Monkey-in-the-Middle) Attack vector. Having automated checks like maybe [DNSSEC DNS queries](dns.md#dnssec) to verify the public key belonging to the server or [Digital Certificates](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) to verify the public key belonging to the server would be nice to have.
         -   The server's ECDH ephemeral public key
-        -   A key exchange hash (that is signed with the server's Host private key)
+            -   The second half of the Key Exchange process.
+        -   A signature of a key exchange hash (The server signs it with its private host key)
+
+            -   The public key that the server gave, if successfully verified, is used to verify this signature with the hash that the client also generates.
+
+            Explanation:
+
+            ```
+            On server:
+                -   Compute `server_hash`
+                    -   Computation includes the final computed ECDH shared secret.
+                -   `sign(server_hash, server_private_key)` = `signature`
+                -   Send (signature, server_public_key, ecdh_ephemeral_key) to client
+
+            On client:
+                -   `verify(server_public_key)` = `valid` or `invalid`
+                    -   If successfully verified, then the `server_public_key` actually belongs to the server that it initially claimed to be.
+                -   Compute `client_hash`
+                    -   Computation includes the final computed ECDH shared secret.
+                -   `verify(client_hash, signature, server_public_key)` = `valid` or `invalid`
+                    -   If successfully verified, then the `ecdh_ephemeral_key` can be trusted to be coming from the server and it can also be confirmed that both, the client and the server, have the same ECDH shared secret.
+            ```
+
+    -   This step also proves to the client that the server is actually who it claims to be and there isn't a MITM (Monkey-in-the-Middle) Attack going on. Thus, the server authenticates itself to the client.
+        -   The client authenticates itself to the server in the [subsequent encrypted communication](#subsequent-encrypted-communication) phase.
     -   It is very interesting to [explore the generation of the hash and the consequence of the Diffie Hellman shared key](https://youtu.be/0Sffl7YO0aY?t=361).
     -   As before, this TCP segment has both `ACK` and `PSH` flags set. This is a common pattern across the entire communication, where there is an `ACK` for every packet from `C -> S` and `S -> C`, and instead of sending it separately, it is often combined with another data containing packet (which will have the `PSH` push flag set).
 
@@ -217,7 +263,11 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 
 ### Subsequent Encrypted Communication
 
--   What can be interesting about packets of information that are encrypted? Well, SSH does something clever here.
+-   After this, all the communication between the client and server are encrypted. (Thus data payload is not visible in the encrypted packets that Wireshark captures.)
+-   The client authenticates itself to the server here. (`SSH_MSG_USERAUTH_REQUEST`)
+    -   The client authenticates itself during this encrypted communication phase rather than before so that it is able to securely transmit passwords and other sensitive data to the server securely.
+    -   The client has different [authentication methods](#authentication-methods) that it can choose from.
+-   What can be interesting about packets of information that are encrypted? Well, SSH does something clever here and a similar behaviour is observed in Telnet as well.
 -   After connection with the remote instance, one's intuition expects that SSH sends the user-typed command to the remote instance after the <kbd>Enter</kbd> key is hit, but SSH actually sends a request to the remote instance every time the user hits a key on their keyboard. The remote instance acknowledges the receipt of the keystroke, checks what happens when that keystroke is executed on the terminal and sends back the action to the client. The client then displays whatever the remote instance responds with, on the user-facing terminal.
     -   Why send every keystroke to the remote instance? This might not make sense for commands such as `ls` (because they can be communicated to the remote instance after the <kbd>Enter</kbd> key is hit), but imagine using something like the [Vim editor](https://www.vim.org) which requires the use of the <kbd>Esc</kbd> key to do certain actions. One does not hit the <kbd>Enter</kbd> key after the <kbd>Esc</kbd> key as that might mean something else to the program, so communicating every keystroke and getting back the reaction of that keystroke is necessary.
     -   Article: [SSH uses four TCP segments for each character you type](http://blog.hyfather.com/blog/2013/04/18/ssh-uses-four-tcp-segments-for-each-character)
@@ -262,17 +312,17 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [Wiresharking Secure Shell](https://www.youtube.com/watch?v=HVWlMNTNcF4)
 -   [How SSH Password-less Key-based Authentication Works](https://www.youtube.com/watch?v=RfolgB-rVe8)
 -   [Cryptography Basics - SSH Protocol Explained](https://www.youtube.com/watch?v=0Sffl7YO0aY&list=PL7d8iOq_0_CWAfs_z4oQnCuVc6yr7W5Fp&index=9)
+-   [Understanding the SSH Encryption and Connection Process](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process)
+-   [A brief history of SSH and remote access](https://www.jeffgeerling.com/blog/brief-history-ssh-and-remote-access)
+-   [RFC 4251: The Secure Shell (SSH) Protocol Architecture](https://datatracker.ietf.org/doc/html/rfc4251)
 -   [SSH uses four TCP segments for each character you type](http://blog.hyfather.com/blog/2013/04/18/ssh-uses-four-tcp-segments-for-each-character)
     -   [Interesting sub-discussion on this on Hacker News](https://news.ycombinator.com/item?id=5792334)
 -   [OpenSSH](https://www.openssh.com)
 -   Wireshark SSH Trace files
     -   These are the Wireshark Network Trace files used to analyse the SSH protocol packets.
-    -   Use the filter `ip.addr == 128.197.11.45` to view the entire SSH communication being talked about in this article.
+    -   Please use the filter `ip.addr == 128.197.11.45` to view the entire SSH communication being talked about in this article.
     -   [The first Wireshark SSH Trace file (`.pcapng`)](./files/ssh/ssh-wireshark-trace-1.pcapng)
     -   [The second Wireshark SSH Trace file (`.pcapng`)](./files/ssh/ssh-wireshark-trace-2.pcapng)
--   [SSH RFCs](https://rfcs.io/ssh)
 -   [SSH Keys](https://www.youtube.com/watch?v=dPAw4opzN9g)
--   [Cryptography](./cryptography.md)
+-   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
-
-([Back to Home](README.md))
