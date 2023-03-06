@@ -105,6 +105,7 @@
 -   'Ephemeral' means 'something that is short lasting'.
 -   ECDH = Elliptic Curve Diffie-Hellman
 -   [ECDH in SSH](https://youtu.be/0Sffl7YO0aY?t=361)
+-   [Perfect Forward Secrecy (FS or PFS)](https://en.wikipedia.org/wiki/Forward_secrecy)
 
 ## Hashing
 
@@ -122,6 +123,7 @@
 -   Message Authentication Codes (MACs) are symmetric key protocols, while Digital Signatures are asymmetric/public key protocols.
 -   [What are Digital Signatures?](https://www.youtube.com/watch?v=s22eJ1eVLTU)
 -   [Digital Signatures: What They Are & How They Work](https://sectigo.com/resource-library/how-digital-signatures-work)
+-   [Digital Signatures](https://cryptobook.nakov.com/digital-signatures)
 
 ## Digital Certificates and Certificate Revocation (OCSP and CRL)
 
