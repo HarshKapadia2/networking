@@ -21,6 +21,8 @@
     -   [TCP BBR](#tcp-bbr)
     -   [DCTCP](#dctcp)
 -   [Enabling a TCP Congestion Control Algorithm](#enabling-a-tcp-congestion-control-algorithm)
+-   [TCP Head-of-Line Blocking](#tcp-head-of-line-blocking)
+-   [TCP Segmentation Offload](#tcp-segmentation-offload)
 -   [Resources](#resources)
 
 ## Introduction
@@ -338,6 +340,17 @@ and more...
 
     $ sudo sysctl net.ipv4.tcp_congestion_control = dctcp
     ```
+
+## TCP Head-of-Line Blocking
+
+-   HoLB: Head-of-Line Blocking
+-   [How does HTTP2 solve Head of Line blocking (HOL) issue](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)
+
+## TCP Segmentation Offload
+
+-   TSO: TCP Segmentation Offload
+-   ['Large Send Off' offloading technique](https://en.wikipedia.org/wiki/TCP_offload_engine#Large_send_offload)
+-   [More on TSO](https://www.coverfire.com/articles/queueing-in-the-linux-network-stack/#:~:text=In%20order%20to%20avoid%20the,queueing%20to%20the%20driver%20queue.)
 
 ## Resources
 
