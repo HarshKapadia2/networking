@@ -2,9 +2,24 @@
 
 ([Back to Home](README.md))
 
+## Table of Contents
+
+-   [Protocols](#protocols)
+    -   [Transfer Protocols](#transfer-protocols)
+        -   [SMTP](#smtp)
+        -   [POP3](#pop3)
+        -   [IMAP](#imap)
+    -   [Utility Protocols](#utility-protocols)
+        -   [MIME](#mime)
+    -   [Security Protocols](#security-protocols)
+        -   [PGP](#pgp)
+        -   [S/MIME](#smime)
+    -   [Sending an Encrypted and Signed e-mail](#sending-an-encrypted-and-signed-e-mail)
+    -   [Resources](#resources)
+
 ## Protocols
 
-### Transfer protocols
+### Transfer Protocols
 
 -   Send e-mail: SMTP
 -   Receive e-mail: POP3, IMAP
@@ -45,7 +60,7 @@
 -   Provides synchronization of e-mails and folders.
 -   The e-mail is kept on the server and local copies are cached on devices as well.
 
-### Utility protocols
+### Utility Protocols
 
 #### MIME
 
@@ -68,7 +83,7 @@
   <img src="https://user-images.githubusercontent.com/50140864/103176023-9eb5b400-4894-11eb-83c3-422024f8b8e1.png" />
 </p>
 
-### Security protocols
+### Security Protocols
 
 #### PGP
 

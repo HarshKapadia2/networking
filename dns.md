@@ -39,7 +39,7 @@
 -   Computers work well with numbers, but humans cannot remember the IP addresses of all the resources that they want to visit on the internet and words are easier to remember than a string of numbers (in case of IPv4) or an alphanumeric string (in case of IPv6), so every resource has a unique URL (Eg: `github.com`) that makes it easy to remember the name to get to the intended resource.
 -   Now resources can only be contacted by knowing their IP addresses, so there has to be some mapping for domain names to their IP addresses.
 -   Here is where the Domain Name System Protocol steps in, wherein the device from which a request is made for a resource first hits a Domain Name Server to get the IP address of the requested resource and uses that IP address to then contact the requested resource to fetch it.
--   The DNS protocol is an [Application Layer](osi_layers.md) protocol that uses port 53 and [mainly uses UDP](https://stackoverflow.com/a/40063445/11958552) as its Transport Layer protocol.
+-   The DNS protocol is an [Application Layer](osi-layers.md) protocol that uses port 53 and [mainly uses UDP](https://stackoverflow.com/a/40063445/11958552) as its Transport Layer protocol.
 
 ## DNS Infrastructure
 

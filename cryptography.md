@@ -172,7 +172,9 @@
 
 -   [Computerphile](https://www.youtube.com/user/Computerphile)
 -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
+-   [Eddie Woo](https://www.youtube.com/watch?v=6xDGSalpPXk&list=PL5KkMZvBpo5CdoOxa3dqll2n6KsXqerYO)
 -   [Abhishek Sharma](https://www.youtube.com/watch?v=9X1rSWLFhLY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8) (Hindi)
 -   [Gideon Samid](https://www.youtube.com/user/GideonTheTeacher/videos) (http://wesecure.net)
+-   [Crypto 101](https://www.crypto101.io)
 -   [Cryptology, Cryptography, and Cryptanalysis – Get your Vocabulary Straight!](https://qvault.io/2019/12/16/cryptology-cryptography-and-cryptanalysis-get-your-vocabulary-straight)
 -   [Why Johnny Can’t Encrypt](https://people.eecs.berkeley.edu/~tygar/papers/Why_Johnny_Cant_Encrypt/OReilly.pdf)

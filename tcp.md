@@ -7,7 +7,7 @@
 -   [Introduction](#introduction)
 -   [Reliable Communication Mechanisms](#reliable-communication-mechanisms)
 -   [Important Terms](#important-terms)
--   [Congestion Control Algorithms of TCP](#congestion-control-algorithms-of-tcp)
+-   [Congestion Control Algorithms](#congestion-control-algorithms)
     -   [Slow Start](#slow-start-ss)
     -   [Congestion Avoidance](#congestion-avoidance)
     -   [Fast Retransmit](#fast-retransmit)
@@ -97,12 +97,12 @@
         -   The transmission/sending rate of new data.
         -   Measured in bps (Bits per Second)
 
-## Congestion Control Algorithms of TCP
+## Congestion Control Algorithms
 
--   Slow Start (SS)
--   Congestion Avoidance
--   Fast Retransmit
--   Fast Recovery
+-   [Slow Start (SS)](#slow-start-ss)
+-   [Congestion Avoidance](#congestion-avoidance)
+-   [Fast Retransmit](#fast-retransmit)
+-   [Fast Recovery](#fast-recovery)
 
 > Read from [Section 3.6](https://networking.harshkapadia.me/files/books/computer-networking-a-top-down-approach-8th-edition.pdf#page=266) and [Section 3.7](https://networking.harshkapadia.me/files/books/computer-networking-a-top-down-approach-8th-edition.pdf#page=274) of the 'Computer Networking - A Top-Down Approach' book.
 

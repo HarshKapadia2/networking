@@ -1,46 +1,65 @@
 # Computer Networking
 
-A collection of [Harsh Kapadia](https://harshkapadia.me)'s Computer Networking knowledge.
+Computer Networking is something that caught [my](https://harshkapadia.me) interest and I love digging deeper to understand how things work. This site is a knowledge base I maintain to keep a track of my learnings. Feel free to [contact me](https://links.harshkapadia.me)!
 
--   [Homa](homa.md)
--   [TCP](./tcp.md)
--   [SSH](./ssh.md)
--   [TLS](tls.md)
--   [DNS](./dns.md)
+## Articles
+
+-   [Homa (Data Center Transport Protocol)](homa.md)
+    -   [Problems with TCP](homa.md#problems-with-tcp)
+    -   [Homa's Features](homa.md#homa-features)
+-   [Secure Shell (SSH)](ssh.md)
+    -   [Examining a SSH Connection using Wireshark](ssh.md#a-ssh-connection)
+-   [Transport Layer Security (TLS)](tls.md)
+    -   [TLS 1.2 Handshake](tls.md#tls-12-handshake)
+    -   [TLS 1.3 Handshake](tls.md#tls-13-handshake)
+-   [Domain Name System (DNS)](dns.md)
+    -   [DNS Infrastructure](dns.md#dns-infrastructure)
+    -   [DNS Resource Records](dns.md#common-dns-records)
+    -   [(Distributed) Denial of Service](dns.md#distributed-denial-of-service)
+    -   [DNSSEC](dns.md#dnssec)
 -   [IPSec](ipsec.md)
--   [HTTP](http.md)
--   [IP](./ip.md)
--   [e-mail](e-mail.md)
+
+## Notes and Collections
+
+-   [TCP](tcp.md)
+    -   [Congestion Control Algorithms](tcp.md#congestion-control-algorithms)
+    -   [TCP Versions](tcp.md#versions-of-tcp)
+    -   [TCP Head of Line Blocking](tcp.md#tcp-head-of-line-blocking)
 -   [BGP](bgp.md)
+-   [HTTP](http.md)
+-   [IP](ip.md)
+-   [e-mail](e-mail.md)
 -   [ARP Spoofing](files/bu-cas-cs-558/assignments/e-mail-arp/index.html#_arp_spoofing)
--   [Cryptography](cryptography.md) (ciphers, hashing, key exchange, digital signatures, digital certificates, etc)
--   [OSI layers](osi_layers.md)
+-   [Cryptography](cryptography.md)
+    -   [PGP](cryptography.md#pgp)
+    -   [Diffie-Hellman Key Exchange](cryptography.md#diffie-hellman)
+    -   [Digital Certificates and Certificate Revocation (OCSP and CRL)](#digital-certificates-and-certificate-revocation-ocsp-and-crl)
+-   [OSI layers](osi-layers.md)
 -   [Protocols](protocols.md)
--   [What happens on hitting enter on a link in the browser?](network_cycle.md)
+-   [What happens on hitting enter on a link in the browser?](network-cycle.md)
 -   [Hardware](hardware.md)
--   [Powers of two](powers_of_two.md)
+    -   [Routers vs Switches vs Hubs vs Modems vs Access Points vs Gateways](hardware.md#routers-vs-switches-vs-hubs-vs-modems-vs-access-points-vs-gateways)
+-   [Powers of two](powers-of-two.md)
 
-## Resources
+## General Resources
 
--   Networking
-    -   [Network Direction](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
-    -   [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
-    -   [Explained from First Principles: The Internet](https://explained-from-first-principles.com/internet)
-    -   [Computerphile](https://www.youtube.com/user/Computerphile)
-    -   Books
-        -   [Computer Networking - A Top Down Approach (8th Edition)](files/books/computer-networking-a-top-down-approach-8th-edition.pdf)
-            -   [Videos, notes and other material](https://gaia.cs.umass.edu/kurose_ross/lectures.php)
-        -   [Computer Networks by Tanenbaum (5th Edition)](files/books/computer-networks-tanenbaum-5th-edition.pdf)
-        -   [Computer Networking: Principles, Protocols and Practice, by Olivier Bonaventure](https://www.computer-networking.info)
+-   [Network Direction](https://www.youtube.com/watch?v=cNwEVYkx2Kk&list=PLDQaRcbiSnqF5U8ffMgZzS7fq1rHUI3Q8)
+-   [Hussein Nasser](https://www.youtube.com/watch?v=V3ZPPPKEipA&list=PLQnljOFTspQUNnO4p00ua_C5mKTfldiYT)
+-   [Explained from First Principles: The Internet](https://explained-from-first-principles.com/internet)
+-   [Computerphile](https://www.youtube.com/user/Computerphile)
+-   Books
+    -   [Computer Networking - A Top Down Approach (8th Edition)](files/books/computer-networking-a-top-down-approach-8th-edition.pdf)
+        -   [Videos, notes and other material](https://gaia.cs.umass.edu/kurose_ross/lectures.php)
+    -   [Computer Networks by Tanenbaum (5th Edition)](files/books/computer-networks-tanenbaum-5th-edition.pdf)
+    -   [Computer Networking: Principles, Protocols and Practice, by Olivier Bonaventure](https://www.computer-networking.info)
+-   Tools
     -   [Wireshark](https://www.wireshark.org)
-    -   RFCs ([RFC Editor](https://www.rfc-editor.org), [Datatracker](https://datatracker.ietf.org), etc.)
-    -   [History of the Internet](https://www.youtube.com/watch?v=9hIQjrMHTv4)
-    -   Research papers
-        -   [The Internet that Wasn't](files/research-papers/the-internet-that-wasnt.pdf) (OSI)
-        -   [The Design Philosophy of the DARPA Internet Protocols](files/research-papers/the-design-philosophy-of-the-darpa-internet-protocols.pdf)
--   Cryptography
-    -   [Computerphile](https://www.youtube.com/user/Computerphile)
-    -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
-    -   [Eddie Woo](https://www.youtube.com/watch?v=6xDGSalpPXk&list=PL5KkMZvBpo5CdoOxa3dqll2n6KsXqerYO)
-    -   [Abhishek Sharma](https://www.youtube.com/watch?v=9X1rSWLFhLY&list=PL9FuOtXibFjV77w2eyil4Xzp8eooqsPp8) (Hindi)
-    -   [Crypto 101](https://www.crypto101.io)
+    -   [tcpdump](https://wizardzines.com/zines/tcpdump)
+-   RFCs
+    -   [RFC Editor](https://www.rfc-editor.org)
+    -   [Datatracker](https://datatracker.ietf.org)
+-   [History of the Internet](https://www.youtube.com/watch?v=9hIQjrMHTv4)
+-   Research papers
+    -   [The Internet that Wasn't](files/research-papers/the-internet-that-wasnt.pdf) (OSI)
+    -   [The Design Philosophy of the DARPA Internet Protocols](files/research-papers/the-design-philosophy-of-the-darpa-internet-protocols.pdf)
+-   [Docker Networking Crash Course](https://www.youtube.com/watch?v=OU6xOM0SE4o) ([More on Docker](https://harshkapadia2.github.io/docker))

@@ -6,6 +6,15 @@
 
 -   [Introduction](#introduction)
 -   [HTTP Request Methods/Verbs](#http-request-methodsverbs)
+    -   [GET](#get)
+    -   [POST](#post)
+    -   [PUT](#put)
+    -   [DELETE](#delete)
+    -   [PATCH](#patch)
+    -   [OPTIONS](#options)
+    -   [CONNECT](#connect)
+    -   [TRACE](#trace)
+    -   [HEAD](#head)
 -   [HTTP Response Status Codes](#http-response-status-codes)
 -   [HTTP Versions](#http-versions)
 -   [REST vs RPC](#rest-vs-rpc)
@@ -56,7 +65,7 @@ HTTP provides certain request methods to the client to state the action of their
 ### CONNECT
 
 -   Starts a two-way tunnel with the target. It can be used to open a tunnel.
--   Used extensively with [proxies](network_cycle.md/#:~:text=Proxy%20or%20load%20balancer) to establish an end to end encrypted connection, so that the proxy won't be able to look at the data.
+-   Used extensively with [proxies](network-cycle.md/#:~:text=Proxy%20or%20load%20balancer) to establish an end to end encrypted connection, so that the proxy won't be able to look at the data.
 -   [How HTTP Tunneling works, The CONNECT method, Pros & Cons and more](https://www.youtube.com/watch?v=PAJ5kK50qp8)
 
 ### TRACE

@@ -2,6 +2,28 @@
 
 ([Back to Home](README.md))
 
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [Features](#features)
+-   [IKE](#ike)
+    -   [IKEv1](#ikev1)
+        -   [Negotiation Modes](#negotiation-modes)
+        -   [Negotiation](#negotiation)
+    -   [IKEv2](#ikev2)
+        -   [Negotiation](#negotiation-1)
+-   [Security Protocols](#security-protocols)
+    -   [AH](#ah)
+    -   [ESP](#esp)
+-   [Operation Modes](#operation-modes)
+    -   [Transport Mode](#transport-mode)
+    -   [Tunnel Mode](#tunnel-mode)
+-   [Advantages](#advantages)
+-   [Disadvantages](#disadvantages)
+-   [Resources](#resources)
+
+## Introduction
+
 -   The IP Security (IPSec) Protocol is a Network Layer encryption protocol most commonly used in VPNs (either to securely browse the internet or to securely connect to a remote network) that is used to create P2P (point to point) associations between tunnel endpoints.
 -   It encrypts and authenticates IP packets.
 -   It is used to make a secure tunnel between the client and the server (or target machine).
@@ -29,7 +51,7 @@
 
 ### IKEv1
 
-#### Negotiation modes
+#### Negotiation Modes
 
 The origin machine proposes a connection to the target machine and that proposal can occur in two modes.
 
@@ -125,7 +147,7 @@ The origin machine proposes a connection to the target machine and that proposal
     -   CREATE_CHILD_SA
     -   INFORMATIONAL
 
-## Security protocols
+## Security Protocols
 
 > NOTE:
 >
@@ -150,12 +172,12 @@ The origin machine proposes a connection to the target machine and that proposal
 -   It does not complain if NAT occurs on the outer IP header, because it does not check the integrity of the outer IP header.
 -   It provides anti-replay attack protection.
 
-## Operation modes
+## Operation Modes
 
 -   AH and ESP protocols both support two types of encapsulations.
 -   The main difference in the two modes is the original IP header.
 
-### Transport mode
+### Transport Mode
 
 -   Cryptographic operations are performed by both source and destination hosts and encrypted data is sent using L2TP.
 -   Original IP header is retained. (There are no separate 'outer' and 'inner' IP headers as in AH.)
@@ -183,7 +205,7 @@ The origin machine proposes a connection to the target machine and that proposal
   NOTE: There is only one IP header, ie, the original IP header.
 </p>
 
-### Tunnel mode
+### Tunnel Mode
 
 -   Cryptographic operations are performed by special gateways as well as source and destination hosts.
 -   This adds a new IP header (the outer IP header), so the original (inner) IP header is hidden to the public.

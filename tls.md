@@ -2,8 +2,24 @@
 
 ([Back to Home](README.md))
 
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [Examples of TLS in the Wild](#examples-of-tls-in-the-wild)
+-   [Cryptography in TLS](#cryptography-in-tls)
+    -   [Diffie-Hellman (DH)](#diffie-hellman-dh)
+    -   [RSA](#rsa)
+    -   [AES](#aes)
+    -   [SHA256](#sha256)
+-   [Conditions to be Fulfilled by a TLS Handshake](#conditions-to-be-fulfilled-by-a-tls-handshake)
+-   [TLS 1.2 Handshake](#tls-12-handshake)
+-   [TLS 1.3 Handshake](#tls-13-handshake)
+-   [Resources](#resources)
+
+## Introduction
+
 -   The Transport Layer Security (TLS) protocol helps in encrypting and authenticating the communication between two services.
--   It is a Transport Layer protocol as per the [OSI Model](osi_layers.md).
+-   It is a Transport Layer protocol as per the [OSI Model](osi-layers.md).
 -   It is the better version of the Secure Sockets Layer (SSL) protocol. (The last SSL version was 3.0.)
     -   TLS 1.0 was also called SSL 3.1.
 -   The latest version of TLS is 1.3.
@@ -12,7 +28,7 @@
     -   Thus, HTTPS is also called 'HTTP over TLS (or SSL)'.
 -   It is not just used in web sites. It is used for other communication as well, for eg, DB communication, browsing on TOR browser, etc.
 
-## Examples
+## Examples of TLS in the Wild
 
 > NOTE:
 >
@@ -58,6 +74,7 @@ Some common terms seen in the pictures above
     -   Perfect Forward Secrecy (PFS)
         -   Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if leaked, pose a big risk.
         -   So, Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as it generates keys independently of RSA and after every session (if the ephemeral version of DH is used) and the communication will not be compromised even if the RSA private key is leaked.
+-   [More details](cryptography.md#diffie-hellman)
 
 ### RSA
 
@@ -72,6 +89,7 @@ Some common terms seen in the pictures above
 -   Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography cipher.
 -   The shared secret from Diffie-Hellman is used to derive a key.
 -   Provides encryption for the data being shared between the two communicating machines.
+-   [More details](cryptography.md#aes)
 
 ### SHA256
 
@@ -79,8 +97,9 @@ Some common terms seen in the pictures above
 -   Generates a unique\* 256 bit hexadecimal string output called a 'hash', for any length of input.
     -   unique\*: Hash collisions are extremely rare.
 -   Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
+-   [More details](cryptography.md#sha)
 
-## Conditions to be fulfilled by a TLS handshake
+## Conditions to be Fulfilled by a TLS Handshake
 
 -   What ciphers to be used for normal communication.
     -   Eg: AES
@@ -91,7 +110,7 @@ Some common terms seen in the pictures above
 -   Robustness
     -   Prevent Man in the Middle Attacks, Replay Attacks, Downgrade Attacks, etc during the handshake.
 
-## TLS 1.2 handshake
+## TLS 1.2 Handshake
 
 > NOTE:
 >
@@ -194,7 +213,7 @@ Some common terms seen in the pictures above
   <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="80%" />
 </p>
 
-## TLS 1.3 handshake
+## TLS 1.3 Handshake
 
 > NOTE:
 >
