@@ -19,6 +19,10 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
     -   [DNSSEC](dns.md#dnssec)
 -   [IPSec](ipsec.md)
 
+## Talks
+
+-   [MAC and IP Routing](https://talks.harshkapadia.me/mac-and-ip-routing)
+
 ## Notes and Collections
 
 -   [TCP](tcp.md)
