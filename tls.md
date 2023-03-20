@@ -2,29 +2,33 @@
 
 ([Back to Home](README.md))
 
+Last updated: 20th March 2023
+
 ## Table of Contents
 
 -   [Introduction](#introduction)
 -   [Examples of TLS in the Wild](#examples-of-tls-in-the-wild)
--   [Cryptography in TLS](#cryptography-in-tls)
+-   [Common Cryptographic Algorithms in TLS](#common-cryptographic-algorithms-in-tls)
     -   [Diffie-Hellman (DH)](#diffie-hellman-dh)
     -   [RSA](#rsa)
     -   [AES](#aes)
     -   [SHA256](#sha256)
+-   [Why Symmetric Key Encryption is Used](#why-symmetric-key-encryption-is-used)
 -   [Conditions to be Fulfilled by a TLS Handshake](#conditions-to-be-fulfilled-by-a-tls-handshake)
+-   [General TLS Protocol Structure](#general-tls-protocol-structure)
 -   [TLS 1.2 Handshake](#tls-12-handshake)
 -   [TLS 1.3 Handshake](#tls-13-handshake)
 -   [Resources](#resources)
 
 ## Introduction
 
--   The Transport Layer Security (TLS) protocol helps in encrypting and authenticating the communication between two services.
--   It is a Transport Layer protocol as per the [OSI Model](osi-layers.md).
+-   The Transport Layer Security (TLS) protocol is connection-oriented and stateful, and it helps in encrypting and authenticating the communication between two services, thus providing the CIA (Confidentiality, Integrity and Authentication) triad.
+-   It is a Transport Layer protocol as per the [OSI Model](osi-layers.md) and TCP/IP Model.
 -   It is the better version of the Secure Sockets Layer (SSL) protocol. (The last SSL version was 3.0.)
     -   TLS 1.0 was also called SSL 3.1.
--   The latest version of TLS is 1.3.
+-   The latest version of TLS at the time of writing is 1.3.
 -   It is placed between TCP and [HTTP](http.md).
-    -   Usually TCP -> HTTP, but with HTTPS, TCP -> TLS -> HTTP.
+    -   HTTP runs over TCP (TCP -> HTTP), but with HTTPS, TCP -> TLS -> HTTP.
     -   Thus, HTTPS is also called 'HTTP over TLS (or SSL)'.
 -   It is not just used in web sites. It is used for other communication as well, for eg, DB communication, browsing on TOR browser, etc.
 
@@ -35,46 +39,58 @@
 > -   This information can be found in the Security tab in the browser DevTools or on clicking the 'lock' (or 'unlock') symbol to the left of the URL in the browser search bar.
 > -   The string of cipher information seen in the pictures below is called a 'cipher suite'. There are several of them for each protocol and they tell us which ciphers are being used by a particular protocol after both machines have agreed on the ciphers to be used.
 
-*https://github.com* :point_down:
+-   [GitHub](https://github.com)
 
-<img src="https://user-images.githubusercontent.com/50140864/102624600-3c5d0500-416a-11eb-9893-0b7ea946c2ba.png" width="80%" />
+<p align="center">
+	<img src="files/img/tls/github-tls.png" loading="lazy" />
+</p>
 
-*https://otc.zulipchat.com* :point_down:
+-   [Zulip](https://otc.zulipchat.com)
 
-<img src="https://user-images.githubusercontent.com/50140864/102624926-bc836a80-416a-11eb-9a12-237e2af7a694.png" width="80%" />
+<p align="center">
+	<img src="files/img/tls/zulip-tls.png" loading="lazy" />
+</p>
 
-[_Source_](https://youtu.be/86cQJ0MMses?t=65) :point_down:
+-   [Source video](https://youtu.be/86cQJ0MMses?t=65)
 
-<img src="https://user-images.githubusercontent.com/50140864/102624503-1cc5dc80-416a-11eb-8240-0a5219c2bc2b.png" width="90%" />
+<p align="center">
+	<img src="files/img/tls/source-video-tls.png" loading="lazy" />
+</p>
 
-> **NOTE: Resources for everything written below can be found in the '[Resources](#resources)' section at the end of this file.**
-
-## Cryptography in TLS
+## Common Cryptographic Algorithms in TLS
 
 Some common terms seen in the pictures above
 
--   Diffie-Hellman (EDCHE, X25519, P-256, etc)
--   RSA
--   AES
--   SHA256
+-   [Diffie-Hellman](#diffie-hellman-dh) (DH, DHE, ECDHE, X25519, P-256, etc.)
+-   [RSA](#rsa)
+-   [AES](#aes) (128, 192, 256, etc.) (CBC, GCM, etc.)
+-   [SHA256](#sha256)
 
 ### Diffie-Hellman (DH)
 
 -   It is a part of Public/Asymmetric Key Cryptography.
--   It is a Key Exchange Protocol for a shared secret between two devices who want to start communication.
--   The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Cryptography ciphers like AES (because Private Key Cryptography is faster than Public Key Cryptography).
+-   It is a Key Exchange Protocol to establish a shared secret between two devices who want to start communication, but have never done so before and/or have no shared secret to generate keys for securing communication.
+-   The established shared secret is then used to derive symmetric keys with Private/Symmetric/Secret Key Cryptography ciphers like AES. ([Why?](#why-symmetric-key-encryption-is-used))
 -   Some types of DH
-    -   ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)
+    -   DH (Diffie-Hellman)
+        -   This is a Static Diffie-Hellman Key Exchange, where the key exchange parameters never change.
+    -   DHE (Diffie-Hellman Ephemeral)
         -   Ephemeral means 'something that lasts for a short time' and here it implies that a new key is generated every time a conversation takes place, ie, very frequently.
+    -   ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)
+        -   Uses Elliptic Curve Cryptography in DHE, making it stronger.
     -   X25519
         -   A type of Elliptic Curve Diffie-Hellman that uses Curve25519.
     -   P-256
         -   A type of curve used in Elliptic Curve Cryptography.
--   Vulnerable to 'Man in the Middle' attacks and here is were Public Key Cryptography ciphers like RSA, DSA, etc help out by providing authentication.
+-   Communication in general is vulnerable to 'Monkey in the Middle' (MITM) attacks and here is where Public Key Cryptography ciphers like RSA, DSA, etc. help out by providing authentication.
     -   Perfect Forward Secrecy (PFS)
-        -   Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow and its keys are established for over years, which if leaked, pose a big risk.
-        -   So, Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as it generates keys independently of RSA and after every session (if the ephemeral version of DH is used) and the communication will not be compromised even if the RSA private key is leaked.
--   [More details](cryptography.md#diffie-hellman)
+        -   Just RSA can be used in place of Diffie-Hellman, but is not, as it is slow, and its keys are established for many years and serve as a host's identity, so if private keys are leaked, it poses a big risk. Thus it is better to limit their use.
+        -   Diffie-Hellman (DH) is used as a quicker method and safety blanket for key exchange, with RSA only providing initial authenticity. It acts as a safety blanket, as
+            -   It generates keys independently of RSA.
+            -   It generates a new secret after every session (if the ephemeral version of [DH](#diffie-hellman-dh) is used).
+            -   The communication will not be compromised even if the RSA private key is leaked.
+        -   [More on Perfect Forward Secrecy (PFS)](cryptography.md#perfect-forward-secrecy)
+-   [More DH details](cryptography.md#diffie-hellman)
 
 ### RSA
 
@@ -82,22 +98,32 @@ Some common terms seen in the pictures above
 -   The name 'RSA' is an acronym of the scientists involved in making the cipher.
     -   The scientists in order: Ron Rivest, Adi Shamir and Leonard Adleman.
 -   Ensures authenticity of sender.
--   Prevents 'Man in the Middle' attacks, as it authenticates the sender.
+-   Prevents 'Monkey in the Middle' (MITM) attacks, as it authenticates the sender.
+    -   [Digital Certificates](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) also help with this.
 
 ### AES
 
 -   Advanced Encryption Standard (AES) is a type of a Private/Symmetric/Secret Key Cryptography cipher.
 -   The shared secret from Diffie-Hellman is used to derive a key.
+-   [Why is Symmetric key encryption used rather than just Asymmetric Key encryption?](#why-symmetric-key-encryption-is-used)
 -   Provides encryption for the data being shared between the two communicating machines.
--   [More details](cryptography.md#aes)
+-   [More AES details](cryptography.md#aes)
 
 ### SHA256
 
 -   Hashing algorithm which is a part of the Secure Hashing Algorithm (SHA) family. (SHA2 to be specific.)
 -   Generates a unique\* 256 bit hexadecimal string output called a 'hash', for any length of input.
-    -   unique\*: Hash collisions are extremely rare.
--   Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, etc.
--   [More details](cryptography.md#sha)
+    -   `unique`\*: Hash collisions are extremely rare.
+-   Used wherever needed, for eg, to derive a key from the shared secret, in digital signatures, MAC, etc.
+-   [More SHA details](cryptography.md#sha)
+
+## Why Symmetric Key Encryption is Used
+
+Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rather than just Asymmetric Key Encryption (Eg: RSA)?
+
+-   Symmetric Key Encryption is ~200 times faster than Asymmetric Key Encryption.
+-   A lot of processors now have dedicated hardware to perform AES encryption and decryption, which speeds up communication even more.
+-   RSA keys are established for many years and serve as a host's identity, and so if private keys are leaked, it poses a big risk. Thus it is better to limit their use.
 
 ## Conditions to be Fulfilled by a TLS Handshake
 
@@ -108,109 +134,135 @@ Some common terms seen in the pictures above
 -   Authentication
     -   Public/Asymmetric Key Cryptography like RSA and verifying with digital signature with certificates.
 -   Robustness
-    -   Prevent Man in the Middle Attacks, Replay Attacks, Downgrade Attacks, etc during the handshake.
+    -   Prevent 'Monkey in the Middle' (MITM) Attacks, Replay Attacks, Downgrade Attacks, etc during the handshake.
+
+## General TLS Protocol Structure
+
+-   Handshaking Protocol
+    -   Cipher negotiation, server authentication, session key generation and other options.
+    -   End product: Symmetric session keys generated at both ends (two sets, one for encryption and one for MAC)
+    -   Sub-protocols
+        -   Handshake Protocol
+            -   Negotiates TLS protocol version, cipher suites supported, compression methods, session identifier, server authentication and does a key exchange to form/generate the master (symmetric) secret at the client and server.
+        -   Alert Protocol
+            -   Informs problems through a Failure Alert or a Warning Alert.
+        -   Change Cipher Specification Protocol
+            -   Informing that a change to a new set of keys is requested and they are generated from the information exchanged during the Handshake Protocol.
+-   Record Protocol
+    -   Actual communication data that is encrypted and MACed using the key information exchanged during the Handshake Protocol.
 
 ## TLS 1.2 Handshake
 
 > NOTE:
 >
 > -   `C` = Client and `S` = Server.
-> -   TLS 1.2 takes two roundtrips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake. (TLS 1.3 takes just one roundtip.)
+> -   TLS 1.2 takes two round trips (`C -> S`, `S -> C`, `C -> S` and `S -> C`) to complete the handshake. (TLS 1.3 takes just one round trip.)
+
+### Overview
 
 <p align="center">
-  The TLS 1.2 handshake as seen in Wireshark :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102719477-68b48500-4314-11eb-9631-e2806662900d.png" width="100%" />
+	The TLS 1.2 handshake as seen in Wireshark
+	<br />
+	<img src="files/img/tls/tls-12-overview-wireshark.png" loading="lazy" />
 </p>
 
--   TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+-   TLS works on top of [TCP](tcp.md) for [HTTP/2 or lower versions](http.md#http-versions), so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+    -   This is not counted as a TLS Handshake round trip.
+
+### First Round Trip
+
 -   `C -> S` Client Hello
     -   States max version of TLS supported.
-    -   Send a random number to prevent Replay attacks.
+    -   Send a random number to prevent Replay Attacks.
     -   Sends a list of cipher suites that the client supports.
 
 <p align="center">
-  Client Hello :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721208-71f71f00-431f-11eb-9be9-2d3304b925ee.png" width="80%" />
-  <br />
-  <br />
-  Contents of 'Random' :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721273-c8645d80-431f-11eb-9a74-09c849a63c36.png" width="80%" />
+	Client Hello
+	<br />
+	<img src="files/img/tls/tls-12-client-hello-1.png" loading="lazy" />
+	<br />
+	<br />
+	Contents of <code>Random</code>
+	<br />
+	<img src="files/img/tls/tls-12-client-hello-2.png" loading="lazy" />
 </p>
 
 -   `S -> C` Server Hello
     -   Choose TLS version and cipher suite.
-    -   Send random number.
-    -   Send a certificate (with the public key of the server attached to it.)
+    -   Send random number to present Replay Attacks.
+        -   Even if the client sends the same random number, the server will always send a different random number in response and this new number is used in the handshake process ahead, so Replay Attacks won't work, as different values will be generated further along the handshake process every time.
+    -   Send a [Digital Certificate](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) chain to authenticate the server.
+        -   It proves the identity of the server.
+        -   The leaf Certificate has the public key of the server in it.
     -   Server Key Exchange message (DH)
         -   It sends params for the Diffie-Hellman (DH) key exchange. (The generator and the huge prime number.)
         -   It sends it's generated public part of the key exchange process.
         -   Digital signature (a hashed value of some of the previous messages signed by the private key of the server). RSA is used here.
-        -   Send 'Server Hello Done'.
+    -   Send 'Server Hello Done'.
 
 <p align="center">
-  Server Hello :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721373-66582800-4320-11eb-93c7-42dcff85e0c1.png" width="80%" />
-  <br />
-  <br />
-  Server Key Exchange :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721626-ef239380-4321-11eb-91b7-b0b8da838157.png" width="80%" />
-  <br />
-  <br />
-  Server Key Exchange (contd) :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721653-24c87c80-4322-11eb-8147-3795b2b13d9f.png" width="80%" />
-  <br />
-  Server Hello Done :point_up:
+	Server Hello
+	<br />
+	<img src="files/img/tls/tls-12-server-hello.png" loading="lazy" />
+	<br />
+	<br />
+	Server Key Exchange
+	<br />
+	<img src="files/img/tls/tls-12-server-key-exchange-1.png" loading="lazy" />
+	<br />
+	<br />
+	Server Key Exchange (contd) and Server Hello Done
+	<br />
+	<img src="files/img/tls/tls-12-server-key-exchange-2-server-hello-done.png" loading="lazy" />
 </p>
+
+### Second Round Trip
 
 -   `C -> S` Client Key Exchange message (DH)
     -   It sends it's generated public part of the key exchange process.
     -   Side note: Both the server and client can now form the pre-master secret by completing the Diffie-Hellman process and then combine them with the random numbers sent in the above messages to make the master secret.
-    -   Change Cipher Spec message. (Says that it is ready to begin encryption.)
-    -   Finished message (Contains an encrypted summary of all the messages so far.)
+    -   Change Cipher Spec message. (Says that it is ready to use the keys generated from the master secret to begin encryption.)
+    -   Finished message (Contains an encrypted summary of all the messages so far, just for the server to check if everything matches.)
 
 <p align="center">
-  Client Key Exchange :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721728-aa4c2c80-4322-11eb-9ea3-21b975a40ad4.png" width="80%" />
-  <br />
-  <br />
-  Change Cipher Spec :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="80%" />
-  <br />
-  <br />
-  Finished :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="80%" />
+	Client Key Exchange
+	<br />
+	<img src="files/img/tls/tls-12-client-key-exchange.png" loading="lazy" />
+	<br />
+	<br />
+	Change Cipher Spec
+	<br />
+	<img src="files/img/tls/tls-12-client-change-cipher-spec.png" loading="lazy" />
+	<br />
+	<br />
+	Finished
+	<br />
+	<img src="files/img/tls/tls-12-client-finished.png" loading="lazy" />
 </p>
 
 -   `S -> C` Change Cipher Spec message
-    -   Finished message (Contains an encrypted summary of all the messages so far.)
-    -   Side note: Only if the two finished messages match, will the handshake succeed. This prevents any Man in the Middle attacks.
+    -   Finished message (Contains an encrypted summary of all the messages so far, for the client to check if everything matches.)
+    -   Only if the two finished messages match, will the handshake succeed. This prevents any 'Monkey in the Middle' (MITM) attacks or misconfigurations.
 
 <p align="center">
-  Change Cipher Spec :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721900-9b19ae80-4323-11eb-92d7-bcc0801cd64d.png" width="80%" />
-  <br />
-  <br />
-  Finished :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102721928-c9978980-4323-11eb-8990-d2e714f83f5b.png" width="80%" />
+	Change Cipher Spec
+	<br />
+	<img src="files/img/tls/tls-12-server-change-cipher-spec.png" loading="lazy" />
+	<br />
+	<br />
+	Finished
+	<br />
+	<img src="files/img/tls/tls-12-client-finished.png" loading="lazy" />
 </p>
 
--   The handshake is complete. The application data is encrypted using the Private/Symmetric/Secret Key Cryptography cipher mentioned in the **chosen** cipher suite (Eg: AES) and both machines can now communicate with encryption and authenticity.
+-   The handshake is complete. The application data is encrypted using the Private/Symmetric/Secret Key Cryptography cipher mentioned in the chosen cipher suite (Eg: AES) and both machines can now communicate with Confidentiality, Integrity and Authentication.
+
+### Overview
 
  <p align="center">
-  An overview of the TLS 1.2 handshake :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102719277-30607700-4313-11eb-874f-70523df03e0f.png" width="80%" />
+	An overview of the TLS 1.2 Handshake as in <a href="https://datatracker.ietf.org/doc/html/rfc5246#section-7.3" target="_blank" rel="noreferrer">RFC 5246</a>
+	<br />
+	<img src="files/img/tls/tls-12-overview-rfc.png" loading="lazy" />
 </p>
 
 ## TLS 1.3 Handshake
@@ -218,50 +270,53 @@ Some common terms seen in the pictures above
 > NOTE:
 >
 > -   `C` = Client and `S` = Server.
-> -   TLS 1.3 takes one roundtrip (`C -> S` and `S -> C`) to complete the handshake. (TLS 1.2 takes two roundtips.)
+> -   TLS 1.3 takes just one round trip (`C -> S` and `S -> C`) to complete the handshake. (TLS 1.2 takes two round trips.)
 
--   TLS works on top of TCP, so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+-   TLS works on top of [TCP](tcp.md) for [HTTP/2 or lower versions](http.md#http-versions), so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
+    -   This is not counted as a TLS Handshake round trip.
 -   `C -> S` Client Hello
     -   Send list of supported TLS versions.
-    -   Send random number.
+    -   Send random number to prevent Reply Attacks.
     -   Send list of supported Cipher Suites.
     -   Send Client Key Exchange.
     -   Send TLS Extensions
-        -   [SNI or ESNI](https://www.youtube.com/watch?v=t0zlO5-NWFU)
-        -   [ALPN](https://www.youtube.com/watch?v=lR1uHVS7I-8)
+        -   [(Encrypted) Server Name Indication (SNI or ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
+        -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 
 <p align="center">
-  Client Hello :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102996572-5b341080-4549-11eb-91d1-d2e68f64592b.png" width="80%" />
+	Client Hello
+	<br />
+	<img src="files/img/tls/tls-13-client-hello.png" loading="lazy" />
 </p>
 
 -   `S -> C` Server Hello
     -   Agree on a cipher suite.
     -   Agree on TLS protocol version.
-    -   Send random number.
+    -   Send random number to prevent Replay Attacks.
     -   Send Server Key Exchange.
-    -   Send Certificate.
+    -   Send [Digital Certificate](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) chain.
     -   Send TLS Extensions.
-        -   [OCSP](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) Stapling (Certificate Verify)
+        -   [Online Certificate Status Protocol (OCSP)](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) Stapling (Certificate Verify)
     -   Send Finished message.
 
 <p align="center">
-  Server Hello :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/102997188-7bb09a80-454a-11eb-9399-0f6c7e5a2dfd.png" width="80%" />
+	Server Hello
+	<br />
+	<img src="files/img/tls/tls-13-server-hello.png" loading="lazy" />
 </p>
 
 -   `C -> S` Client sends a Finished message and then encrypted and authenticated communication starts.
 
+### Overview
+
 <p align="center">
-  An overview of the TLS 1.3 handshake (as a cURL request) :point_down:
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/105168866-bbb26f80-5b40-11eb-94f9-1f87c3c8fbde.png" width="80%" />
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/105169280-527f2c00-5b41-11eb-9b65-c75b2e1dc765.png" width="80%" />
-  <br />
-  <img src="https://user-images.githubusercontent.com/50140864/105169404-81959d80-5b41-11eb-82af-3df69445ab26.png" width="80%" />
+	An overview of the TLS 1.3 Handshake as a cURL request
+	<br />
+	<img src="files/img/tls/tls-13-overview-curl-1.png" loading="lazy" />
+	<br />
+	<img src="files/img/tls/tls-13-overview-curl-2.png" loading="lazy" />
+	<br />
+	<img src="files/img/tls/tls-13-overview-curl-3.png" loading="lazy" />
 </p>
 
 ## Resources
@@ -274,12 +329,15 @@ Some common terms seen in the pictures above
     -   [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
     -   [cURL Verbose Mode Explained](https://www.youtube.com/watch?v=PVm0YEEuS8s)
     -   [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
-    -   https://badssl.com
+    -   [TLS](files/tls/tls-ieee.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/document/6938667))
+    -   [https://badssl.com](https://badssl.com)
+    -   [http://neverssl.com](http://neverssl.com)
 -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 -   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
 -   [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital Signatures, Digital Certificates, CRL, OCSP, etc resources)
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
     -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
+        -   [Smashing the Stack for Fun and Profit](files/tls/smashing-the-stack-for-fun-and-profit.pdf) ([UCB hosted](https://inst.eecs.berkeley.edu/~cs161/fa08/papers/stack_smashing.pdf))
     -   [More about PFS](cryptography.md#perfect-forward-secrecy)
 -   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)

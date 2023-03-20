@@ -1,5 +1,3 @@
 {
-    "ignoredFiles": [
-        "files/img/ssh/*"
-    ]
+	"ignoredFiles": ["files/img/ssh/*", "files/img/tls/*"]
 }
