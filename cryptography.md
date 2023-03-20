@@ -19,6 +19,7 @@
 -   [Digital Signatures](#digital-signatures)
 -   [Digital Certificates and Certificate Revocation (OCSP and CRL)](#digital-certificates-and-certificate-revocation-ocsp-and-crl)
 -   [PGP](#pgp)
+-   [Perfect Forward Secrecy](#perfect-forward-secrecy)
 -   [Resources](#resources)
 
 ## Introduction
@@ -105,7 +106,7 @@
 -   'Ephemeral' means 'something that is short lasting'.
 -   ECDH = Elliptic Curve Diffie-Hellman
 -   [ECDH in SSH](https://youtu.be/0Sffl7YO0aY?t=361)
--   [Perfect Forward Secrecy (FS or PFS)](https://en.wikipedia.org/wiki/Forward_secrecy)
+-   [Perfect Forward Secrecy (FS or PFS)](#perfect-forward-secrecy)
 
 ## Hashing
 
@@ -167,6 +168,14 @@
 -   [Guidelines for strong passwords](https://en.wikipedia.org/wiki/Password_strength#Guidelines_for_strong_passwords)
 -   [Why should one not use the same asymmetric key for encryption as they do for signing?](https://security.stackexchange.com/questions/1806/why-should-one-not-use-the-same-asymmetric-key-for-encryption-as-they-do-for-sig)
 -   Exercise: [Sending an Encrypted and Signed e-mail](e-mail.md#sending-an-encrypted-and-signed-e-mail)
+
+## Perfect Forward Secrecy
+
+-   PFS or FS: Perfect Forward Secrecy
+-   [Wikipedia: Perfect Forward Secrecy](https://en.wikipedia.org/wiki/Forward_secrecy)
+-   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
+    -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
+    -   [More about TLS](tls.md)
 
 ## Resources
 
