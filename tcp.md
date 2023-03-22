@@ -343,6 +343,7 @@ and more...
 
 -   HoLB: Head-of-Line Blocking
 -   [How does HTTP2 solve Head of Line blocking (HOL) issue](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue)
+-   Multiple messages multiplexed over a single TCP connection (as in HTTP/2) implies that even if only one packet at the start of the [Congestion Window (CWND)](#important-terms) needs to be retransmitted, all the packets after it will be buffered at the receiver and not be handed to their respective streams up the networking stack even if the individual packets that might be belonging to different streams are complete.
 
 ## TCP Segmentation Offload
 
