@@ -174,38 +174,47 @@ The following features of TCP cause it problems **in the Data Center**:
 >
 > -   [Message vs Packet](#message-vs-packet)
 > -   [Sender vs Receiver](#sender-vs-receiver)
-> -   Source: [protocol.md](https://github.com/PlatformLab/HomaModule/blob/master/protocol.md#packet-types)
+> -   Source: [`protocol.md` file](https://github.com/PlatformLab/HomaModule/blob/master/protocol.md#packet-types) and [`homa_impl.h` file](https://github.com/PlatformLab/HomaModule/blob/master/homa_impl.h)
 
 -   `DATA`
+    -   `DATA(rpc_id, data, offset, self_prio, m_len)`
     -   Sent by the sender or receiver.
-    -   Contains a contiguous range of bytes within a message, defined by an offset and a length.
+    -   Contains a contiguous range of bytes within a message, defined by an offset.
     -   Also indicates the total message length.
     -   It has the ability to acknowledge (`ACK`) one RPC, so future RPCs can be used to acknowledge one RPC, thus not requiring an explicit `ACK` packet to be sent.
 -   `GRANT`
+    -   `GRANT(rpc_id, offset, exp_prio)`
     -   Sent by the receiver.
     -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
     -   Also specifies the priority level to use for the `DATA` packets.
 -   `RESEND`
-    -   Sent by the receiver.
+    -   `RESEND(rpc_id, offset, len, exp_prio)`
+    -   Sent by the sender or receiver.
     -   Indicates that the sender should re-transmit a given range of bytes within a message.
     -   Includes priority that should be used for the retransmitted packets.
-    -   To prevent unnecessary bandwidth usage, Homa only issues one outstanding `RESEND` packet to a given peer at a time. (One peer can have multiple RPCs.) Homa rotates the `RESEND`s among the RPCs to that peer. If enough timeouts occur to conclude that a peer has crashed, then Homa aborts all RPCs for that peer.
+    -   To prevent unnecessary bandwidth usage, Homa only issues one outstanding `RESEND` packet to a given peer at a time. (One peer can have multiple RPCs.) Homa rotates the `RESEND`s among the RPCs to that peer.
+    -   If enough timeouts occur (i.e., enough `RESEND` packets are sent), Homa concludes that a peer has crashed, aborts all RPCs for that peer and discards all the state associated with those RPCs.
 -   `UNKNOWN`
+    -   `UNKNOWN(rpc_id)`
     -   Sent by the sender or receiver.
     -   Indicates that the RPC for which a packet was received is unknown to it.
 -   `BUSY`
+    -   `BUSY(rpc_id)`
     -   Sent from sender to receiver.
     -   Indicates that a response to `RESEND` will be delayed.
         -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
     -   Used to prevent timeouts.
 -   `CUTOFFS`
+    -   `CUTOFFS(rpc_id, exp_unsched_prio)`
     -   Sent by the receiver.
     -   Indicates priority cutoff values that the sender should use for unscheduled packets.
 -   `ACK`
+    -   `ACK(rpc_id)`
     -   Sent by the sender.
     -   Explicitly acknowledges that receipt of a response message to **one or more RPCs**.
         -   Aids the receiver to discard state for completed RPCs.
 -   `NEED_ACK`
+    -   `NEED_ACK(rpc_id)`
     -   Sent by the receiver.
     -   Indicates an explicit requirement for an acknowledgement (`ACK` packet) for the response of a particular RPC.
 
@@ -311,7 +320,7 @@ The following features of TCP cause it problems **in the Data Center**:
 > NOTE:
 >
 > -   These are the functions that implement the Homa API visible to applications. They are intended to be a part of the user-level run-time library.
-> -   Source: [`homa_api.c`](https://github.com/PlatformLab/HomaModule/blob/master/homa_api.c)
+> -   Source: [`homa_api.c` file](https://github.com/PlatformLab/HomaModule/blob/master/homa_api.c)
 
 -   `homa_send()`
     -   Send a request message to initiate a RPC.
@@ -329,6 +338,7 @@ The following features of TCP cause it problems **in the Data Center**:
 -   [Directed Study application](files/homa/directed-study-application.pdf)
 -   Presentations
     -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
+    -   Homa 2 ([PDF](files/homa/presentations/homa-2.pdf), [Google Slides](https://docs.google.com/presentation/d/1NLEzvXmMS3w5n46XY8d2teHnPXZjphkSq9ZwmYnbkj8/edit?usp=sharing))
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
     -   [Homa: A Receiver-Driven Low-Latency Transport Protocol Using Network Priorities (Complete Version)](files/homa/research-papers/homa-a-receiver-driven-low-latency-transport-protocol-using-network-priorities-complete-version.pdf) ([arXiv](https://arxiv.org/abs/1803.09615))
