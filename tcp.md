@@ -28,9 +28,7 @@
 ## Introduction
 
 -   [Building Blocks of TCP](https://hpbn.co/building-blocks-of-tcp)
--   Understanding the hardware Network stack architecture in Linux
-    -   [Queueing in the Linux Network Stack](https://www.coverfire.com/articles/queueing-in-the-linux-network-stack)
-    -   [SYN packet handling in the wild](https://blog.cloudflare.com/syn-packet-handling-in-the-wild)
+-   [Understanding the Network stack architecture in Linux](linux.md#packet-processing)
 -   [Threads and Connections](https://www.youtube.com/watch?v=CZw57SIwgiE)
 -   [Socket Programming: Echo Server, and RTT and Throughput Measurement](./files/bu-grs-cs-655/assignments/socket-echo-rtt-tput-instructions.pdf)
     -   Exercise and good resources to get introduced to socket programming.
@@ -365,5 +363,5 @@ and more...
         -   [Congestion Avoidance and Control (Slightly revised)](files/tcp/research-papers/congestion-avoidance-and-control-revised.pdf)
     -   [Data Center TCP (DCTCP)](files/tcp/research-papers/data-center-tcp-dctcp.pdf)
 -   [Transport Layer Security (TLS)](tls.md)
--   [Linux `sysctl` command](https://linuxize.com/post/sysctl-command-in-linux)
+-   [Linux sysctl(8) command](linux.md#packet-handling)
 -   [InstaGeni Monitor](https://flsmonitor.fed4fire.eu/genitests)
