@@ -20,6 +20,7 @@
 -   [Streaming vs Messages](#streaming-vs-messages)
     -   [The Problem with TCP Streaming](#the-problem-with-tcp-streaming)
     -   [How Messages Help](#how-messages-help)
+-   [Homa API](#homa-api)
 -   [Resources](#resources)
 
 ## Introduction
@@ -121,7 +122,7 @@ Some of the important features a **Data Center transport protocol** should have:
 -   Efficient Load Balancing
     -   Trying to load balance Data Center workloads causes additional overheads to manage cache and the connections, and also causes hot spots where workload is not properly distributed.
     -   Load Balancing overheads are a major reason for tail latency.
--   Network Interface Card (NIC) offload
+-   Network Interface Card/Controller (NIC) offload
     -   The protocol cannot be a pure software implementation, because that's too slow. It should make use of inherent NIC features, for which better NICs are needed as well.
 
 ## Message vs Packet
@@ -144,7 +145,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   Keeping aside packet buffer space and application level state, 2000 bytes of state data has to be maintained for every TCP socket.
     -   Connection setup takes up one Round Trip Time (RTT).
 -   Bandwidth sharing (Fair scheduling)
-    -   Under high loads, short messages have a very bad RTT as compared to long messages, due to [TCP Head of Line Blocking (HoLB)](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue).
+    -   Under high loads, short messages have a very bad RTT as compared to long messages, due to [TCP Head of Line Blocking (HoLB)](tcp.md#tcp-head-of-line-blocking).
     -   Under high load, all streams share bandwidth, which collectively slows down everyone.
 -   Sender-driven congestion control
     -   Congestion is usually detected when there is buffer occupancy, which implies that there will be some packet queuing, which further implies increased latency and HoLB.
@@ -197,9 +198,7 @@ The following features of TCP cause it problems **in the Data Center**:
 
 -   Message-oriented protocol, that implements [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc) rather than streams.
     -   Please refer to the [Message vs Packet](#message-vs-packet) and the [Streaming vs Messages](#streaming-vs-messages) sections.
-    -   Homa exposes discrete messages to transport, letting multiple threads read from a single socket without worrying about getting a message from a different connection (as in the TCP world).
-    -   This is disadvantageous in the sense that longer messages will have a higher latency, because every message will have to be delivered in its entirety, as these are not streams.
-        -   This can be overcome by sending multiple messages in parallel, so essentially the data is being broken into multiple messages. (This is so much like TCP though and won't this need re-ordering and state maintenance, which is what Homa wanted to avoid?)
+    -   Homa exposes discrete messages to transport, letting multiple threads read from a single socket without worrying about getting a message from a different connection (as in the TCP world, especially with HTTP/2 multiplexing multiple streams on one TCP connection, causing HoLB).
 -   Connectionless protocol
     -   Homa uses RPCs and so it doesn't require explicit connection establishment between the sender and receiver, and vice versa. This reduces connection setup overhead.
     -   An application can use a single socket to manage any number of concurrent RPCs with any number of peers.
@@ -213,22 +212,35 @@ The following features of TCP cause it problems **in the Data Center**:
 -   Shortest Remaining Processing Time (SRPT) Scheduling
     -   Homa uses SRPT Scheduling (a type of Run-to-Completion Scheduling) to queue messages to send and receive. It is best if both, the receiver and the sender, use SRPT, as it prevents short messages from starving behind long messages in queues on both ends.
     -   Homa makes use of priority queues in modern switches and queues shorter messages through the priority queues, so that they don't get starved by long messages. This helps reduce the 'latency vs bandwidth' optimization problem.
+        -   Priority is divided into two groups, the highest levels are for unscheduled packets and the lower levels are for scheduled packets. In each group, the highest priorities are for the shorter messages.
+        -   The receiver assigns priorities dynamically (depending on the flows that it has) and can change them at any time it wishes. It communicates them through `GRANT` packets.
+        -   The receiver assigning priorities makes sense because it knows all the flows that want to send data to it and its current network load and buffer occupancy.
         -   Reducing queuing is the key to reducing latency.
+            -   Homa not only limits queue buildup in switches, but also in the NIC, so that HoLB does not take place.
+                -   To prevent queue build up in the NIC, it uses a queue and a 'Pacer Thread' that essentially keeps an approximate of the time in which the NIC queue will be empty and sends packets to the NIC from its queue based on that estimate while maintaining the original SRPT order.
         -   Homa intentionally does 'controlled overcommitment', i.e., it allows a little buffering (for longer messages), to keep link utilization high (thus optimizing for throughput, while keeping latency low through SRPT and priority queues).
             -   The controlled overcommitment helps in keeping up capacity utilization in cases where senders aren't sending messages in a timely fashion.
-    -   Homa also allocates 5-10% of the bandwidth to the oldest message (which will be the longest one), so that the longest message also doesn't completely starve.
+    -   Homa also allocates 5-10% of the bandwidth to the oldest message (which will be the longest one), so that the longest message also doesn't completely starve. Both, the granting mechanism and the Pacer Thread take this into consideration.
 -   Receiver-driven Congestion Control
     -   A receiver is usually in a better position to signal and drive congestion rather than the sender, because the receiver knows how much buffer capacity it has left and the number of RPCs that it has. So, it is better to let the receiver signal whether messages can be sent or not.
     -   A sender can send a few unscheduled packets to receive some replies from the receiver to test the waters, but packets after that will be scheduled and can be sent only if the receiver sends a _grant_ for those messages.
         -   The message size is mentioned in the initial unscheduled blindly sent (to reduce latency) packets, which further helps the receiver to make a decision on scheduling those messages and also allows it to give priority to shorter messages.
             -   Yes, this might cause some buffering if there are too many senders that send unscheduled packets, but that minimum buffering is unavoidable. The scheduling of further messages through the _grant_ mechanism ensures reduced buffer occupancy.
-        -   A `GRANT` packet is sent for every `DATA` packet (if the receiver decides that it can accept more data) and it contains an offset for the number of outstanding bytes of the message size that it wants from the sender and also the priority that the sender should send the packet with. So Homa can vary priorities dynamically based on the load it has on the receiver.
+        -   A `GRANT` packet is sent after a decided amount of data (defaulted at 10,000 bytes), if the receiver decides that it can accept more data and it contains an offset for the number of outstanding bytes of the message size that it wants from the sender and also the priority that the sender should send the packet with. So Homa can vary priorities dynamically based on the load it has on the receiver.
+            -   Homa does not send a `GRANT` packet for every `DATA` packet, as that causes a lot of overheads and Homa uses [TCP Segmentation Offload (TSO)](tcp.md#tcp-segmentation-offload), which implies that the sender transmits packets in groups, so every packet does not need to have a `GRANT` packet.
         -   The sender should transmit 'RTT bytes' (including software delays on both ends) and by the time RTT bytes are sent, it should receive an indication from the receiver whether to keep sending or not, thus reducing transmission latency in case an immediate grant is received.
     -   As the receiver knows the load it has and expects from the received messages, it can prioritise messages (using a small number of priority queues) and the bandwidth they can have.
         -   Knowing the message sizes, they can predict the bandwidth required and take the decision of granting and priority on those basis.
         -   This helps the receiver implement SRPT Scheduling, as they have the priority in their control.
 -   Out-of-Order packets
     -   Homa can tolerate Out-of-Order packets, so Packet Spraying works, which aids load balancing over multiple links, avoiding network traffic hot spot creation.
+-   No explicit acknowledgements
+    -   Homa does not send out explicit acknowledgements for every packet, thus reducing almost half the packets that have to be sent per message. This reduces transmission overheads and conserves bandwidth.
+    -   As mentioned in the 'Homa Features' sub-point 'Receiver-driven Congestion Control' above, a `GRANT` packet is not sent for every `DATA` packet, but for a bunch of packets, so `GRANT` packets are not acknowledgement packets for every packet that was sent.
+        -   Although not explicitly mentioned anywhere, they can be considered as SACK (Selective Acknowledgement) packets in my opinion.
+    -   If any packet is missing, the receiver will send a `RESEND` packet requesting for the information.
+-   [At-least-once semantics](https://www.lightbend.com/blog/how-akka-works-at-least-once-message-delivery#:~:text=Message%20Delivery%20Semantics)
+    -   In case of failures or losses, Homa does have mechanisms to ensure retransmission (Eg: The `RESEND` packet or fresh retries after deadlines), so packets are sent at least once, but can be sent more times to ensure delivery.
 
 ## Homa Design Principles
 
@@ -258,26 +270,52 @@ The following features of TCP cause it problems **in the Data Center**:
     -   This helps `GRANT` packets from the receiver to the sender to specify an offset of outstanding 'RTT bytes' of the message to transmit to the receiver to ensure as far as possible, no interruptions in transmitting, which improves bandwidth utilization.
         -   Specifying this also helps with buffer occupancy predictions and checks, because the receiver knows how much a particular RPC was allowed to send in a particular packet.
     -   This puts the power of Congestion and Flow Control in the hands of the receiver, which makes more sense, because it is the entity that has the best knowledge of its state, rather than the sender having to make guesses based on parameters like 'packet loss' and 'duplicate acknowledgements', that are not the most accurate indicators of congestion.
--   Removing streaming also gets rid of the [TCP Head of Line Blocking (HoLB)](https://stackoverflow.com/questions/45583861/how-does-http2-solve-head-of-line-blocking-hol-issue) problem.
+-   Removing streaming also gets rid of the [TCP Head of Line Blocking (HoLB)](tcp.md#tcp-head-of-line-blocking) problem.
     -   In the HTTP world, QUIC (the transport protocol for HTTP/3) solves this by having multiple independent streams, unlike TCP in HTTP/2, which was multiplexing multiple streams over a single TCP stream/connection (thus causing HoLB).
-        -   The point here can be that Homa is doing away with streaming altogether and just using messages, so not only is HoLB solved, but so are [the other issues with TCP streaming](#the-problem-with-tcp-streaming).
+        -   HoLB: Multiple messages multiplexed over a single TCP connection (as in HTTP/2) implies that even if only one packet at the start of the [Congestion Window (CWND)](tcp.md#important-terms) needs to be retransmitted, all the packets after it will be buffered at the receiver and not be handed to their respective streams up the networking stack even if the individual packets that might be belonging to different streams are complete.
+            -   This is also where the scare of reading packets from a different stream from one connection pops up in TCP.
+        -   The point here can be that Homa is doing away with streaming altogether and just using messages, so not only is HoLB solved, but so are [the other issues with streaming](#the-problem-with-tcp-streaming).
+
+## Homa API
+
+> NOTE:
+>
+> -   These are the functions that implement the Homa API visible to applications. They are intended to be a part of the user-level run-time library.
+> -   Source: [`homa_api.c`](https://github.com/PlatformLab/HomaModule/blob/master/homa_api.c)
+
+-   `homa_send()`
+    -   Send a request message to initiate a RPC.
+    -   `homa_sendv()`
+        -   Same as `homa_send()`, except that the request message can be divided among multiple disjoint chunks of memory.
+-   `homa_reply()`
+    -   Send a response message for a RPC previously received.
+    -   `homa_replyv()`
+        -   Similar to `homa_reply()`, except the response message can be divided among several chunks of memory.
+-   `homa_abort()`
+    -   Terminate the execution of a RPC.
 
 ## Resources
 
 -   [Directed Study application](files/homa/directed-study-application.pdf)
+-   Presentations
+    -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
     -   [Homa: A Receiver-Driven Low-Latency Transport Protocol Using Network Priorities (Complete Version)](files/homa/research-papers/homa-a-receiver-driven-low-latency-transport-protocol-using-network-priorities-complete-version.pdf) ([arXiv](https://arxiv.org/abs/1803.09615))
+    -   [A Linux Kernel Implementation of the Homa Transport Protocol](files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf) ([USENIX](https://www.usenix.org/conference/atc21/presentation/ousterhout))
     -   [Datacenter Traffic Control: Understanding Techniques and Tradeoffs](files/homa/research-papers/data-center-traffic-control-understanding-techniques-and-tradeoffs.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8207422))
--   Presentations
-    -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
+-   [The Homa Linux kernel module source](https://github.com/PlatformLab/HomaModule)
 -   Videos
     -   [Discussing the Homa paper - Replacing TCP for the Datacenter](https://www.youtube.com/watch?v=nEFOni_87Yw)
     -   [USENIX ATC '21 - A Linux Kernel Implementation of the Homa Transport Protocol](https://www.youtube.com/watch?v=qu5WDcZRveo)
     -   [Netdev 0x16 - Keynote: It's Time to Replace TCP in the Datacenter](https://www.youtube.com/watch?v=o2HBHckrdQc)
+-   Articles
+    -   [Homa: A Receiver-Driven Low-Latency Transport Protocol Using Network Priorities, Part I](https://www.micahlerner.com/2021/08/15/a-linux-kernel-implementation-of-the-homa-transport-protocol.html)
+    -   [A Linux Kernel Implementation of the Homa Transport Protocol, Part II](https://www.micahlerner.com/2021/08/29/a-linux-kernel-implementation-of-the-homa-transport-protocol.html)
 -   [Transmission Control Protocol (TCP)](tcp.md)
 -   [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc)
 -   [Incast](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2012/EECS-2012-40.pdf)
 -   Data Plane Development Kit (DPDK)
     -   [What is DPDK?](https://www.packetcoders.io/what-is-dpdk)
     -   [dpdk.org](https://www.dpdk.org)
+-   [Linux networking specifics](linux.md)
