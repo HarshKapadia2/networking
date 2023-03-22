@@ -166,29 +166,53 @@ The following features of TCP cause it problems **in the Data Center**:
     -   Sender: Server
     -   Receiver: Client
 
+> A peer can be a sender or a receiver and can have multiple RPCs.
+
 ## Homa Packet Types
 
 > NOTE:
 >
 > -   [Message vs Packet](#message-vs-packet)
 > -   [Sender vs Receiver](#sender-vs-receiver)
+> -   Source: [protocol.md](https://github.com/PlatformLab/HomaModule/blob/master/protocol.md#packet-types)
 
 -   `DATA`
-    -   Sent from sender to receiver.
-    -   Contains a range of bytes within a message, defined by an offset and a length.
+    -   Sent by the sender or receiver.
+    -   Contains a contiguous range of bytes within a message, defined by an offset and a length.
     -   Also indicates the total message length.
+    -   It has the ability to acknowledge (`ACK`) one RPC, so future RPCs can be used to acknowledge one RPC, thus not requiring an explicit `ACK` packet to be sent.
 -   `GRANT`
-    -   Sent from receiver to sender.
+    -   Sent by the receiver.
     -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
-    -   Also specifies the priority level to use.
+    -   Also specifies the priority level to use for the `DATA` packets.
 -   `RESEND`
-    -   Sent from receiver to sender.
+    -   Sent by the receiver.
     -   Indicates that the sender should re-transmit a given range of bytes within a message.
+    -   Includes priority that should be used for the retransmitted packets.
+    -   To prevent unnecessary bandwidth usage, Homa only issues one outstanding `RESEND` packet to a given peer at a time. (One peer can have multiple RPCs.) Homa rotates the `RESEND`s among the RPCs to that peer. If enough timeouts occur to conclude that a peer has crashed, then Homa aborts all RPCs for that peer.
+-   `UNKNOWN`
+    -   Sent by the sender or receiver.
+    -   Indicates that the RPC for which a packet was received is unknown to it.
 -   `BUSY`
     -   Sent from sender to receiver.
     -   Indicates that a response to `RESEND` will be delayed.
-        -   The sender might be busy transmitting higher priority messages or an RPC operation is still being executed.
+        -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
     -   Used to prevent timeouts.
+-   `CUTOFFS`
+    -   Sent by the receiver.
+    -   Indicates priority cutoff values that the sender should use for unscheduled packets.
+-   `ACK`
+    -   Sent by the sender.
+    -   Explicitly acknowledges that receipt of a response message to **one or more RPCs**.
+        -   Aids the receiver to discard state for completed RPCs.
+-   `NEED_ACK`
+    -   Sent by the receiver.
+    -   Indicates an explicit requirement for an acknowledgement (`ACK` packet) for the response of a particular RPC.
+
+> -   `FREEZE`
+>     -   Only for performance measurements, testing and debugging.
+> -   `BOGUS`
+>     -   Only for unit testing.
 
 ## Homa Features
 
@@ -196,10 +220,10 @@ The following features of TCP cause it problems **in the Data Center**:
     <img src="./files/img/homa/homa-overview.png" alt="Overview of the Homa protocol" loading="lazy" />
 </p>
 
--   Message-oriented protocol, that implements [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc) rather than streams.
+-   **Message-oriented protocol, that implements [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc) rather than streams.**
     -   Please refer to the [Message vs Packet](#message-vs-packet) and the [Streaming vs Messages](#streaming-vs-messages) sections.
     -   Homa exposes discrete messages to transport, letting multiple threads read from a single socket without worrying about getting a message from a different connection (as in the TCP world, especially with HTTP/2 multiplexing multiple streams on one TCP connection, causing HoLB).
--   Connectionless protocol
+-   **Connectionless protocol**
     -   Homa uses RPCs and so it doesn't require explicit connection establishment between the sender and receiver, and vice versa. This reduces connection setup overhead.
     -   An application can use a single socket to manage any number of concurrent RPCs with any number of peers.
     -   Each RPC is handled independently and there are no message ordering guarantees between concurrent RPCs.
@@ -209,37 +233,43 @@ The following features of TCP cause it problems **in the Data Center**:
         -   State for sockets, RPCs and peers are kept (200 bytes per host vs TCP's 2000 bytes per connection [not including data buffer space]).
         -   One way to think of Homa is that it maintains short-lived and lightweight connections for each RPC.
         -   Each RPC is handled independently and Flow Control, Retry and Congestion Control are implemented per RPC state.
--   Shortest Remaining Processing Time (SRPT) Scheduling
+-   **Shortest Remaining Processing Time (SRPT) Scheduling rather than Fair Scheduling**
     -   Homa uses SRPT Scheduling (a type of Run-to-Completion Scheduling) to queue messages to send and receive. It is best if both, the receiver and the sender, use SRPT, as it prevents short messages from starving behind long messages in queues on both ends.
     -   Homa makes use of priority queues in modern switches and queues shorter messages through the priority queues, so that they don't get starved by long messages. This helps reduce the 'latency vs bandwidth' optimization problem.
         -   Priority is divided into two groups, the highest levels are for unscheduled packets and the lower levels are for scheduled packets. In each group, the highest priorities are for the shorter messages.
-        -   The receiver assigns priorities dynamically (depending on the flows that it has) and can change them at any time it wishes. It communicates them through `GRANT` packets.
+            -   All packet types other than `DATA` packets have the highest priorities.
+        -   The receiver assigns priorities dynamically (depending on the flows that it has) and can change them at any time it wishes. It communicates them through `GRANT` packets for scheduled packets and through `CUTOFFS` packets for unscheduled packets.
         -   The receiver assigning priorities makes sense because it knows all the flows that want to send data to it and its current network load and buffer occupancy.
         -   Reducing queuing is the key to reducing latency.
-            -   Homa not only limits queue buildup in switches, but also in the NIC, so that HoLB does not take place.
+            -   Homa not only limits queue buildup in switches, but also in the Network Interface Controller (NIC), so that HoLB does not take place.
                 -   To prevent queue build up in the NIC, it uses a queue and a 'Pacer Thread' that essentially keeps an approximate of the time in which the NIC queue will be empty and sends packets to the NIC from its queue based on that estimate while maintaining the original SRPT order.
         -   Homa intentionally does 'controlled overcommitment', i.e., it allows a little buffering (for longer messages), to keep link utilization high (thus optimizing for throughput, while keeping latency low through SRPT and priority queues).
             -   The controlled overcommitment helps in keeping up capacity utilization in cases where senders aren't sending messages in a timely fashion.
     -   Homa also allocates 5-10% of the bandwidth to the oldest message (which will be the longest one), so that the longest message also doesn't completely starve. Both, the granting mechanism and the Pacer Thread take this into consideration.
--   Receiver-driven Congestion Control
+-   **Receiver-driven Congestion Control**
     -   A receiver is usually in a better position to signal and drive congestion rather than the sender, because the receiver knows how much buffer capacity it has left and the number of RPCs that it has. So, it is better to let the receiver signal whether messages can be sent or not.
     -   A sender can send a few unscheduled packets to receive some replies from the receiver to test the waters, but packets after that will be scheduled and can be sent only if the receiver sends a _grant_ for those messages.
         -   The message size is mentioned in the initial unscheduled blindly sent (to reduce latency) packets, which further helps the receiver to make a decision on scheduling those messages and also allows it to give priority to shorter messages.
             -   Yes, this might cause some buffering if there are too many senders that send unscheduled packets, but that minimum buffering is unavoidable. The scheduling of further messages through the _grant_ mechanism ensures reduced buffer occupancy.
         -   A `GRANT` packet is sent after a decided amount of data (defaulted at 10,000 bytes), if the receiver decides that it can accept more data and it contains an offset for the number of outstanding bytes of the message size that it wants from the sender and also the priority that the sender should send the packet with. So Homa can vary priorities dynamically based on the load it has on the receiver.
             -   Homa does not send a `GRANT` packet for every `DATA` packet, as that causes a lot of overheads and Homa uses [TCP Segmentation Offload (TSO)](tcp.md#tcp-segmentation-offload), which implies that the sender transmits packets in groups, so every packet does not need to have a `GRANT` packet.
+                -   The 'RTT bytes' that the `GRANT` packet sends might be split into multiple packets depending on the Maximum Transmission Unit (MTU) value.
         -   The sender should transmit 'RTT bytes' (including software delays on both ends) and by the time RTT bytes are sent, it should receive an indication from the receiver whether to keep sending or not, thus reducing transmission latency in case an immediate grant is received.
     -   As the receiver knows the load it has and expects from the received messages, it can prioritise messages (using a small number of priority queues) and the bandwidth they can have.
         -   Knowing the message sizes, they can predict the bandwidth required and take the decision of granting and priority on those basis.
         -   This helps the receiver implement SRPT Scheduling, as they have the priority in their control.
--   Out-of-Order packets
+-   **High out-of-order packet tolerance**
     -   Homa can tolerate Out-of-Order packets, so Packet Spraying works, which aids load balancing over multiple links, avoiding network traffic hot spot creation.
--   No explicit acknowledgements
+        -   Homa does not follow TCP's Flow Consistent Routing.
+-   **No per-packet acknowledgements**
     -   Homa does not send out explicit acknowledgements for every packet, thus reducing almost half the packets that have to be sent per message. This reduces transmission overheads and conserves bandwidth.
     -   As mentioned in the 'Homa Features' sub-point 'Receiver-driven Congestion Control' above, a `GRANT` packet is not sent for every `DATA` packet, but for a bunch of packets, so `GRANT` packets are not acknowledgement packets for every packet that was sent.
         -   Although not explicitly mentioned anywhere, they can be considered as SACK (Selective Acknowledgement) packets in my opinion.
     -   If any packet is missing, the receiver will send a `RESEND` packet requesting for the information.
--   [At-least-once semantics](https://www.lightbend.com/blog/how-akka-works-at-least-once-message-delivery#:~:text=Message%20Delivery%20Semantics)
+    -   The sender has to send an explicit `ACK` packet on completely receiving a RPC response message from the receiver for a RPC request message, so that the receiver can discard the RPC state.
+        -   If an `ACK` packet is not sent by the sender, the receiver can explicitly ask for one using the `NEED_ACK` packet.
+        -   If the sender has not received the entire response message, it can send a `RESEND` packet to the receiver.
+-   **[At-least-once semantics](https://www.lightbend.com/blog/how-akka-works-at-least-once-message-delivery#:~:text=Message%20Delivery%20Semantics)**
     -   In case of failures or losses, Homa does have mechanisms to ensure retransmission (Eg: The `RESEND` packet or fresh retries after deadlines), so packets are sent at least once, but can be sent more times to ensure delivery.
 
 ## Homa Design Principles
@@ -305,6 +335,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   [A Linux Kernel Implementation of the Homa Transport Protocol](files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf) ([USENIX](https://www.usenix.org/conference/atc21/presentation/ousterhout))
     -   [Datacenter Traffic Control: Understanding Techniques and Tradeoffs](files/homa/research-papers/data-center-traffic-control-understanding-techniques-and-tradeoffs.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8207422))
 -   [The Homa Linux kernel module source](https://github.com/PlatformLab/HomaModule)
+    -   [Homa Protocol Synopsis](https://github.com/PlatformLab/HomaModule/blob/master/protocol.md)
 -   Videos
     -   [Discussing the Homa paper - Replacing TCP for the Datacenter](https://www.youtube.com/watch?v=nEFOni_87Yw)
     -   [USENIX ATC '21 - A Linux Kernel Implementation of the Homa Transport Protocol](https://www.youtube.com/watch?v=qu5WDcZRveo)
