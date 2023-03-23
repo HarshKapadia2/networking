@@ -22,6 +22,7 @@
     -   [The Problem with TCP Streaming](#the-problem-with-tcp-streaming)
     -   [How Messages Help](#how-messages-help)
 -   [Homa API](#homa-api)
+-   [Homa Message Sequence Scenarios](#homa-message-sequence-scenarios)
 -   [Resources](#resources)
 
 ## Introduction
@@ -205,6 +206,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   Indicates that a response to `RESEND` will be delayed.
         -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
     -   Used to prevent timeouts.
+        -   It can be thought of as a 'keep-alive' indicator, as it keeps the communication alive and prevents the RPC from being aborted due to lack of data receipt.
 -   `CUTOFFS`
     -   `CUTOFFS(rpc_id, exp_unsched_prio)`
     -   Sent by the receiver.
@@ -344,6 +346,56 @@ The following features of TCP cause it problems **in the Data Center**:
         -   Similar to `homa_reply()`, except the response message can be divided among several chunks of memory.
 -   `homa_abort()`
     -   Terminate the execution of a RPC.
+    -   `homa_abortp()`
+        -   Same as `homa_abort()`, but just receives all parameters in one `struct` instead of separately/individually.
+
+## Homa Message Sequence Scenarios
+
+> NOTE: [Sender vs Receiver](#sender-vs-receiver)
+
+<p align="center">
+    <img src="files/img/homa/homa-message-sequence-diagram-1.png" alt="Homa message sequence diagram" loading="lazy" />
+</p>
+
+-   The image above showcases a normal Homa RPC communication.
+-   Both, a RPC Request and a RPC Response are shown.
+-   Priority levels: `P0` (lowest) to `P7` (highest)
+-   It is important to note that `GRANT` packets are for 'RTT bytes' to keep link utilization at 100%, but `DATA` packets are of the size of the [Maximum Transmission Unit (MTU)](tcp.md#important-terms). So each `GRANT` packet might generate multiple `DATA` packets.
+
+<p align="center">
+	<br />
+	<br />
+    <img src="files/img/homa/homa-message-sequence-diagram-2.png" alt="Homa message sequence diagram" loading="lazy" />
+</p>
+
+-   A RPC Request is shown in the image above.
+-   The sender crashes after sending two of its three granted `DATA` packets. The first granted (scheduled) `DATA` packet is lost as well, which causes a timeout on the receiver, causing it to send a `RESEND` packet for the missing data.
+-   After multiple `RESEND` packets not receiving responses, the receiver determines that the sender is non-responsive and discards all of the state related to that RPC ID.
+-   On coming back online, the sender looks at its previous state and tries to resume by sending the last granted `DATA` packet that it had not sent, but the receiver sends an `UNKNOWN` packet, as it has already discarded all information related to that RPC ID.
+-   The sender has to re-start the communication with the receiver.
+
+<p align="center">
+	<br />
+	<br />
+    <img src="files/img/homa/homa-message-sequence-diagram-3.png" alt="Homa message sequence diagram" loading="lazy" />
+</p>
+
+-   A RPC Request is shown in the image above.
+-   Here, a `DATA` packet is lost and the `RESEND` packet for that missing data is lost as well, but the next `RESEND` packet makes it to the sender.
+-   The sender can either immediately respond with the missing data in a `DATA` packet or if it is busy transmitting other higher priority packets, then it can send a `BUSY` packet to the receiver to prevent a timeout (like a 'keep-alive' indicator) and can send the `DATA` packet once it is free.
+
+<p align="center">
+	<br />
+	<br />
+    <img src="files/img/homa/homa-message-sequence-diagram-4.png" alt="Homa message sequence diagram" loading="lazy" />
+</p>
+
+-   A RPC Request is shown in the image above.
+-   This scenario needs to be confirmed properly, but this is most likely how it happens.
+-   If the blindly sent unscheduled `DATA` packets don't reach the receiver due to loss, overload, congestion or other reasons, then the sender times out waiting for a response from the receiver.
+-   On timing out, the sender sends a `RESEND` packet to the receiver, asking for a response.
+-   If the `RESEND` packet reaches the receiver, then it will respond with an `UNKNOWN` packet, because it never got the initial packets and was never aware of the RPC.
+-   The sender has to re-start the communication with the receiver.
 
 ## Resources
 

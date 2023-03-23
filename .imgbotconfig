@@ -1,3 +1,10 @@
 {
-	"ignoredFiles": ["files/img/ssh/*", "files/img/tls/*"]
+	"ignoredFiles": [
+		"files/img/ssh/*",
+		"files/img/tls/*",
+		"files/img/homa/homa-message-sequence-diagram-1.png",
+		"files/img/homa/homa-message-sequence-diagram-2.png",
+		"files/img/homa/homa-message-sequence-diagram-3.png",
+		"files/img/homa/homa-message-sequence-diagram-4.png"
+	]
 }
