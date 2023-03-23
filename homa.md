@@ -16,6 +16,7 @@
 -   [Sender vs Receiver](#sender-vs-receiver)
 -   [Homa Features](#homa-features)
 -   [Homa Design Principles](#homa-design-principles)
+-   [Homa Linux Working](#homa-linux-working)
 -   [Homa Packet Types](#homa-packet-types)
 -   [Streaming vs Messages](#streaming-vs-messages)
     -   [The Problem with TCP Streaming](#the-problem-with-tcp-streaming)
@@ -36,7 +37,7 @@
 ### Topology
 
 <p align="center">
-    <img src="./files/img/homa/typical-data-center-cluster.png" alt="A typical Data Center cluster" loading="lazy" />
+    <img src="files/img/homa/typical-data-center-cluster.png" alt="A typical Data Center cluster" loading="lazy" />
 </p>
 
 -   Data Center -> Clusters -> Racks (with a Top of Rack [ToR] switch) -> Machines
@@ -226,7 +227,7 @@ The following features of TCP cause it problems **in the Data Center**:
 ## Homa Features
 
 <p align="center">
-    <img src="./files/img/homa/homa-overview.png" alt="Overview of the Homa protocol" loading="lazy" />
+    <img src="files/img/homa/homa-overview.png" alt="Overview of the Homa protocol" loading="lazy" />
 </p>
 
 -   **Message-oriented protocol, that implements [Remote Procedure Calls (RPCs)](http.md#rest-vs-rpc) rather than streams.**
@@ -287,6 +288,17 @@ The following features of TCP cause it problems **in the Data Center**:
 -   Using in-network priorities
 -   Allocating priorities dynamically at receivers in conjunction with receiver-driven rate control
 -   Controlled over-commitment of receiver downlinks
+
+## Homa Linux Working
+
+<p align="center">
+    <img src="files/img/homa/homa-linux-working.png" alt="Working of Homa in the Linux kernel" loading="lazy" />
+</p>
+
+-   Transmit (top): [`homa_send()`](#homa-api) -> copy packets -> [TSO](tcp.md#tcp-segmentation-offload)/GSO -> Homa, IP layer -> NIC (and its driver)
+-   Receive (bottom): NIC ([RSS](<https://networking.harshkapadia.me/linux#:~:text=Scaling%20in%20the%20Linux%20Networking%20Stack%20(RSS%2C%20RPS%2C%20RFS%2C%20etc.)>)) -> Interrupt -> [NAPI](linux.md#napi) (GRO, SoftIRQ core choosing) -> SoftIRQ (network stack traversal) -> copy packets -> `homa_recv()`
+-   Research paper explanation: [Packet flow and batching (4.1)](https://networking.harshkapadia.me/files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf#page=5) from [A Linux Kernel Implementation of the Homa Transport Protocol](files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf) ([USENIX](https://www.usenix.org/conference/atc21/presentation/ousterhout))
+-   Review article: [A Linux Kernel Implementation of the Homa Transport Protocol, Part II](https://www.micahlerner.com/2021/08/29/a-linux-kernel-implementation-of-the-homa-transport-protocol.html)
 
 ## Streaming vs Messages
 
