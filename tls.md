@@ -18,6 +18,7 @@ Last updated: 20th March 2023
 -   [General TLS Protocol Structure](#general-tls-protocol-structure)
 -   [TLS 1.2 Handshake](#tls-12-handshake)
 -   [TLS 1.3 Handshake](#tls-13-handshake)
+-   [Need for Two Sets of Keys](#need-for-two-sets-of-keys)
 -   [Resources](#resources)
 
 ## Introduction
@@ -140,7 +141,12 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 
 -   Handshaking Protocol
     -   Cipher negotiation, server authentication, session key generation and other options.
-    -   End product: Symmetric session keys generated at both ends (two sets, one for encryption and one for MAC)
+    -   End product: Symmetric session keys generated at both ends
+        -   The same two sets of two symmetric keys are generated on both ends from the master secret.
+            -   Each set contains two symmetric keys, one for encryption and one for MAC.
+            -   There are two such sets, one set for client to server communication and the other set for the opposite direction.
+            -   The client and server are able to generate the exact same four keys from the master secret. (There are two keys per set and there are two sets, so there are four symmetric keys in total.)
+            -   [Need for Two Sets of Keys](#need-for-two-sets-of-keys)
     -   Sub-protocols
         -   Handshake Protocol
             -   Negotiates TLS protocol version, cipher suites supported, compression methods, session identifier, server authentication and does a key exchange to form/generate the master (symmetric) secret at the client and server.
@@ -255,7 +261,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 	<img src="files/img/tls/tls-12-client-finished.png" loading="lazy" />
 </p>
 
--   The handshake is complete. The application data is encrypted using the Private/Symmetric/Secret Key Cryptography cipher mentioned in the chosen cipher suite (Eg: AES) and both machines can now communicate with Confidentiality, Integrity and Authentication.
+-   The handshake is complete, with the [generation of two sets of symmetric keys](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret. The application data is encrypted and MACed, and both machines can now communicate securely.
 
 ### Overview
 
@@ -305,7 +311,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 	<img src="files/img/tls/tls-13-server-hello.png" loading="lazy" />
 </p>
 
--   `C -> S` Client sends a Finished message and then encrypted and authenticated communication starts.
+-   `C -> S` Client sends a Finished message and then the handshake is complete, with the [generation of two sets of symmetric keys](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret. Encrypted and authenticated communication can now start.
 
 ### Overview
 
@@ -322,6 +328,24 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 	<br />
 	<img src="files/img/tls/tls-13-overview-curl-3.png" loading="lazy" />
 </p>
+
+## Need for Two Sets of Keys
+
+> Credits to [Gabriel Kaptchuk](https://kaptchuk.com) for this explanation.
+
+-   At the end of [the Handshaking Protocol](#general-tls-protocol-structure), the same two sets of two symmetric keys are generated on both ends from the [Diffie-Hellman](#diffie-hellman-dh) master secret.
+-   Each set contains two symmetric keys, one for encryption and one for MAC (authentication).
+-   There are two such sets, one set for client to server communication and the other set for the opposite direction.
+-   The client and server are able to generate the exact same four keys from the master secret. (There are two keys per set and there are two sets, so there are four symmetric keys in total.)
+-   This is required, because an attacker could reflect messages back to the client, without them ever reaching the server.
+-   Eg: After processing a request from a client, if a server using a protocol running on top of TLS responds with the exact same data as in the request from the client, then the attacker could just simply capture the message and send it/reflect it back to client and the client would not know that the server did not receive its message. So the server would not carry out the action that the client wanted it to carry out, which is obviously bad.
+-   With having different sets of keys for each direction of communication, such reflection attacks would fail, because each direction would have different looking encrypted data even if the actual content would be the same, as the keys used to encrypt the same data would be different.
+
+    -   Eg:
+
+        Encrypt<sub>key_1</sub>("abc") = xyz
+
+        Encrypt<sub>key_2</sub>("abc") = pqr
 
 ## Resources
 
