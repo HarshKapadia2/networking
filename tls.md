@@ -310,6 +310,10 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 ### Overview
 
 <p align="center">
+	An overview of the TLS 1.3 Handshake as in <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2" target="_blank" rel="noreferrer">RFC 8446</a>
+	<br />
+	<img src="files/img/tls/tls-13-overview-rfc.png" loading="lazy" />
+	<br />
 	An overview of the TLS 1.3 Handshake as a cURL request
 	<br />
 	<img src="files/img/tls/tls-13-overview-curl-1.png" loading="lazy" />
@@ -342,6 +346,5 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 -   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)
 -   Picture sources
-    -   [RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2](https://tools.ietf.org/html/rfc5246)
     -   [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
     -   [SSL/TLS Handshake Explained With Wireshark Screenshot](https://www.linuxbabe.com/security/ssltls-handshake-process-explained-with-wireshark-screenshot)
