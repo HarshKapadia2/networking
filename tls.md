@@ -183,12 +183,12 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Sends a list of cipher suites that the client supports.
 
 <p align="center">
-	Client Hello
+	'Client Hello' Message
 	<br />
 	<img src="files/img/tls/tls-12-client-hello-1.png" loading="lazy" />
 	<br />
 	<br />
-	Contents of <code>Random</code>
+	Contents of <code>Random</code> in the 'Client Hello' Message
 	<br />
 	<img src="files/img/tls/tls-12-client-hello-2.png" loading="lazy" />
 </p>
@@ -207,17 +207,17 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Send 'Server Hello Done'.
 
 <p align="center">
-	Server Hello
+	'Server Hello' Message
 	<br />
 	<img src="files/img/tls/tls-12-server-hello.png" loading="lazy" />
 	<br />
 	<br />
-	Server Key Exchange
+	'Server Key Exchange' Message
 	<br />
 	<img src="files/img/tls/tls-12-server-key-exchange-1.png" loading="lazy" />
 	<br />
 	<br />
-	Server Key Exchange (contd) and Server Hello Done
+	'Server Key Exchange' Message (contd.) and 'Server Hello Done' Message
 	<br />
 	<img src="files/img/tls/tls-12-server-key-exchange-2-server-hello-done.png" loading="lazy" />
 </p>
@@ -231,17 +231,17 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Finished message (Contains an encrypted summary of all the messages so far, just for the server to check if everything matches.)
 
 <p align="center">
-	Client Key Exchange
+	'Client Key Exchange' Message
 	<br />
 	<img src="files/img/tls/tls-12-client-key-exchange.png" loading="lazy" />
 	<br />
 	<br />
-	Change Cipher Spec
+	Client 'Change Cipher Spec' Message
 	<br />
 	<img src="files/img/tls/tls-12-client-change-cipher-spec.png" loading="lazy" />
 	<br />
 	<br />
-	Finished
+	Client 'Finished' Message
 	<br />
 	<img src="files/img/tls/tls-12-client-finished.png" loading="lazy" />
 </p>
@@ -251,14 +251,14 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Only if the two finished messages match, will the handshake succeed. This prevents any 'Monkey in the Middle' (MITM) attacks or misconfigurations.
 
 <p align="center">
-	Change Cipher Spec
+	Server 'Change Cipher Spec' Message
 	<br />
 	<img src="files/img/tls/tls-12-server-change-cipher-spec.png" loading="lazy" />
 	<br />
 	<br />
-	Finished
+	Server 'Finished' Message
 	<br />
-	<img src="files/img/tls/tls-12-client-finished.png" loading="lazy" />
+	<img src="files/img/tls/tls-12-server-finished.png" loading="lazy" />
 </p>
 
 -   The handshake is complete, with the [generation of two sets of symmetric keys](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret. The application data is encrypted and MACed, and both machines can now communicate securely.
@@ -278,19 +278,33 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 > -   `C` = Client and `S` = Server.
 > -   TLS 1.3 takes just one round trip (`C -> S` and `S -> C`) to complete the handshake. (TLS 1.2 takes two round trips.)
 
+### Overview
+
+<p align="center">
+	The TLS 1.3 handshake as seen in Wireshark
+	<br />
+	<img src="files/img/tls/tls-13-overview-wireshark.png" loading="lazy" />
+</p>
+
 -   TLS works on top of [TCP](tcp.md) for [HTTP/2 or lower versions](http.md#http-versions), so a [TCP handshake](https://www.youtube.com/watch?v=bW_BILl7n0Y) is done first.
     -   This is not counted as a TLS Handshake round trip.
+
+### Round Trip
+
 -   `C -> S` Client Hello
     -   Send list of supported TLS versions.
     -   Send random number to prevent Reply Attacks.
     -   Send list of supported Cipher Suites.
     -   Send Client Key Exchange.
+        -   The client's Diffie-Hellman Key Exchange pre-master secret is sent.
     -   Send TLS Extensions
         -   [(Encrypted) Server Name Indication (SNI or ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
         -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 
+> NOTE: The images below are from Wireshark and are for a TLS 1.3 handshake. There are lots of mentions of protocol versions being `TLS 1.0` or `TLS 1.2`, but that is done on purpose by the TLS 1.3 standard for backward compatibility due to possible version negotiation issues which might cause 'version intolerance'. The actual version for TLS 1.3 is mentioned in the `supported_versions` extension as seen in the Client Hello and Server Hello images below. ([All the places in the TLS 1.3 handshake where old TLS versions can be seen](https://networkengineering.stackexchange.com/a/55756) and [the reason for using old TLS version numbers in a TLS 1.3 handshake](https://networkengineering.stackexchange.com/a/55753).)
+
 <p align="center">
-	Client Hello
+	'Client Hello' Message
 	<br />
 	<img src="files/img/tls/tls-13-client-hello.png" loading="lazy" />
 </p>
@@ -300,18 +314,33 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Agree on TLS protocol version.
     -   Send random number to prevent Replay Attacks.
     -   Send Server Key Exchange.
+        -   The server's Diffie-Hellman Key Exchange pre-master secret is sent.
+    -   Start encrypting and MACing (authenticating).
+        -   The server has the client's pre-master secret and it has its own [Diffie-Hellman](#diffie-hellman-dh) parameters created to send its pre-master secret to the client as well, so the server can already compute the final master Diffie-Hellman secret.
+        -   So for additional security, the server encrypts and signs some part of the data that it sends in this Server Hello message.
+        -   [This prevents attacks on TLS.](https://blog.cloudflare.com/rfc-8446-aka-tls-1-3)
+        -   Just like TLS 1.2, [two sets of symmetric keys (four symmetric keys in total) are generated](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret.
     -   Send [Digital Certificate](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) chain.
     -   Send TLS Extensions.
         -   [Online Certificate Status Protocol (OCSP)](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl) Stapling (Certificate Verify)
     -   Send Finished message.
 
+> NOTE: Please read the note above the TLS 1.3 handshake Client Hello image in case there is a confusion as to why the TLS version is `TLS 1.2` for a TLS 1.3 handshake at a lot of places in the image below. Hint: The actual TLS version used (`TLS 1.3`) is mentioned in the `supported_versions` extension as seen in the image below.
+
 <p align="center">
-	Server Hello
+	'Server Hello' Message
 	<br />
 	<img src="files/img/tls/tls-13-server-hello.png" loading="lazy" />
 </p>
 
--   `C -> S` Client sends a Finished message and then the handshake is complete, with the [generation of two sets of symmetric keys](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret. Encrypted and authenticated communication can now start.
+-   `C -> S` Client sends a Finished message and Change Cipher Specification message, and then the handshake is complete, with the [generation of two sets of symmetric keys](#need-for-two-sets-of-keys) from the Diffie-Hellman master secret. Partial data encryption and authentication that had started from the Server Hello message (for increased security), can now continue with fully encrypted and authenticated data communication.
+    -   Yes, this is an extra message from the claimed one round trip that TLS 1.3 is supposed to have, but application data can be piggybacked onto this message, so we can approximate TLS 1.3 to have a one round trip handshake.
+
+<p align="center">
+	Client 'Change Cipher Spec' Message
+	<br />
+	<img src="files/img/tls/tls-13-client-change-cipher-spec.png" loading="lazy" />
+</p>
 
 ### Overview
 
@@ -319,6 +348,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 	An overview of the TLS 1.3 Handshake as in <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2" target="_blank" rel="noreferrer">RFC 8446</a>
 	<br />
 	<img src="files/img/tls/tls-13-overview-rfc.png" loading="lazy" />
+	<br />
 	<br />
 	An overview of the TLS 1.3 Handshake as a cURL request
 	<br />
@@ -340,12 +370,13 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 -   This is required, because an attacker could reflect messages back to the client, without them ever reaching the server.
 -   Eg: After processing a request from a client, if a server using a protocol running on top of TLS responds with the exact same data as in the request from the client, then the attacker could just simply capture the message and send it/reflect it back to client and the client would not know that the server did not receive its message. So the server would not carry out the action that the client wanted it to carry out, which is obviously bad.
 -   With having different sets of keys for each direction of communication, such reflection attacks would fail, because each direction would have different looking encrypted data even if the actual content would be the same, as the keys used to encrypt the same data would be different.
-
     -   Eg:
 
-        Encrypt<sub>key_1</sub>("abc") = xyz
-
-        Encrypt<sub>key_2</sub>("abc") = pqr
+<p align="center">
+    Encrypt <sub>key_1</sub> ("unchanged_data") = "1234567890"
+    <br />
+    Encrypt <sub>key_2</sub> ("unchanged_data") = "abcdefghij"
+</p>
 
 ## Resources
 
@@ -355,6 +386,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [Illustrated TLS 1.2 Handshake](https://tls.ulfheim.net/)
     -   [Illustrated TLS 1.3 Handshake](https://tls13.ulfheim.net/)
     -   [Wiresharking TLS](https://www.youtube.com/watch?v=06Kq50P01sI)
+    -   [A Detailed Look at RFC 8446 (a.k.a. TLS 1.3)](https://blog.cloudflare.com/rfc-8446-aka-tls-1-3)
     -   [cURL Verbose Mode Explained](https://www.youtube.com/watch?v=PVm0YEEuS8s)
     -   [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
     -   [TLS](files/tls/tls-ieee.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/document/6938667))
@@ -367,6 +399,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
         -   [Smashing the Stack for Fun and Profit](files/tls/smashing-the-stack-for-fun-and-profit.pdf) ([UCB hosted](https://inst.eecs.berkeley.edu/~cs161/fa08/papers/stack_smashing.pdf))
     -   [More about PFS](cryptography.md#perfect-forward-secrecy)
+    -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
 -   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)
 -   Picture sources
