@@ -12,6 +12,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 -   [Transport Layer Security (TLS)](tls.md)
     -   [TLS 1.2 Handshake](tls.md#tls-12-handshake)
     -   [TLS 1.3 Handshake](tls.md#tls-13-handshake)
+-   [How Routing is Done Using Both IP and MAC Addresses](https://talks.harshkapadia.me/mac-and-ip-routing/content)
 -   [Domain Name System (DNS)](dns.md)
     -   [DNS Infrastructure](dns.md#dns-infrastructure)
     -   [DNS Resource Records](dns.md#common-dns-records)
