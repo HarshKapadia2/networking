@@ -174,7 +174,7 @@
 -   PFS or FS: Perfect Forward Secrecy
 -   [Wikipedia: Perfect Forward Secrecy](https://en.wikipedia.org/wiki/Forward_secrecy)
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
-    -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
+    -   [The Heartbleed Bug](tls.md#heartbleed)
     -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
     -   [More about TLS](tls.md)
 

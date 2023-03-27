@@ -19,6 +19,7 @@ Last updated: 20th March 2023
 -   [TLS 1.2 Handshake](#tls-12-handshake)
 -   [TLS 1.3 Handshake](#tls-13-handshake)
 -   [Need for Two Sets of Keys](#need-for-two-sets-of-keys)
+-   [Heartbleed](#heartbleed)
 -   [Resources](#resources)
 
 ## Introduction
@@ -378,6 +379,17 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     Encrypt <sub>key_2</sub> ("unchanged_data") = "abcdefghij"
 </p>
 
+## Heartbleed
+
+-   The Heartbleed Bug is a Buffer Overflow bug in the extremely critical and widely used OpenSSL library that affected hundred thousands of machines.
+-   It was not a protocol/standard bug, but an implementation (code) bug in [the Heartbeat Extension](https://datatracker.ietf.org/doc/rfc6520), where certain checks were not put in place.
+    -   [The vulnerability was patched.](https://github.com/openssl/openssl/commit/96db9023b881d7cd9f379b0c154650d6c108e9a3) ([Source](https://stackoverflow.com/a/27950540/11958552))
+-   [heartbleed.com](https://heartbleed.com)
+-   [Heartbleed, Running the Code - Computerphile](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
+-   [From Missingno to Heartbleed: Buffer Exploits and Buffer Overflows](https://www.youtube.com/watch?v=rE5dW3BTpn4)
+-   [Smashing the Stack for Fun and Profit](files/tls/smashing-the-stack-for-fun-and-profit.pdf) ([UCB hosted](https://inst.eecs.berkeley.edu/~cs161/fa08/papers/stack_smashing.pdf))
+-   [More about Perfect Forward Secrecy](cryptography.md#perfect-forward-secrecy)
+
 ## Resources
 
 -   TLS
@@ -396,9 +408,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 -   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
 -   [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital Signatures, Digital Certificates, CRL, OCSP, etc resources)
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
-    -   [Heartbleed problem](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
-        -   [Smashing the Stack for Fun and Profit](files/tls/smashing-the-stack-for-fun-and-profit.pdf) ([UCB hosted](https://inst.eecs.berkeley.edu/~cs161/fa08/papers/stack_smashing.pdf))
-    -   [More about PFS](cryptography.md#perfect-forward-secrecy)
+    -   [The Heartbleed Bug](#heartbleed)
     -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
 -   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)
