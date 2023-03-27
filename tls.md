@@ -411,6 +411,8 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [The Heartbleed Bug](#heartbleed)
     -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
 -   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
+-   [Datagram TLS (DTLS)](https://www.rfc-editor.org/rfc/rfc9147.html)
+    -   TLS for applications running on top of UDP.
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)
 -   Picture sources
     -   [Dissecting TLS Using Wireshark](https://blog.catchpoint.com/2017/05/12/dissecting-tls-using-wireshark/)
