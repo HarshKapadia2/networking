@@ -324,5 +324,6 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
     -   [The first Wireshark SSH Trace file (`.pcapng`)](./files/ssh/ssh-wireshark-trace-1.pcapng)
     -   [The second Wireshark SSH Trace file (`.pcapng`)](./files/ssh/ssh-wireshark-trace-2.pcapng)
 -   [SSH Keys](https://www.youtube.com/watch?v=dPAw4opzN9g)
+-   [GitHub SSH key is Leaked - How bad is this?](https://www.youtube.com/watch?v=WUNu24bM9sE)
 -   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
