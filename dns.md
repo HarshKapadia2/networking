@@ -284,6 +284,7 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [What is DNS cache poisoning? (DNS spoofing)](https://www.cloudflare.com/learning/dns/dns-cache-poisoning)
 -   [An Illustrated Guide to the Kaminsky DNS Vulnerability](http://unixwiz.net/techtips/iguide-kaminsky-dns-vuln.html)
 -   [DNS Nameserver Spoofability Test](https://www.grc.com/dns/dns.htm)
+-   [Demonstrating DNS Cache Poisoning](files/bu-cas-cs-558/assignments/dns-heartbleed/dns-cache-poisoning)
 
 ## DNSSEC
 
