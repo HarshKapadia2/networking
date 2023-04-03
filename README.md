@@ -44,6 +44,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 -   [What happens on hitting enter on a link in the browser?](network-cycle.md)
 -   [Hardware](hardware.md)
     -   [Routers vs Switches vs Hubs vs Modems vs Access Points vs Gateways](hardware.md#routers-vs-switches-vs-hubs-vs-modems-vs-access-points-vs-gateways)
+-   [Tor](tor.md)
 -   [Powers of two](powers-of-two.md)
 
 ## General Resources
