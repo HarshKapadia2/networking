@@ -1,6 +1,6 @@
 # Computer Networking
 
-Computer Networking is something that caught [my](https://harshkapadia.me) interest and I love digging deeper to understand how things work. This site is a knowledge base I maintain to keep a track of my learnings. Feel free to [contact me](https://links.harshkapadia.me)!
+Computer Networking is something that caught [my](https://harshkapadia.me) interest and I love digging deeper to understand how things work. This site is a knowledge base I maintain to keep a track of my learnings. Feel free to [contact me](https://links.harshkapadia.me) and [view my networking résumé](https://resume.harshkapadia.me/networking).
 
 ## Articles
 
