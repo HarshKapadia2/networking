@@ -17,3 +17,4 @@
 -   [Tor Abuse FAQ](https://2019.www.torproject.org/docs/faq-abuse.html.en)
 -   [How does a Tor client pick Tor nodes for circuit creation?](https://tor.stackexchange.com/a/231)
 -   [You [Tor] should transport all IP packets, not just TCP packets.](https://support.torproject.org/alternate-designs/transport-all-ip-packets)
+-   [Operation Bayonet: Inside the Sting That Hijacked an Entire Dark Web Drug Market](https://www.wired.com/story/hansa-dutch-police-sting-operation)
