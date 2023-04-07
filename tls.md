@@ -20,6 +20,7 @@ Last updated: 20th March 2023
 -   [TLS 1.3 Handshake](#tls-13-handshake)
 -   [Need for Two Sets of Keys](#need-for-two-sets-of-keys)
 -   [Heartbleed](#heartbleed)
+-   [mTLS](#mtls)
 -   [Resources](#resources)
 
 ## Introduction
@@ -388,7 +389,15 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 -   [Heartbleed, Running the Code - Computerphile](https://www.youtube.com/watch?v=1dOCHwf8zVQ)
 -   [From Missingno to Heartbleed: Buffer Exploits and Buffer Overflows](https://www.youtube.com/watch?v=rE5dW3BTpn4)
 -   [Smashing the Stack for Fun and Profit](files/tls/smashing-the-stack-for-fun-and-profit.pdf) ([UCB hosted](https://inst.eecs.berkeley.edu/~cs161/fa08/papers/stack_smashing.pdf))
+-   [Heartbleed assignment](files/bu-cas-cs-558/assignments/dns-heartbleed/dns-heartbleed.html)
 -   [More about Perfect Forward Secrecy](cryptography.md#perfect-forward-secrecy)
+
+## mTLS
+
+-   mTLS: Mutual Transport Layer Security
+-   mTLS is used when the client sends its certificates to the server in addition to the server sending its certificates (as in the basic TLS process) to prove identity.
+-   [Mutual TLS](https://www.youtube.com/watch?v=KwpV-ICpkc4)
+-   [The Cloudflare mTLS vulnerability](https://www.youtube.com/watch?v=xsLqf1Qomn0)
 
 ## Resources
 
@@ -410,7 +419,6 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
     -   [The Heartbleed Bug](#heartbleed)
     -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
--   [Mutual TLS (mTLS)](https://www.youtube.com/watch?v=KwpV-ICpkc4)
 -   [Datagram TLS (DTLS)](https://www.rfc-editor.org/rfc/rfc9147.html)
     -   TLS for applications running on top of UDP.
 -   [Automatic Cipher Suite Ordering in `crypto/tls`](https://go.dev/blog/tls-cipher-suites) (The Go Blog)
