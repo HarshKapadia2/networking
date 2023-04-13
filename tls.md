@@ -375,9 +375,9 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   Eg:
 
 <p align="center">
-    Encrypt <sub>key_1</sub> ("unchanged_data") = "1234567890"
+    Encrypt(key_1, "unchanged_data") = "1234567890"
     <br />
-    Encrypt <sub>key_2</sub> ("unchanged_data") = "abcdefghij"
+    Encrypt(key_2, "unchanged_data") = "abcdefghij"
 </p>
 
 ## Heartbleed
@@ -411,6 +411,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [cURL Verbose Mode Explained](https://www.youtube.com/watch?v=PVm0YEEuS8s)
     -   [TLS playlist by Hussein Nasser](https://www.youtube.com/playlist?list=PLQnljOFTspQW4yHuqp_Opv853-G_wAiH-)
     -   [TLS](files/tls/tls-ieee.pdf) ([IEEE Xplore](https://ieeexplore.ieee.org/document/6938667))
+    -   [TLS assignment](files/bu-cas-cs-558/assignments/tls)
     -   [https://badssl.com](https://badssl.com)
     -   [http://neverssl.com](http://neverssl.com)
 -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
