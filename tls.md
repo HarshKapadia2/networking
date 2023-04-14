@@ -415,7 +415,9 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [https://badssl.com](https://badssl.com)
     -   [http://neverssl.com](http://neverssl.com)
 -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
--   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
+-   Server Name Indication
+    -   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
+    -   [Domain Fronting](https://www.bamsoftware.com/papers/fronting) (It is used a lot in [Tor](tor.md) to bypass Tor censorship.)
 -   [`cryptography.md`](cryptography.md) (for Diffie-Hellman, RSA, AES, Hashing, Digital Signatures, Digital Certificates, CRL, OCSP, etc resources)
 -   [Perfect Forward Secrecy (PFS) in TLS](https://www.youtube.com/watch?v=zSQtyW_ywZc)
     -   [The Heartbleed Bug](#heartbleed)

@@ -1,7 +1,9 @@
 # Tor
 
--   Tor: The Onion Router
-    -   It is written as 'Tor' and not 'TOR'. Branding. _\* eye roll \*_
+-   Tor branding
+    -   It is written as 'Tor' and not 'TOR'.
+    -   The older acronym was 'The Onion Router', but they have done away with that. It is just called 'Tor' now.
+    -   Source: [Why is it called Tor?](https://support.torproject.org/about/why-is-it-called-tor)
 -   Providing anonymity on the internet.
 -   The [Tor Browser](https://www.torproject.org/download) is the way for users to browse the internet using Tor.
 -   Prerequisites
@@ -14,7 +16,9 @@
 -   Hussein Nasser videos
     -   [How Tor Works](https://www.youtube.com/watch?v=gIkzx7-s2RU)
     -   [Tor’s Connection Establishment](https://www.youtube.com/watch?v=6THVzuUtwJs)
+-   [Tor: Onion Service Protocol](https://2019.www.torproject.org/docs/onion-services.html.en)
 -   [Tor Abuse FAQ](https://2019.www.torproject.org/docs/faq-abuse.html.en)
 -   [How does a Tor client pick Tor nodes for circuit creation?](https://tor.stackexchange.com/a/231)
 -   [You [Tor] should transport all IP packets, not just TCP packets.](https://support.torproject.org/alternate-designs/transport-all-ip-packets)
 -   [Operation Bayonet: Inside the Sting That Hijacked an Entire Dark Web Drug Market](https://www.wired.com/story/hansa-dutch-police-sting-operation)
+-   [Domain Fronting](https://www.bamsoftware.com/papers/fronting) to bypass Tor censorship.
