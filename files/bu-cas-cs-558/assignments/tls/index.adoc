@@ -449,7 +449,7 @@ Add the following lines to the `C:\Windows\System32\drivers\etc\hosts` file.
 
 [source, shell]
 ----
-\# Added by Harsh Kapadia for BU CAS CS 558
+# Added by Harsh Kapadia for BU CAS CS 558
 127.0.0.1 harshkapadia.me
 127.0.0.1 networking.harshkapadia.me
 ----
