@@ -30,6 +30,12 @@
     -   [How Messages Help](#how-messages-help)
 -   [API](#api)
 -   [Message Sequence Scenarios](#message-sequence-scenarios)
+-   [Algorithms](#algorithms)
+    -   [Sorting Peers and RPCs](#sorting-peers-and-rpcs)
+    -   [Calculating Scheduled Priorities](#calculating-scheduled-priorities)
+    -   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
+    -   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
+    -   [Calculating `GRANT` Offset](#calculating-grant-offset)
 -   [Resources](#resources)
 
 ## Introduction
@@ -430,6 +436,314 @@ Homa's Message Sequence Scenarios:
 -   On timing out, the sender sends a `RESEND` packet to the receiver, asking for a response.
 -   If the `RESEND` packet reaches the receiver, then it will respond with an `UNKNOWN` packet, because it never got the initial packets and was never aware of the RPC.
 -   The sender has to re-start the communication with the receiver.
+
+## Algorithms
+
+Some of the algorithms that Homa implements for
+
+-   [Sorting Peers and RPCs](#sorting-peers-and-rpcs)
+-   [Calculating Scheduled Priorities](#calculating-scheduled-priorities)
+-   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
+-   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
+-   [Calculating `GRANT` Offset](#calculating-grant-offset)
+
+> All details as seen in [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b) (31st March 2023).
+
+### Sorting Peers and RPCs
+
+-   Constituents
+
+    -   Peers (`P`)
+        -   There can be multiple peers (hosts) transmitting (sending (`S`)) to the same receiver (`R`).
+        -   Each such peer can be sent `GRANT` packets to send more data.
+    -   `RPC`s: Every peer can have multiple RPCs transmitting to the same receiver.
+
+    Example:
+
+    ```
+    P1(RPC1, RPC2) -> R1
+    P2(RPC3) -> R1
+    P3(RPC4, RPC5, RPC6) -> R1
+
+    or
+
+    S(P1(RPC1, RPC2), P2(RPC3), P3(RPC4, RPC5, RPC6)) -> R1
+    ```
+
+-   A Homa receiver maintains a list of peers (`grantable_peers`) that are sending it data and every peer in `grantable_peers` maintains a list of RPCs (`grantable_rpcs`) that are sending data to that receiver.
+-   The `grantable_rpcs` list is sorted based on the number of bytes still to be received (`bytes_remaining`). The RPC with the least `bytes_remaining` is at the head (start) of the list.
+    -   If `bytes_remaining` are equal, then the time (`birth`) at which the RPC was added to the `grantable_rpcs` list is used to break the tie. The older RPC will be nearer to the head (start) of the list.
+-   The `grantable_peers` list is also sorted based on the `bytes_remaining` parameter of the first RPC in each peer's `grantable_rpcs` list. The peer with the least `bytes_remaining` in the first RPC of its `grantable_rpcs` list is at the head of the `grantable_peers` list.
+    -   To break a `bytes_remaining` tie, the same `birth` factor as mentioned in the sub-point above is responsible.
+-   RPCs per peer are ordered first and then peers are ordered.
+
+#### Algorithm
+
+```c
+/* - The overall Homa state maintains one sorted grantable peer list (`homa_state->grantable_peers`).
+ * - Every peer in that list maintains a sorted grantable RPC list (`peer->grantable_rpcs`).
+ * - The algorithm below first sorts a RPC in its peer's `grantable_rpcs` list and then due to that change, sorts that peer in the `grantable_peers` list.
+ * - Logic derived from https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L819-L933
+ */
+
+position_rpc(homa_state, rpc_to_check) {
+	peer_to_check = rpc_to_check->peer;
+
+	while(rpc in peer_to_check->grantable_rpcs) {
+		if(rpc->bytes_remaining > rpc_to_check->bytes_remaining) { // RPC with fewest bytes wins.
+			// Add `rpc_to_check` before `rpc`.
+
+			// Due to above change, `peer_to_check` might have to be re-positioned in `homa_state->grantable_peers`.
+			position_peer(homa_state, peer_to_check);
+			break;
+		}
+		else if(rpc->bytes_remaining == rpc_to_check->bytes_remaining) {
+			if(rpc->birth > rpc_to_check->birth) { // Tie breaker: Oldest RPC wins.
+				// Add `rpc_to_check` before `rpc`.
+
+				// Due to above change, `peer_to_check` might have to be re-positioned in `homa_state->grantable_peers`.
+				position_peer(homa_state, peer_to_check);
+				break;
+			}
+		}
+	}
+}
+
+position_peer(homa_state, peer_to_check) {
+	first_rpc_in_peer_to_check = get_list_head(peer_to_check);
+
+	while(peer in homa_state->grantable_peers) {
+		first_rpc_in_peer = get_list_head(peer);
+
+		if(first_rpc_in_peer->bytes_remaining > first_rpc_in_peer_to_check->bytes_remaining) { // Peer having first RPC with fewest bytes wins.
+			// Add `peer_to_check` before `peer`.
+
+			break;
+		}
+		else if(first_rpc_in_peer->bytes_remaining == first_rpc_in_peer_to_check->bytes_remaining) {
+			if(first_rpc_in_peer->birth > first_rpc_in_peer_to_check->birth) { // Tie breaker: Peer with oldest first RPC wins.
+				// Add `peer_to_check` before `peer`.
+
+				break;
+			}
+		}
+	}
+}
+```
+
+### Calculating Scheduled Priorities
+
+-   A Homa receiver sends `GRANT` packets to senders to give them permission to send `DATA` packets to it. Those `GRANT` packets have a `priority` field in them, which the sender has to add to the `DATA` packets they send.
+    -   The first RPC in the `grantable_rpcs` list in every peer is granted and it is given its own scheduled data priority after calculations.
+-   Homa's default priority range is from `0` to `7` (eight levels). Level `0` has the lowest priority while level `7` has the highest priority.
+    -   The levels are manually split in two parts (by `max_sched_prio`), the former for scheduled packets and the latter for unscheduled packets.
+        -   The former part that is for scheduled packets always has the lower priorities of the entire range.
+        -   The latter part (highest priorities in the entire range) is always kept for the unscheduled packets, as they always have the highest priority.
+        -   Example: If priority levels are from `0` (lowest) to `7` (highest) and `max_sched_prio` is `4`, then scheduled packets can have priorities between `0` and `4` (both inclusive), while unscheduled packets can have priorities between `5` and `7` (both inclusive).
+        -   [The `max_sched_prio` parameter is set using the `unsched_cutoffs` array.](#calculating-unscheduled-priorities)
+    -   In each half of the range, Homa tries to assign the lowest possible priority to each RPC, so that newer messages with higher priorities can be accommodated easily to implement SRPT properly.
+
+#### Algorithm
+
+```c
+// Logic derived from https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L935-L1119
+
+set_scheduled_data_priority(homa_state) {
+	rank = 0; // Just a counter variable.
+	max_grants = 10; // Hard coded value for maximum grants that can be issued in one function call.
+	max_scheduled_priority = homa_state->max_sched_prio; // Fixed integer value set using the `unsched_cutoffs` array.
+	num_grantable_peers = homa_state->num_grantable_peers; // No. of peers in `homa_state->grantable_peers` list.
+
+	while(peer in homa_state->grantable_peers) {
+		rank++;
+
+		priority = max_scheduled_priority - (rank - 1); // Calculates the max. priority possible.
+
+		/* `extra_levels` is calculated to try to later adjust priority to lowest possible value for SRPT.
+		 * It helps in pushing priorities as low as possible, so that newer higher priority messages can be accommodated easily.
+		 */
+		total_levels = max_scheduled_priority + 1;
+		extra_levels = total_levels - num_grantable_peers;
+
+		if (extra_levels >= 0) { // `extra_levels` < 0 implies congestion or too much overcommitment.
+			priority = priority - extra_levels; // Adjust priority to lowest possible value for SRPT.
+		}
+		if (priority < 0) {
+			priority = 0;
+		}
+
+		// Assign `priority` to `GRANT` packet.
+
+		if(rank == max_grants) {
+			break;
+		}
+	}
+}
+```
+
+#### Examples
+
+-   Using the two situations presented in two points below, we can understand how `final_priority` for every message is assigned in Homa using the `priority` and `extra_levels` formulae.
+
+-   `No. of messages to granted` = `No. of priority levels` (i.e., `6 = 6`)
+
+    ```c
+    max_scheduled_priority = 5 // i.e., 0 to 5, which is six levels
+    num_grantable_peers = 6
+    rank = 0
+
+    // For 1st msg
+    rank = rank + 1
+    	= 0 + 1
+    	= 1
+    priority = max_scheduled_priority - (rank - 1)
+    		= 5 - (1 - 1)
+    		= 5
+    extra_levels = (max_scheduled_priority + 1) - num_grantable_peers
+    			= (5 + 1) - 6
+    			= 0
+    final_priority = priority - extra_levels
+    		= 5 - 0
+    		= 5
+
+    // For 2nd msg
+    rank = 1 + 1 = 2
+    priority = 5 - (2 - 1) = 4
+    extra_levels = (5 + 1) - 6 = 0
+    final_priority = 4 - 0 = 4
+
+    // For 3rd msg
+    final_priority = (5 - (3 - 1)) - ((5 + 1) - 6) = 3 - 0 = 3
+
+    // Similarly, for 4th, 5th and 6th (final) messages, priorities will be 2, 1 and 0 respectively.
+    ```
+
+-   `No. of messages to granted` < `No. of priority levels` (i.e., `4 < 6`)
+
+    ```c
+    max_scheduled_priority = 5 // i.e., 0 to 5, which is six levels
+    num_grantable_peers = 4
+    rank = 0
+
+    // For 1st msg
+    rank = rank + 1
+    	= 0 + 1
+    	= 1
+    priority = max_scheduled_priority - (rank - 1)
+    		= 5 - (1 - 1)
+    		= 5
+    extra_levels = (max_scheduled_priority + 1) - num_grantable_peers
+    			= (5 + 1) - 4
+    			= 2
+    final_priority = priority - extra_levels
+    		= 5 - 2
+    		= 3
+
+    // For 2nd msg
+    rank = 1 + 1 = 2
+    priority = 5 - (2 - 1) = 4
+    extra_levels = (5 + 1) - 4 = 2
+    final_priority = 4 - 2 = 2
+
+    // For 3rd msg
+    final_priority = (5 - (3 - 1)) - ((5 + 1) - 4) = 3 - 2 = 1
+
+    // For 4th (final) message
+    final_priority = (5 - (4 - 1)) - ((5 + 1) - 4) = 2 - 2 = 0
+    ```
+
+    <p align="center">
+    <img src="files/img/homa/homa-scheduled-priority-pushing.png" alt="Homa pushing messages to the lowest possible priorities" loading="lazy" />
+    </p>
+
+-   From the two situations above, it can be understood that Homa always pushes messages to the lowest possible priorities (using the `extra_levels` parameter) to be able to easily accommodate higher priority messages.
+
+-   When `No. of messages to granted` > `No. of priority levels`, then some messages will accumulate at the lowest priority level (`0`). This can be a sign of congestion and/or too much overcommitment.
+
+### Calculating Unscheduled Priorities
+
+-   `unsched_cutoffs` is an array of message length values. The length of the array is eight by default.
+-   Each position in the array defines the largest message length that can be used for that priority level.
+    -   The 0th position of the `unsched_cutoffs` array has the lowest priority while the last position in has the highest priority.
+    -   Message length values should increase the end of the array to the start of the array.
+    -   This is to implement SRPT, i.e., messages with fewer bytes left get higher priorities.
+-   A [value of `HOMA_MAX_MESSAGE_LENGTH`](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa.h#L39-L43) at any position will indicate the lowest priority for unscheduled priorities. All positions below this will be used for scheduled packets.
+    -   [This array is also used to set the `max_sched_prio` variable](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_utils.c#L1584-L1620), as its value will be the array position before the position that has the `HOMA_MAX_MESSAGE_LENGTH` value.
+    -   Example: For eight priority levels (`0` to `7`), if `unsched_cutoffs[6] = HOMA_MAX_MESSAGE_LENGTH`, then `max_sched_prio = 5`, the scheduled packet priority range is from `0` to `5` (both inclusive) and unscheduled packet priorities are `6` and `7`.
+-   Instead of being a dynamically changing array, this is a statically assigned array in the configuration, at least till [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b).
+
+### Calculating `rtt_bytes`
+
+-   Round-Trip Time (RTT) is the time from when sending a request started to when the receipt of a response for that request completed.
+-   `rtt_bytes` is the number of bytes of data that can be sent in the time one round-trip takes. Theoretically, if a client keeps sending `rtt_bytes` of data, there will be no breaks in transmitting data, which means that link utilization will be 100% and that is the most efficient use of the link's capacity. ([More info](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/protocol.md?plain=1#L50-L66))
+-   Instead of being a dynamically changing value, this is a statically assigned configuration value, at least till [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b).
+-   As mentioned in [`9c9a1ff`/protocol.md](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/protocol.md?plain=1#L68-L72):
+    > Note: in networks with nonuniform round-trip times (e.g. most datacenter fabrics), `rtt_bytes` should be calculated on a peer-to-peer basis to reflect the round-trip times between that pair of machines. This feature is not currently implemented: Homa uses a single value of `rtt_bytes` for all peers.
+
+### Calculating `GRANT` Offset
+
+-   The most important parts of a `GRANT` packet in Homa are the `priority` and `offset` values.
+-   The offset is a value that is smaller than or equal to the length of message to be received. (`offset` <= `total_length`)
+-   The offset value indicates to a sender that the server is permitting sending all data upto a particular byte of the total message length.
+
+    Example: If total_length = 100 and offset = 20, this implies that the server is granting permission to send the first 20 bytes of the 100 byte message.
+
+-   The optimal amount of data that should be granted is `rtt_bytes`, as that keeps link utilization at 100%. (More info: [Calculating `rtt_bytes`](#calculating-rtt_bytes))
+
+#### Algorithm
+
+```c
+// Logic derived from https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L935-L1119
+
+set_data_offset(homa_state) {
+	counter = 0;
+	max_grants = 10; // Hard coded value for maximum grants that can be issued in one function call.
+	total_bytes_available_to_grant = homa_state->max_incoming - homa_state->total_incoming;
+
+	if(total_bytes_available_to_grant <= 0) {
+		return;
+	}
+
+	while(peer in homa_state->grantable_peers) {
+		counter++;
+
+		first_rpc_in_peer = get_list_head(peer);
+		rpc_bytes_received = first_rpc_in_peer->total_msg_length - first_rpc_in_peer->msg_bytes_remaining;
+		offset = rpc_bytes_received + homa_state->rtt_bytes; // Ensures optimal link utilization
+
+		if(offset > first_rpc_in_peer->total_msg_length) {
+			offset = first_rpc_in_peer->total_msg_length;
+		}
+
+		increment = offset - first_rpc_in_peer->total_incoming_bytes;
+
+		if (increment <= 0) {
+			continue; // No need to grant same amount of data as already expected.
+		}
+		if (total_bytes_available_to_grant <= 0) {
+			break;
+		}
+		if (increment > total_bytes_available_to_grant) {
+			increment = total_bytes_available_to_grant;
+			offset = first_rpc_in_peer->total_incoming_bytes + increment;
+		}
+
+		first_rpc_in_peer->total_incoming_bytes = offset;
+		total_bytes_available_to_grant = total_bytes_available_to_grant - increment;
+
+		// Assign `offset` to `GRANT` packet.
+
+		if(counter == max_grants) {
+			break;
+		}
+	}
+}
+
+/* homa_state->max_incoming = homa_state->max_overcommit * homa_state->rtt_bytes;
+ * `max_overcommit` is the maximum number of messages to which Homa will send grants at any given point in time.
+ * As seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L1815
+ */
+```
 
 ## Resources
 
