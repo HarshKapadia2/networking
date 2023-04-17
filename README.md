@@ -6,7 +6,9 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 
 -   [Homa (Data Center Transport Protocol)](homa.md)
     -   [Problems with TCP](homa.md#problems-with-tcp)
-    -   [Homa's Features](homa.md#homa-features)
+    -   [Homa's Features](homa.md#features)
+    -   [Homa's Message Sequence Scenarios](homa.md#message-sequence-scenarios)
+    -   [Homa's Algorithms](homa.md#algorithms)
 -   [Secure Shell (SSH)](ssh.md)
     -   [Examining a SSH Connection using Wireshark](ssh.md#a-ssh-connection)
 -   [Transport Layer Security (TLS)](tls.md)
