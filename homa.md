@@ -31,7 +31,7 @@
 -   [API](#api)
 -   [Message Sequence Scenarios](#message-sequence-scenarios)
 -   [Algorithms](#algorithms)
-    -   [Sorting Peers and RPCs](#sorting-peers-and-rpcs)
+    -   [Sorting Peers and RPCs](#sorting-rpcs-and-peers)
     -   [Calculating Scheduled Priorities](#calculating-scheduled-priorities)
     -   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
     -   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
@@ -202,6 +202,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   Sent by the receiver.
     -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
     -   Also specifies the priority level to use for the `DATA` packets.
+    -   [When are `GRANT` packets sent?](#offset-and-scheduled-priority-calculation-timing)
 -   `RESEND`
     -   `RESEND(rpc_id, offset, len, exp_prio)`
     -   Sent by the sender or receiver.
@@ -224,6 +225,7 @@ The following features of TCP cause it problems **in the Data Center**:
     -   `CUTOFFS(rpc_id, exp_unsched_prio)`
     -   Sent by the receiver.
     -   Indicates priority cutoff values that the sender should use for unscheduled packets.
+    -   [When are `CUTOFFS` packets sent?](#unscheduled-priority-setting-and-transmission-timing)
 -   `ACK`
     -   `ACK(rpc_id)`
     -   Sent by the sender.
@@ -441,7 +443,7 @@ Homa's Message Sequence Scenarios:
 
 Some of the algorithms that Homa implements for
 
--   [Sorting Peers and RPCs](#sorting-peers-and-rpcs)
+-   [Sorting Peers and RPCs](#sorting-rpcs-and-peers)
 -   [Calculating Scheduled Priorities](#calculating-scheduled-priorities)
 -   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
 -   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
@@ -449,7 +451,7 @@ Some of the algorithms that Homa implements for
 
 > All details as seen in [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b) (31st March 2023).
 
-### Sorting Peers and RPCs
+### Sorting RPCs and Peers
 
 -   Constituents
 
@@ -476,6 +478,7 @@ Some of the algorithms that Homa implements for
 -   The `grantable_peers` list is also sorted based on the `bytes_remaining` parameter of the first RPC in each peer's `grantable_rpcs` list. The peer with the least `bytes_remaining` in the first RPC of its `grantable_rpcs` list is at the head of the `grantable_peers` list.
     -   To break a `bytes_remaining` tie, the same `birth` factor as mentioned in the sub-point above is responsible.
 -   RPCs per peer are ordered first and then peers are ordered.
+-   [When are RPCs and peers sorted?](#rpc-and-peer-sorting-timing)
 
 #### Algorithm
 
@@ -531,17 +534,25 @@ position_peer(homa_state, peer_to_check) {
 }
 ```
 
+#### RPC and Peer Sorting Timing
+
+-   The sorting of RPCs and peers happens in [the `homa_check_grantable` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L819-L933).
+-   The `homa_check_grantable` function is called by [the `homa_data_pkt` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L486-L572) (which handles incoming `DATA` packets), if the incoming message had scheduled bytes in it.
+-   The `homa_data_pkt` function is called by [the `homa_pkt_dispatch` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L325-L484) that handles all incoming packets.
+-   The `homa_pkt_dispatch` function is called by [the `homa_softirq` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_plumbing.c#L1201-L1365) that handles incoming packets at the SoftIRQ level in the Linux Kernel. (SoftIRQ: [1](https://blog.packagecloud.io/illustrated-guide-monitoring-tuning-linux-networking-stack-receiving-data#:~:text=Devices%20have%20many,processing%20incoming%20packets.) and [2](https://blog.packagecloud.io/monitoring-tuning-linux-networking-stack-receiving-data/#softirqs:~:text=What%20is%20a,from%20the%20device.))
+
 ### Calculating Scheduled Priorities
 
 -   A Homa receiver sends `GRANT` packets to senders to give them permission to send `DATA` packets to it. Those `GRANT` packets have a `priority` field in them, which the sender has to add to the `DATA` packets they send.
     -   The first RPC in the `grantable_rpcs` list in every peer is granted and it is given its own scheduled data priority after calculations.
--   Homa's default priority range is from `0` to `7` (eight levels). Level `0` has the lowest priority while level `7` has the highest priority.
+-   Homa's default priority range is from `0` to `7` (eight levels) ([Source](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_impl.h#L172-L177)). Level `0` has the lowest priority while level `7` has the highest priority.
     -   The levels are manually split in two parts (by `max_sched_prio`), the former for scheduled packets and the latter for unscheduled packets.
         -   The former part that is for scheduled packets always has the lower priorities of the entire range.
         -   The latter part (highest priorities in the entire range) is always kept for the unscheduled packets, as they always have the highest priority.
         -   Example: If priority levels are from `0` (lowest) to `7` (highest) and `max_sched_prio` is `4`, then scheduled packets can have priorities between `0` and `4` (both inclusive), while unscheduled packets can have priorities between `5` and `7` (both inclusive).
         -   [The `max_sched_prio` parameter is set using the `unsched_cutoffs` array.](#calculating-unscheduled-priorities)
     -   In each half of the range, Homa tries to assign the lowest possible priority to each RPC, so that newer messages with higher priorities can be accommodated easily to implement SRPT properly.
+-   [When are offsets and scheduled priorities calculated?](#offset-and-scheduled-priority-calculation-timing)
 
 #### Algorithm
 
@@ -671,6 +682,94 @@ set_scheduled_data_priority(homa_state) {
     -   [This array is also used to set the `max_sched_prio` variable](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_utils.c#L1584-L1620), as its value will be the array position before the position that has the `HOMA_MAX_MESSAGE_LENGTH` value.
     -   Example: For eight priority levels (`0` to `7`), if `unsched_cutoffs[6] = HOMA_MAX_MESSAGE_LENGTH`, then `max_sched_prio = 5`, the scheduled packet priority range is from `0` to `5` (both inclusive) and unscheduled packet priorities are `6` and `7`.
 -   Instead of being a dynamically changing array, this is a statically assigned array in the configuration, at least till [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b).
+-   [When and how is the unscheduled priority used and set?](#unscheduled-priority-setting-and-transmission-timing)
+
+#### Unscheduled Priority Setting and Transmission Timing
+
+-   Alternate title: '`CUTOFFS` Packet Transmission Timing'
+
+##### Initializations
+
+-   Homa initializes priority-based values for the overall Homa state (`homa_state`)
+
+    ```c
+    /* - `HOMA_MAX_PRIORITIES = 8` is a hard coded value.
+     * - `HOMA_MAX_MESSAGE_LENGTH = 1000000` is a hard coded value.
+     * - Code below as seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_utils.c#L104-L119
+     */
+
+    homa_state->num_priorities = HOMA_MAX_PRIORITIES; // = 8
+
+    homa_state->max_sched_prio = HOMA_MAX_PRIORITIES - 5; // = 3 (So levels 0 to 3 for scheduled data while levels 4 to 7 for unscheduled data.)
+
+    homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-1] = 200; // Level 7 can receive (unscheduled) msgs with <= 200 remaining bytes.
+    homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-2] = 2800; // Level 6 can receive (unscheduled) msgs with <= 2,800 remaining bytes.
+    homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-3] = 15000; // Level 5 can receive (unscheduled) msgs with <= 15,000 remaining bytes.
+    homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-4] = HOMA_MAX_MESSAGE_LENGTH;  // Level 4 can receive (unscheduled) msgs with <= 1,000,000 (max acceptable) remaining bytes.
+
+    homa_state->cutoff_version = 1;
+    ```
+
+-   Homa initializes priority-based values for every peer whenever it is created
+
+    ```c
+    /* - `HOMA_MAX_PRIORITIES = 8` is a hard coded value.
+     * - Code below as seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_peertab.c#L156-L159
+     */
+
+    peer->unsched_cutoffs[HOMA_MAX_PRIORITIES-1] = 0; // Level 7 can receive no msg data.
+    peer->unsched_cutoffs[HOMA_MAX_PRIORITIES-2] = INT_MAX; // Level 6 will receive all msgs.
+
+    peer->cutoff_version = 0; // Value `0` implies that no `CUTOFFS` packet has ever been received from the host.
+
+    peer->last_update_jiffies = 0;
+    ```
+
+##### Sender
+
+-   When scheduled or unscheduled `DATA` packets need to be sent, the sender assigns priority from the peer data that it has.
+
+    -   If `CUTOFFS` packets haven't been received for a peer, the defaults for a peer are used as shown above, which might trigger the receiver into sending a `CUTOFFS` packet due to the `cutoff_version` mismatch.
+        -   There is a `cutoff_version` mismatch, as the sender initializes the `cutoff_version` with `0` (as shown above), while the receiver initializes the `cutoff_version` with `1` (as shown above).
+
+    ```c
+    // As seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_outgoing.c#L425-L430
+
+    if(rpc->bytes_to_be_sent_offset < rpc->unscheduled_bytes_offset) {
+    	priority = get_unscheduled_priority(rpc->total_msg_length);
+    }
+    else {
+    	priority = rpc->scheduled_priority;
+    }
+    ```
+
+-   When control packets (packets other than `DATA` packets) need to be sent, the sender assigns the highest priority to them.
+
+    ```c
+    // As seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_outgoing.c#L314
+
+    priority = homa_state->total_num_of_priorities - 1;
+    ```
+
+##### Receiver
+
+-   On receiving a `DATA` packet, the receiver checks the `cutoff_version` in the packet for a mismatch with its own `cutoff_version` (which is the latest, because the receiver drives the sending behaviour of the sender). If the receiver does find a mismatch and if a `CUTOFFS` packet has not been sent for a sufficient amount of time, an updated `CUTOFFS` packet is sent.
+
+    ```c
+    // As seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L546-L567
+
+    if(incoming_pkt_data_header->cutoff_version != homa_state->cutoff_version) {
+    	// Implies that the sender has a stale (old) `CUTOFFS` packet.
+
+    	/* Time check (below) in place to not send a `CUTOFFS` packet for every single stale packet, in case a lot of them arrive together.
+    	 * It helps to pace out the sending of `CUTOFFS` packets.
+    	 */
+    	if(time_now != peer->last_cutoffs_packet_send_time) {
+    		// Send updated `homa_state->unsched_cutoffs` array and `homa_state->cutoff_version` in a `CUTOFFS` packet to peer.
+    		// Update time when last `CUTOFFS` packet was sent
+    	}
+    }
+    ```
 
 ### Calculating `rtt_bytes`
 
@@ -689,6 +788,7 @@ set_scheduled_data_priority(homa_state) {
     Example: If total_length = 100 and offset = 20, this implies that the server is granting permission to send the first 20 bytes of the 100 byte message.
 
 -   The optimal amount of data that should be granted is `rtt_bytes`, as that keeps link utilization at 100%. (More info: [Calculating `rtt_bytes`](#calculating-rtt_bytes))
+-   [When are offsets and scheduled priorities calculated?](#offset-and-scheduled-priority-calculation-timing)
 
 #### Algorithm
 
@@ -744,6 +844,19 @@ set_data_offset(homa_state) {
  * As seen in https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L1815
  */
 ```
+
+#### Offset and Scheduled Priority Calculation Timing
+
+-   Alternate title: '`GRANT` Packet Transmission Timing'
+-   Offsets and scheduled priorities are sent in `GRANT` packets that are created and sent from [the `homa_send_grants` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L935-L1119).
+-   A `priority` and `offset` value to be sent in each `GRANT` packet is calculated for every packet in that same function and added to the packets, just before sending each of those `GRANT` packets.
+
+The `homa_send_grants` function is called by
+
+-   [The `homa_softirq` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_plumbing.c#L1201-L1365) that handles incoming packets at the SoftIRQ level in the Linux Kernel. (SoftIRQ: [1](https://blog.packagecloud.io/illustrated-guide-monitoring-tuning-linux-networking-stack-receiving-data#:~:text=Devices%20have%20many,processing%20incoming%20packets.) and [2](https://blog.packagecloud.io/monitoring-tuning-linux-networking-stack-receiving-data/#softirqs:~:text=What%20is%20a,from%20the%20device.))
+-   [The `homa_remove_from_grantable` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L1238-L1267) that removes a RPC from its peer.
+    -   This function internally leads to shifting the peer's position if required, so new `GRANT` packets might have to be sent, which is why the `homa_send_grants` function is called.
+    -   This function is itself called when a RPC is aborted (`homa_rpc_abort()`) or needs to be freed (`homa_rpc_free()`).
 
 ## Resources
 
