@@ -13,6 +13,11 @@
     -   [Protocol Requirements](#protocol-requirements)
 -   [Message vs Packet](#message-vs-packet)
 -   [Problems with TCP](#problems-with-tcp)
+    -   [Stream Orientation](#stream-orientation)
+    -   [Connection Orientation](#connection-orientation)
+    -   [Fair Scheduling](#fair-scheduling)
+    -   [Sender-Driven Congestion Control](#sender-driven-congestion-control)
+    -   [In-Order Packet Delivery](#in-order-packet-delivery)
 -   [Sender vs Receiver](#sender-vs-receiver)
 -   [Packet Types](#packet-types)
 -   [Features](#features)
@@ -152,25 +157,39 @@ Some of the important features a **Data Center transport protocol** should have:
 
 The following features of TCP cause it problems **in the Data Center**:
 
--   Stream orientation
-    -   Please refer to [the 'Streaming vs Messages' section](#streaming-vs-messages).
--   Connection orientation
-    -   Connections are not the best inside the Data Center, because each application might have hundreds or thousands of them and that causes overheads in space and time.
-        -   Techniques such as [Delayed ACKs](https://medium.com/@gonzalo.cloud/what-is-delayed-ack-and-how-can-it-be-a-bottleneck-in-your-network-77a7ecf7bb0b) have to be used to reduce packet overheads.
-    -   Keeping aside packet buffer space and application level state, 2000 bytes of state data has to be maintained for every TCP socket.
-    -   Connection setup takes up one Round Trip Time (RTT).
--   Bandwidth sharing (Fair scheduling)
-    -   Under high loads, short messages have a very bad RTT as compared to long messages, due to [TCP Head of Line Blocking (HoLB)](tcp.md#tcp-head-of-line-blocking).
-    -   Under high load, all streams share bandwidth, which collectively slows down everyone.
--   Sender-driven congestion control
-    -   Congestion is usually detected when there is buffer occupancy, which implies that there will be some packet queuing, which further implies increased latency and HoLB.
-    -   TCP does not make use of priority queues in modern switches, which implies that all messages are treated equally, which causes problems for short messages behind long message queues. (HoLB)
-    -   It causes a latency vs throughput dilemma, where less latency implies buffers being under-utilized, which in-turn reduces the throughput for long messages, and high throughput implies always having data in buffers ready to go, but the queuing causes delays for short messages, increasing the latency.
-    -   Please refer to [the 'Streaming vs Messages' section](#streaming-vs-messages).
--   In-order packet delivery
-    -   Asymmetries in packet delivery in a Data Center environment due to Packet Spraying (sending packets across multiple connections) can cause packet reordering beyond TCP's tolerance threshold and cause unnecessary retransmissions.
-    -   If Packet Spraying is not used and Flow-consistent Routing is used, which fixes links for particular TCP flows, it can cause hot spots for the duration of the connection on particular links if multiple flows get hashed through the same links.
-    -   Linux performs Load Balancing at the software level by routing packets through multiple cores for processing and to maintain the order or delivery, all packets have to pass through the same sequence of cores, which can lead to core hot spots as well, if multiple flows get hashed to the same cores. This also increases the tail latency of TCP.
+### Stream Orientation
+
+-   TCP is a stream-oriented protocol. It blindly sends how much ever data that [the layer above it in the network stack](osi-layers.md) gives it, without having any knowledge of a logical chunk of data.
+-   Please refer to [the 'Streaming vs Messages' section](#streaming-vs-messages).
+
+### Connection Orientation
+
+-   TCP is a connection-oriented protocol. There is a three-way handshake that takes place to establish a connection between a client and a server.
+-   Connections are not the best inside the Data Center, because each application might have hundreds or thousands of them and that causes overheads in space and time.
+    -   Techniques such as [Delayed ACKs](https://medium.com/@gonzalo.cloud/what-is-delayed-ack-and-how-can-it-be-a-bottleneck-in-your-network-77a7ecf7bb0b) have to be used to reduce packet overheads.
+-   Keeping aside packet buffer space and application level state, 2000 bytes of state data has to be maintained for every TCP socket.
+-   Connection setup takes up one Round Trip Time (RTT).
+
+### Fair scheduling
+
+-   TCP uses Fair Scheduling to do bandwidth sharing between various connections.
+-   Under high loads, short messages have a very bad RTT as compared to long messages, due to [TCP Head of Line Blocking (HoLB)](tcp.md#tcp-head-of-line-blocking).
+-   Under high load, all streams share bandwidth, which collectively slows down everyone.
+
+### Sender-Driven Congestion Control
+
+-   In TCP, the sender tries to avoid congestion.
+-   Congestion is usually detected when there is buffer occupancy, which implies that there will be some packet queuing, which further implies increased latency and HoLB.
+-   TCP does not make use of priority queues in modern switches, which implies that all messages are treated equally, which causes problems for short messages behind long message queues. (HoLB)
+-   It causes a latency vs throughput dilemma, where less latency implies buffers being under-utilized, which in-turn reduces the throughput for long messages, and high throughput implies always having data in buffers ready to go, but the queuing causes delays for short messages, increasing the latency.
+-   Please refer to [the 'Streaming vs Messages' section](#streaming-vs-messages).
+
+### In-Order Packet Delivery
+
+-   In comparison to Homa, TCP has a lower out-of-order packet tolerance and prefers that packets are sent in-order and on the sane link (Flow-consistent Routing).
+-   Asymmetries in packet delivery in a Data Center environment due to Packet Spraying (sending packets across multiple connections) can cause packet reordering beyond TCP's tolerance threshold and cause unnecessary retransmissions.
+-   If Packet Spraying is not used and Flow-consistent Routing is used, which fixes links for particular TCP flows, it can cause hot spots for the duration of the connection on particular links if multiple flows get hashed through the same links.
+-   Linux performs Load Balancing at the software level by routing packets through multiple cores for processing and to maintain the order or delivery, all packets have to pass through the same sequence of cores, which can lead to core hot spots as well, if multiple flows get hashed to the same cores. This also increases the tail latency of TCP.
 
 ## Sender vs Receiver
 
@@ -191,55 +210,75 @@ The following features of TCP cause it problems **in the Data Center**:
 > -   [Sender vs Receiver](#sender-vs-receiver)
 > -   Source: [`protocol.md` file](https://github.com/PlatformLab/HomaModule/blob/master/protocol.md#packet-types) and [`homa_impl.h` file](https://github.com/PlatformLab/HomaModule/blob/master/homa_impl.h)
 
--   `DATA`
-    -   `DATA(rpc_id, data, offset, self_prio, m_len)`
-    -   Sent by the sender or receiver.
-    -   Contains a contiguous range of bytes within a message, defined by an offset.
-    -   Also indicates the total message length.
-    -   It has the ability to acknowledge (`ACK`) one RPC, so future RPCs can be used to acknowledge one RPC, thus not requiring an explicit `ACK` packet to be sent.
--   `GRANT`
-    -   `GRANT(rpc_id, offset, exp_prio)`
-    -   Sent by the receiver.
-    -   Indicates that the sender may now transmit all bytes in the message up to a given offset.
-    -   Also specifies the priority level to use for the `DATA` packets.
-    -   [When are `GRANT` packets sent?](#offset-and-scheduled-priority-calculation-timing)
--   `RESEND`
-    -   `RESEND(rpc_id, offset, len, exp_prio)`
-    -   Sent by the sender or receiver.
-    -   Indicates that the sender should re-transmit a given range of bytes within a message.
-    -   Includes priority that should be used for the retransmitted packets.
-    -   To prevent unnecessary bandwidth usage, Homa only issues one outstanding `RESEND` packet to a given peer at a time. (One peer can have multiple RPCs.) Homa rotates the `RESEND`s among the RPCs to that peer.
-    -   If enough timeouts occur (i.e., enough `RESEND` packets are sent), Homa concludes that a peer has crashed, aborts all RPCs for that peer and discards all the state associated with those RPCs.
--   `UNKNOWN`
-    -   `UNKNOWN(rpc_id)`
-    -   Sent by the sender or receiver.
-    -   Indicates that the RPC for which a packet was received is unknown to it.
--   `BUSY`
-    -   `BUSY(rpc_id)`
-    -   Sent from sender to receiver.
-    -   Indicates that a response to `RESEND` will be delayed.
-        -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
-    -   Used to prevent timeouts.
-        -   It can be thought of as a 'keep-alive' indicator, as it keeps the communication alive and prevents the RPC from being aborted due to lack of data receipt.
--   `CUTOFFS`
-    -   `CUTOFFS(rpc_id, exp_unsched_prio)`
-    -   Sent by the receiver.
-    -   Indicates priority cutoff values that the sender should use for unscheduled packets.
-    -   [When are `CUTOFFS` packets sent?](#unscheduled-priority-setting-and-transmission-timing)
--   `ACK`
-    -   `ACK(rpc_id)`
-    -   Sent by the sender.
-    -   Explicitly acknowledges that receipt of a response message to **one or more RPCs**.
-        -   Aids the receiver to discard state for completed RPCs.
--   `NEED_ACK`
-    -   `NEED_ACK(rpc_id)`
-    -   Sent by the receiver.
-    -   Indicates an explicit requirement for an acknowledgement (`ACK` packet) for the response of a particular RPC.
+Homa's packet types:
 
-> -   `FREEZE`
->     -   Only for performance measurements, testing and debugging.
-> -   `BOGUS`
->     -   Only for unit testing.
+### `DATA`
+
+-   `DATA(rpc_id, data, offset, self_prio, m_len)`
+-   Sent by the sender or receiver.
+-   Contains a contiguous range of bytes within a message, defined by an offset.
+-   Also indicates the total message length.
+-   It has the ability to acknowledge (`ACK`) one RPC, so future RPCs can be used to acknowledge one RPC, thus not requiring an explicit `ACK` packet to be sent.
+
+### `GRANT`
+
+-   `GRANT(rpc_id, offset, exp_prio)`
+-   Sent by the receiver.
+-   Indicates that the sender may now transmit all bytes in the message up to a given offset.
+-   Also specifies the priority level to use for the `DATA` packets.
+-   [When are `GRANT` packets sent?](#offset-and-scheduled-priority-calculation-timing)
+
+### `RESEND`
+
+-   `RESEND(rpc_id, offset, len, exp_prio)`
+-   Sent by the sender or receiver.
+-   Indicates that the sender should re-transmit a given range of bytes within a message.
+-   Includes priority that should be used for the retransmitted packets.
+-   To prevent unnecessary bandwidth usage, Homa only issues one outstanding `RESEND` packet to a given peer at a time. (One peer can have multiple RPCs.) Homa rotates the `RESEND`s among the RPCs to that peer.
+-   If enough timeouts occur (i.e., enough `RESEND` packets are sent), Homa concludes that a peer has crashed, aborts all RPCs for that peer and discards all the state associated with those RPCs.
+
+### `UNKNOWN`
+
+-   `UNKNOWN(rpc_id)`
+-   Sent by the sender or receiver.
+-   Indicates that the RPC for which a packet was received is unknown to it.
+
+### `BUSY`
+
+-   `BUSY(rpc_id)`
+-   Sent from sender to receiver.
+-   Indicates that a response to `RESEND` will be delayed.
+    -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
+-   Used to prevent timeouts.
+    -   It can be thought of as a 'keep-alive' indicator, as it keeps the communication alive and prevents the RPC from being aborted due to lack of data receipt.
+
+### `CUTOFFS`
+
+-   `CUTOFFS(rpc_id, exp_unsched_prio)`
+-   Sent by the receiver.
+-   Indicates priority cutoff values that the sender should use for unscheduled packets.
+-   [When are `CUTOFFS` packets sent?](#unscheduled-priority-setting-and-transmission-timing)
+
+### `ACK`
+
+-   `ACK(rpc_id)`
+-   Sent by the sender.
+-   Explicitly acknowledges that receipt of a response message to **one or more RPCs**.
+    -   Aids the receiver to discard state for completed RPCs.
+
+### `NEED_ACK`
+
+-   `NEED_ACK(rpc_id)`
+-   Sent by the receiver.
+-   Indicates an explicit requirement for an acknowledgement (`ACK` packet) for the response of a particular RPC.
+
+### `FREEZE`
+
+-   Only for performance measurements, testing and debugging.
+
+### `BOGUS`
+
+-   Only for unit testing.
 
 ## Features
 
