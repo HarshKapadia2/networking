@@ -41,6 +41,7 @@
     -   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
     -   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
     -   [Calculating `GRANT` Offset](#calculating-grant-offset)
+    -   [Calculating Unscheduled Bytes Offset](#calculating-unscheduled-bytes-offset)
 -   [Resources](#resources)
 
 ## Introduction
@@ -308,7 +309,7 @@ Homa's features:
 
 ### SRPT
 
--   Homa uses Shortest Remaining Processing Time (SRPT) Scheduling rather than Fair Scheduling.
+-   Homa uses Shortest Remaining Processing Time (SRPT) Scheduling rather than [TCP's Fair Scheduling](#fair-scheduling).
 -   Homa uses SRPT Scheduling (a type of Run-to-Completion Scheduling) to queue messages to send and receive. It is best if both, the receiver and the sender, use SRPT, as it prevents short messages from starving behind long messages in queues on both ends.
 -   Homa makes use of priority queues in modern switches and queues shorter messages through the priority queues, so that they don't get starved by long messages. This helps reduce the 'latency vs bandwidth' optimization problem.
     -   Priority is divided into two groups, the highest levels are for unscheduled packets and the lower levels are for scheduled packets. In each group, the highest priorities are for the shorter messages.
@@ -487,6 +488,7 @@ Some of the algorithms that Homa implements for
 -   [Calculating Unscheduled Priorities](#calculating-unscheduled-priorities)
 -   [Calculating `rtt_bytes`](#calculating-rtt_bytes)
 -   [Calculating `GRANT` Offset](#calculating-grant-offset)
+-   [Calculating Unscheduled Bytes Offset](#calculating-unscheduled-bytes-offset)
 
 > All details as seen in [commit `9c9a1ff` of the Homa Linux kernel module](https://github.com/PlatformLab/HomaModule/tree/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b) (31st March 2023).
 
@@ -896,6 +898,56 @@ The `homa_send_grants` function is called by
 -   [The `homa_remove_from_grantable` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L1238-L1267) that removes a RPC from its peer.
     -   This function internally leads to shifting the peer's position if required, so new `GRANT` packets might have to be sent, which is why the `homa_send_grants` function is called.
     -   This function is itself called when a RPC is aborted (`homa_rpc_abort()`) or needs to be freed (`homa_rpc_free()`).
+
+### Calculating Unscheduled Bytes Offset
+
+-   Every message in Homa is split into unscheduled and scheduled bytes on the sender.
+-   The sender sends all unscheduled bytes of a message blindly to the receiver, i.e., it does not wait for the receiver's `GRANT` packets to send unscheduled bytes of data.
+-   Scheduled bytes are sent only if the receiver sends `GRANT` packets for a certain amount of that scheduled data.
+-   The split between the two is not even and a certain formula (mentioned in the algorithm below) is used to decide the unscheduled bytes offset.
+-   It is important to note that Homa calculates an _offset_ for the unscheduled bytes to be sent, so all bytes from the first byte of the message up to the byte indicated by the offset are sent blindly using [unscheduled priorities](#calculating-unscheduled-priorities).
+    -   Example: If a message is 100 bytes long and the calculated unscheduled bytes offset is `20`, then the sender will blindly send the first 20 bytes of the message to the receiver.
+-   The logic/rationale used to arrive to the formula that calculates that unscheduled bytes offset is not clear to me.
+-   [When is the unscheduled bytes offset calculated for a message?](#unscheduled-bytes-offset-calculation-timing)
+
+#### Algorithm
+
+```c
+// Logic derived from https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_outgoing.c#L42-L244
+
+set_unscheduled_byte_offset(rpc) {
+	/* Network stack layers: Ethernet(IP(Homa(rpc_msg_bytes)))
+	 * `mss` = Maximum Segment Size (Max. payload of a Homa `DATA` packet.)
+	 * `mtu` = Maximum Transmission Unit (Max. payload of an Ethernet Frame.)
+	 * `data_header_length` = Length of the header of a Homa `DATA` packet
+	 */
+	mss = mtu - ip_header_length - data_header_length;
+
+	if(rpc->total_msg_length <= mss) {
+		// Message fits in a single packet, so no need for GSO.
+		rpc->unscheduled_bytes = rpc->total_msg_length;
+	}
+	else {
+		gso_pkt_data = pkts_per_gso * mss;
+
+		rpc->unscheduled_bytes = rpc->rtt_bytes + gso_pkt_data - 1; // Not clear about the rationale behind this formula.
+
+		// Rounding down to a quantized number of packets.
+		extra_bytes = rpc->unscheduled_bytes % gso_pkt_data;
+		rpc->unscheduled_bytes = rpc->unscheduled_bytes - extra_bytes;
+
+		if (rpc->unscheduled_bytes > rpc->total_msg_length) {
+			rpc->unscheduled_bytes = rpc->total_msg_length;
+		}
+	}
+}
+```
+
+#### Unscheduled Bytes Offset Calculation Timing
+
+-   The unscheduled bytes offset is calculated in [the `homa_message_out_init` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_outgoing.c#L42-L244), which initializes information for sending a message for a RPC (either request or response) and (possibly) begins transmitting the message, among other things.
+-   The `homa_message_out_init` function is called by [the `homa_sendmsg` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_plumbing.c#L841-L961), which sends a request or response message.
+    -   What is weird is that the `homa_sendmsg` function is not called by any other function and it is not a part of the [Homa API](#api) as well to be a function that is directly called by a library. (Maybe it is called directly by a library, but I don't know that and neither is it mentioned anywhere.)
 
 ## Resources
 
