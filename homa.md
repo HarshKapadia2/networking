@@ -577,6 +577,10 @@ position_peer(homa_state, peer_to_check) {
 
 #### RPC and Peer Sorting Timing
 
+<p align="center">
+    <img src="files/img/homa/homa-rpc-peer-sorting-fn-call-tree.png" alt="Homa's RPC and peer sorting function call tree" loading="lazy" />
+</p>
+
 -   The sorting of RPCs and peers happens in [the `homa_check_grantable` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L819-L933).
 -   The `homa_check_grantable` function is called by [the `homa_data_pkt` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L486-L572) (which handles incoming `DATA` packets), if the incoming message had scheduled bytes in it.
 -   The `homa_data_pkt` function is called by [the `homa_pkt_dispatch` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L325-L484) that handles all incoming packets.
@@ -586,11 +590,16 @@ position_peer(homa_state, peer_to_check) {
 
 -   A Homa receiver sends `GRANT` packets to senders to give them permission to send `DATA` packets to it. Those `GRANT` packets have a `priority` field in them, which the sender has to add to the `DATA` packets they send.
     -   The first RPC in the `grantable_rpcs` list in every peer is granted and it is given its own scheduled data priority after calculations.
+
+<p align="center">
+    <img src="files/img/homa/homa-priority-levels.png" alt="Homa's priority level structure" loading="lazy" />
+</p>
+
 -   Homa's default priority range is from `0` to `7` (eight levels) ([Source](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_impl.h#L172-L177)). Level `0` has the lowest priority while level `7` has the highest priority.
     -   The levels are manually split in two parts (by `max_sched_prio`), the former for scheduled packets and the latter for unscheduled packets.
         -   The former part that is for scheduled packets always has the lower priorities of the entire range.
         -   The latter part (highest priorities in the entire range) is always kept for the unscheduled packets, as they always have the highest priority.
-        -   Example: If priority levels are from `0` (lowest) to `7` (highest) and `max_sched_prio` is `4`, then scheduled packets can have priorities between `0` and `4` (both inclusive), while unscheduled packets can have priorities between `5` and `7` (both inclusive).
+        -   Example (as seen in picture above): If priority levels are from `0` (lowest) to `7` (highest) and `max_sched_prio` is `5`, then scheduled packets can have priorities between `0` and `5` (both inclusive), while unscheduled packets can have priorities `6` and `7`.
         -   [The `max_sched_prio` parameter is set using the `unsched_cutoffs` array.](#calculating-unscheduled-priorities)
     -   In each half of the range, Homa tries to assign the lowest possible priority to each RPC, so that newer messages with higher priorities can be accommodated easily to implement SRPT properly.
 -   [When are offsets and scheduled priorities calculated?](#offset-and-scheduled-priority-calculation-timing)
@@ -733,6 +742,8 @@ set_scheduled_data_priority(homa_state) {
 
 -   Homa initializes priority-based values for the overall Homa state (`homa_state`)
 
+    -   Incoming `DATA` packet `cutoff_version` is checked with `homa_state->cutoff_version`.
+
     ```c
     /* - `HOMA_MAX_PRIORITIES = 8` is a hard coded value.
      * - `HOMA_MAX_MESSAGE_LENGTH = 1000000` is a hard coded value.
@@ -743,6 +754,7 @@ set_scheduled_data_priority(homa_state) {
 
     homa_state->max_sched_prio = HOMA_MAX_PRIORITIES - 5; // = 3 (So levels 0 to 3 for scheduled data while levels 4 to 7 for unscheduled data.)
 
+    // Rationale behind choosing/guessing these values is not clear
     homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-1] = 200; // Level 7 can receive (unscheduled) msgs with <= 200 remaining bytes.
     homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-2] = 2800; // Level 6 can receive (unscheduled) msgs with <= 2,800 remaining bytes.
     homa_state->unsched_cutoffs[HOMA_MAX_PRIORITIES-3] = 15000; // Level 5 can receive (unscheduled) msgs with <= 15,000 remaining bytes.
@@ -751,7 +763,13 @@ set_scheduled_data_priority(homa_state) {
     homa_state->cutoff_version = 1;
     ```
 
+    <p align="center">
+    <img src="files/img/homa/homa-unsched-cutoffs.png" alt="Homa's unscheduled cutoffs (`homa_state`)" loading="lazy" />
+    </p>
+
 -   Homa initializes priority-based values for every peer whenever it is created
+
+    -   Outgoing `DATA` packet `cutoff_version` is added from `peer->cutoff_version`.
 
     ```c
     /* - `HOMA_MAX_PRIORITIES = 8` is a hard coded value.
@@ -763,7 +781,7 @@ set_scheduled_data_priority(homa_state) {
 
     peer->cutoff_version = 0; // Value `0` implies that no `CUTOFFS` packet has ever been received from the host.
 
-    peer->last_update_jiffies = 0;
+    peer->last_update_jiffies = 0; // Last `CUTOFFS` packet time
     ```
 
 ##### Sender
@@ -807,7 +825,8 @@ set_scheduled_data_priority(homa_state) {
     	 */
     	if(time_now != peer->last_cutoffs_packet_send_time) {
     		// Send updated `homa_state->unsched_cutoffs` array and `homa_state->cutoff_version` in a `CUTOFFS` packet to peer.
-    		// Update time when last `CUTOFFS` packet was sent
+
+    		// Update time when last `CUTOFFS` packet was sent.
     	}
     }
     ```
@@ -888,6 +907,10 @@ set_data_offset(homa_state) {
 
 #### Offset and Scheduled Priority Calculation Timing
 
+<p align="center">
+    <img src="files/img/homa/homa-offset-and-sched-priority-calc-fn-call-tree.png" alt="Homa's offset and scheduled priority calculation function call tree" loading="lazy" />
+</p>
+
 -   Alternate title: '`GRANT` Packet Transmission Timing'
 -   Offsets and scheduled priorities are sent in `GRANT` packets that are created and sent from [the `homa_send_grants` function](https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_incoming.c#L935-L1119).
 -   A `priority` and `offset` value to be sent in each `GRANT` packet is calculated for every packet in that same function and added to the packets, just before sending each of those `GRANT` packets.
@@ -916,7 +939,7 @@ The `homa_send_grants` function is called by
 // Logic derived from https://github.com/PlatformLab/HomaModule/blob/9c9a1ff3cbd018810f9fc11ca404c5d20ed10c3b/homa_outgoing.c#L42-L244
 
 set_unscheduled_byte_offset(rpc) {
-	/* Network stack layers: Ethernet(IP(Homa(rpc_msg_bytes)))
+	/* Network stack layers: Ethernet(IP(Homa(rpc_msg_data_bytes)))
 	 * `mss` = Maximum Segment Size (Max. payload of a Homa `DATA` packet.)
 	 * `mtu` = Maximum Transmission Unit (Max. payload of an Ethernet Frame.)
 	 * `data_header_length` = Length of the header of a Homa `DATA` packet
@@ -924,7 +947,7 @@ set_unscheduled_byte_offset(rpc) {
 	mss = mtu - ip_header_length - data_header_length;
 
 	if(rpc->total_msg_length <= mss) {
-		// Message fits in a single packet, so no need for GSO.
+		// Message fits in a single packet, so no need for Generic Segmentation Offload (GSO).
 		rpc->unscheduled_bytes = rpc->total_msg_length;
 	}
 	else {
@@ -955,6 +978,7 @@ set_unscheduled_byte_offset(rpc) {
 -   Presentations
     -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
     -   Homa 2 ([PDF](files/homa/presentations/homa-2.pdf), [Google Slides](https://docs.google.com/presentation/d/1NLEzvXmMS3w5n46XY8d2teHnPXZjphkSq9ZwmYnbkj8/edit?usp=sharing))
+    -   Homa 3([PDF](files/homa/presentations/homa-3.pdf), [Google Slides](https://docs.google.com/presentation/d/1kB7c8sRgYKVSuHNlrXui9zBhnMgzKAmiNcXMd3vAq8k/edit?usp=sharing))
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
     -   [Homa: A Receiver-Driven Low-Latency Transport Protocol Using Network Priorities (Complete Version)](files/homa/research-papers/homa-a-receiver-driven-low-latency-transport-protocol-using-network-priorities-complete-version.pdf) ([arXiv](https://arxiv.org/abs/1803.09615))
