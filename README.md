@@ -41,6 +41,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
     -   [PGP](cryptography.md#pgp)
     -   [Diffie-Hellman Key Exchange](cryptography.md#diffie-hellman)
     -   [Digital Certificates and Certificate Revocation (OCSP and CRL)](cryptography.md#digital-certificates-and-certificate-revocation-ocsp-and-crl)
+-   [OPAQUE](opaque.md)
 -   [OSI layers](osi-layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network-cycle.md)
