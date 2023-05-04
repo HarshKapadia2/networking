@@ -181,6 +181,8 @@
 
 ## Resources
 
+-   The start of the 2nd Crypto Wars: [A history of backdoors](https://blog.cryptographyengineering.com/2015/07/20/a-history-of-backdoors)
+-   [Remarks on "Chat Control"](https://blog.cryptographyengineering.com/2023/03/23/remarks-on-chat-control)
 -   [Computerphile](https://www.youtube.com/user/Computerphile)
 -   [Christof Paar](https://www.youtube.com/channel/UC1usFRN4LCMcfIV7UjHNuQg/videos)
 -   [Eddie Woo](https://www.youtube.com/watch?v=6xDGSalpPXk&list=PL5KkMZvBpo5CdoOxa3dqll2n6KsXqerYO)
