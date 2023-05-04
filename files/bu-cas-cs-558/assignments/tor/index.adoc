@@ -1,0 +1,114 @@
+= Tor
+Harsh Gaurang Kapadia <harshk@bu.edu>
+:toc:					left
+:favicon:				../../../../favicon.ico
+:imagesdir:				./img
+:docinfo:				shared
+:sectanchors:
+:figure-caption!:
+
+== Review Questions
+
+NOTE: link:./tor.html#review-questions[Assignment questions and instructions]
+
+=== Data vs Metadata
+
+* Data
+	** Data is the actual meaningful information/payload that the user wants to send to the server. Data is the user information that can get stored in databases and can cause actions to be executed on the server.
+	** Data is usually user-specific/user-generated information.
+	** Example: PDFs (data) that the user wants to store in their Google Drive.
+* Metadata
+	** Metadata is extra information that needs to be added on top of the data payload so that the data payload is able to carry out its actions and reach its destination. Metadata adds identifying and fingerprinting information to data.
+	** Metadata can be a combination of information that is generated due to a user-action and just extra information created to be able to complete an action sufficiently.
+	** Example: IP addresses, port numbers, user agent (browser version, device type, etc.), protocol type and version (Eg: `HTTP/3`), authentication headers, etc.
+
+==== TLS
+
+===== Metadata Leaked
+
+* The Server Name Indication (SNI) Extension exposes the domain the client wants to communicate with.
+* The server's responds to the client with its certificate chain, which again reveals the domain the client wants to connect to.
+* The link:https://networking.harshkapadia.me/cryptography#diffie-hellman[Diffie-Hellman (DH) Key Exchange Algorithm^] parameters are exchanged in plaintext and an attack (like a Downgrade Attack) or an insecure configuration can lead to an attacker being able to decrypt past and future communication by figuring out the `b` from the DH pre-master secret `g^b`.
+* The Application Layer Protocol Negotiation (ALPN) Extension reveals the protocol being used by the layer above the link:https://networking.harshkapadia.me/osi-layers[Transport Layer^], for example HTTP.
+
+===== Metadata Leakage Ramifications
+
+* It becomes easy to track a user's internet usage history, which can aid an entity in suppressing people's voices and targeting people who are accessing certain services.
+
+==== Encrypted e-mail
+
+===== Metadata Leaked
+
+NOTE: Encrypted e-mail only has its e-mail body (payload) encrypted and not anything else.
+
+* The entire journey of the e-mail from the sender to the receiver through all the intermediate e-mail relays and Mail Exchanges are recorded in plaintext in the e-mail envelop.
+* The date and time of the e-mail communication is also visible, which aids in tracking a user's activity.
+* The MIME type is transported in plaintext, so an attacker can figure out the content type of the encrypted data.
+* Which entities along the path have DKIM and DMARC enabled or disabled is also visible and entities with disabled security measures can be exploited.
+
+===== Metadata Leakage Ramifications
+
+* The e-mail envelop is making it apparent that some entities are not securely configured with DKIM and DMARC, which can lead to attackers targeting specific e-mails.
+* A malicious entity can know who a user is communicating with and when the communication happened through the e-mail envelop, which can be used to target and threaten people.
+
+=== Benefits of a Three-Node Tor Circuit
+
+* The point of a Tor circuit having at least three nodes is to provide the user with anonymity, such that even the nodes that are part of the circuit don't know all the details of the entire connection and none of them can individually identify all the parameters associated with a client to server communication.
+* A three node Tor circuit consists of a Guard (Entry) Node, an Intermediate Node and an Exit Node.
+	** The Guard node knows who the client is, but doesn't know where it is headed.
+	** The Intermediate Node knows nothing about the client or server and just relays traffic between two (seemingly random) nodes.
+	** The Exit Node knows the server that is being contacted, but doesn't know the original client who is connecting to the server.
+* In case just one proxy is used by a client to communicate with the server, although the server cannot figure out who the client is, the proxy is the point of vulnerability, because if the proxy is questioned, it can see both, the client and the server, so it can reveal that information.
+* With a Tor circuit, data is end-to-end encrypted, so no server can see the contents of the data being sent. With TLS terminating proxies, the proxy decrypts the data (this means that it has the chance to peek into the data) and then re-encrypts that data over its connection with the server. The same happens in the reverse direction. This makes proxying dangerous and one has to be able to completely trust the proxy to be able to use it.
+
+== Setting Up a Tor Circuit
+
+[NOTE]
+====
+* link:./tor.html#setting-up-a-tor-circuit[Assignment questions and instructions]
+* link:./telescoping_circuit.py[`telescoping_circuit.py` file]
+====
+
+Explaining the code:
+
+* Choose the appropriate Guard, Middle and Exit nodes depending on the option passed in through the command line.
+* Generate a random circuit ID.
+* Create a circuit with the Guard Node.
+	** Build and send a `CREATE` cell.
+	** Receive a `CREATED` cell.
+	** Compute shared secret.
+* Extend the circuit to the Middle Router.
+	** Build and send a `EXTEND` cell.
+	** Receive a `EXTENDED` cell.
+	** Compute shared secret.
+* Extend the circuit further from the Middle Node to the Exit Router
+	** Same steps as for the Middle Router.
+* The circuit is now created.
+* A HTTP request is made to the domain passed as an argument to the program.
+* The response is stored in a file.
+
+== Connecting to a Hidden Service
+
+[NOTE]
+====
+* link:./tor.html#connecting-to-a-hidden-service[Assignment questions and instructions]
+* link:./hidden_service.py[`hidden_service.py` file]
+====
+
+Explaining the code:
+
+* Create a conventional three hop circuit and start a TCP stream over it.
+* Connect to the Introduction Points of the Hidden Service.
+	** Get a directory for the required Hidden Service.
+	** Use the directory to find the Introduction Points of the required Hidden Service.
+	** Calculate a Rendezvous Point/Router and a Rendezvous Cookie.
+	** Connect to the Introduction Point
+		*** Pass in the Rendezvous Router and Cookie.
+		*** Carry out a TAP (Tor Authentication Protocol) Handshake to create a connection to the Introduction points and pass the required details to the Hidden Service.
+			**** Send `INTRODUCE1` inside a `RELAY` cell.
+			**** Compute a shared key.
+			**** Send the Hidden Service the required details like the Rendezvous Cookie.
+		*** Append the Rendezvous Points to the original circuit.
+* Connect with the Hidden Service through the Rendezvous point that was added to the circuit.
+* Make a HTTP request to the Hidden Service.
+* The response is stored in a file.

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="generator" content="pandoc" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=yes"
+		/>
+		<title>CS558 Tor</title>
+		<style>
+			html {
+				line-height: 1.5;
+				font-family: Georgia, serif;
+				font-size: 20px;
+				color: #1a1a1a;
+				background-color: #fdfdfd;
+			}
+			body {
+				margin: 0 auto;
+				max-width: 36em;
+				padding-left: 50px;
+				padding-right: 50px;
+				padding-top: 50px;
+				padding-bottom: 50px;
+				hyphens: auto;
+				word-wrap: break-word;
+				text-rendering: optimizeLegibility;
+				font-kerning: normal;
+			}
+			@media (max-width: 600px) {
+				body {
+					font-size: 0.9em;
+					padding: 1em;
+				}
+			}
+			@media print {
+				body {
+					background-color: transparent;
+					color: black;
+					font-size: 12pt;
+				}
+				p,
+				h2,
+				h3 {
+					orphans: 3;
+					widows: 3;
+				}
+				h2,
+				h3,
+				h4 {
+					page-break-after: avoid;
+				}
+			}
+			p {
+				margin: 1em 0;
+			}
+			a {
+				color: #1a1a1a;
+			}
+			a:visited {
+				color: #1a1a1a;
+			}
+			img {
+				max-width: 100%;
+			}
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				margin-top: 1.4em;
+			}
+			h5,
+			h6 {
+				font-size: 1em;
+				font-style: italic;
+			}
+			h6 {
+				font-weight: normal;
+			}
+			ol,
+			ul {
+				padding-left: 1.7em;
+				margin-top: 1em;
+			}
+			li > ol,
+			li > ul {
+				margin-top: 0;
+			}
+			blockquote {
+				margin: 1em 0 1em 1.7em;
+				padding-left: 1em;
+				border-left: 2px solid #e6e6e6;
+				color: #606060;
+			}
+			code {
+				font-family: Menlo, Monaco, "Lucida Console", Consolas,
+					monospace;
+				font-size: 85%;
+				margin: 0;
+			}
+			pre {
+				margin: 1em 0;
+				overflow: auto;
+			}
+			pre code {
+				padding: 0;
+				overflow: visible;
+			}
+			.sourceCode {
+				background-color: transparent;
+				overflow: visible;
+			}
+			hr {
+				background-color: #1a1a1a;
+				border: none;
+				height: 1px;
+				margin: 1em 0;
+			}
+			table {
+				margin: 1em 0;
+				border-collapse: collapse;
+				width: 100%;
+				overflow-x: auto;
+				display: block;
+				font-variant-numeric: lining-nums tabular-nums;
+			}
+			table caption {
+				margin-bottom: 0.75em;
+			}
+			tbody {
+				margin-top: 0.5em;
+				border-top: 1px solid #1a1a1a;
+				border-bottom: 1px solid #1a1a1a;
+			}
+			th {
+				border-top: 1px solid #1a1a1a;
+				padding: 0.25em 0.5em 0.25em 0.5em;
+			}
+			td {
+				padding: 0.125em 0.5em 0.25em 0.5em;
+			}
+			header {
+				margin-bottom: 4em;
+				text-align: center;
+			}
+			#TOC li {
+				list-style: none;
+			}
+			#TOC a:not(:hover) {
+				text-decoration: none;
+			}
+			code {
+				white-space: pre-wrap;
+			}
+			span.smallcaps {
+				font-variant: small-caps;
+			}
+			span.underline {
+				text-decoration: underline;
+			}
+			div.column {
+				display: inline-block;
+				vertical-align: top;
+				width: 50%;
+			}
+			div.hanging-indent {
+				margin-left: 1.5em;
+				text-indent: -1.5em;
+			}
+			ul.task-list {
+				list-style: none;
+			}
+			pre > code.sourceCode {
+				white-space: pre;
+				position: relative;
+			}
+			pre > code.sourceCode > span {
+				display: inline-block;
+				line-height: 1.25;
+			}
+			pre > code.sourceCode > span:empty {
+				height: 1.2em;
+			}
+			.sourceCode {
+				overflow: visible;
+			}
+			code.sourceCode > span {
+				color: inherit;
+				text-decoration: inherit;
+			}
+			div.sourceCode {
+				margin: 1em 0;
+			}
+			pre.sourceCode {
+				margin: 0;
+			}
+			@media screen {
+				div.sourceCode {
+					overflow: auto;
+				}
+			}
+			@media print {
+				pre > code.sourceCode {
+					white-space: pre-wrap;
+				}
+				pre > code.sourceCode > span {
+					text-indent: -5em;
+					padding-left: 5em;
+				}
+			}
+			pre.numberSource code {
+				counter-reset: source-line 0;
+			}
+			pre.numberSource code > span {
+				position: relative;
+				left: -4em;
+				counter-increment: source-line;
+			}
+			pre.numberSource code > span > a:first-child::before {
+				content: counter(source-line);
+				position: relative;
+				left: -1em;
+				text-align: right;
+				vertical-align: baseline;
+				border: none;
+				display: inline-block;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				padding: 0 4px;
+				width: 4em;
+				color: #aaaaaa;
+			}
+			pre.numberSource {
+				margin-left: 3em;
+				border-left: 1px solid #aaaaaa;
+				padding-left: 4px;
+			}
+			div.sourceCode {
+			}
+			@media screen {
+				pre > code.sourceCode > span > a:first-child::before {
+					text-decoration: underline;
+				}
+			}
+			code span.al {
+				color: #ff0000;
+				font-weight: bold;
+			} /* Alert */
+			code span.an {
+				color: #60a0b0;
+				font-weight: bold;
+				font-style: italic;
+			} /* Annotation */
+			code span.at {
+				color: #7d9029;
+			} /* Attribute */
+			code span.bn {
+				color: #40a070;
+			} /* BaseN */
+			code span.bu {
+			} /* BuiltIn */
+			code span.cf {
+				color: #007020;
+				font-weight: bold;
+			} /* ControlFlow */
+			code span.ch {
+				color: #4070a0;
+			} /* Char */
+			code span.cn {
+				color: #880000;
+			} /* Constant */
+			code span.co {
+				color: #60a0b0;
+				font-style: italic;
+			} /* Comment */
+			code span.cv {
+				color: #60a0b0;
+				font-weight: bold;
+				font-style: italic;
+			} /* CommentVar */
+			code span.do {
+				color: #ba2121;
+				font-style: italic;
+			} /* Documentation */
+			code span.dt {
+				color: #902000;
+			} /* DataType */
+			code span.dv {
+				color: #40a070;
+			} /* DecVal */
+			code span.er {
+				color: #ff0000;
+				font-weight: bold;
+			} /* Error */
+			code span.ex {
+			} /* Extension */
+			code span.fl {
+				color: #40a070;
+			} /* Float */
+			code span.fu {
+				color: #06287e;
+			} /* Function */
+			code span.im {
+			} /* Import */
+			code span.in {
+				color: #60a0b0;
+				font-weight: bold;
+				font-style: italic;
+			} /* Information */
+			code span.kw {
+				color: #007020;
+				font-weight: bold;
+			} /* Keyword */
+			code span.op {
+				color: #666666;
+			} /* Operator */
+			code span.ot {
+				color: #007020;
+			} /* Other */
+			code span.pp {
+				color: #bc7a00;
+			} /* Preprocessor */
+			code span.sc {
+				color: #4070a0;
+			} /* SpecialChar */
+			code span.ss {
+				color: #bb6688;
+			} /* SpecialString */
+			code span.st {
+				color: #4070a0;
+			} /* String */
+			code span.va {
+				color: #19177c;
+			} /* Variable */
+			code span.vs {
+				color: #4070a0;
+			} /* VerbatimString */
+			code span.wa {
+				color: #60a0b0;
+				font-weight: bold;
+				font-style: italic;
+			} /* Warning */
+			.display.math {
+				display: block;
+				text-align: center;
+				margin: 0.5rem auto;
+			}
+		</style>
+		<!--[if lt IE 9]>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<h1 id="tor-assignment">Tor Assignment</h1>
+		<p>Due: May 3rd, 2023 @ 9PM Eastern</p>
+		<p>Team Size: 2 Students Per Team</p>
+		<h2 id="assignment-overview">Assignment Overview</h2>
+		<p>
+			In this assignment you are going to get an in-depth view on Tor. You
+			are going to be writing the client logic to build circuits and
+			implement the required logic to build hidden services.
+		</p>
+		<h2 id="resources">Resources</h2>
+		<h3 id="tor">Tor</h3>
+		<ul>
+			<li>
+				<a href="https://2019.www.torproject.org/docs/onion-services"
+					>Overview of Hidden Services</a
+				>
+			</li>
+			<li>
+				<a
+					href="https://gitweb.torproject.org/torspec.git/plain/tor-spec.txt"
+					>Tor Protocol Specification</a
+				>
+			</li>
+			<li>
+				<a
+					href="https://raw.githubusercontent.com/FiloSottile/torspec/master/rend-spec-v2.txt"
+					>Tor Rendezvous Specification</a
+				>
+			</li>
+			<li>
+				<a href="https://pypi.org/project/torpy">TorPy Documentation</a>
+			</li>
+		</ul>
+		<h3 id="docker">Docker</h3>
+		<ul>
+			<li>
+				<a href="https://docs.docker.com/get-started/overview/"
+					>Docker Documentation</a
+				>
+			</li>
+			<li>
+				<a href="https://github.com/wsargent/docker-cheat-sheet"
+					>Docker Cheat Sheet</a
+				>
+			</li>
+			<li>
+				<a
+					href="https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf"
+					>Another Docker Cheat Sheet</a
+				>
+			</li>
+		</ul>
+		<h2 id="setup">Setup</h2>
+		<p>
+			For a recorded guide on getting set up for this assignment, you can
+			also check out
+			<a href="https://www.youtube.com/watch?v=i83ZoixbzQ8"
+				>this wonderful video</a
+			>
+			that an old TA created.
+		</p>
+		<p>
+			We will provide you with a virtual Tor network so that you can test
+			your code and get it working. We will also be using this virtual Tor
+			environment to do our autograding. To get started, clone the
+			repository as
+			<code>git clone https://github.com/gkaptch1/cs558tor</code> to get
+			all the starter code. Then, run a copy of the virtual Tor network
+			with the following commands:
+		</p>
+		<pre class="shell"><code># Make sure Docker is running and ...
+docker run -p 5000-5005:5000-5005 -p 7000-7005:7000-7005 -it gkaptchuk/cs558tor23 bash</code></pre>
+		<p>
+			It will download an Alpine Linux Docker image with Tor Chutney and
+			Nyx installed on it, and then instantiate it in interactive mode
+			with the onion routing ports mapped to your host network. Chutney is
+			already configured with 3 directory authorities, 3 guard and middle
+			nodes, and 3 exit nodes. This test net is quite small, so be sure
+			not to accidentally route through the same node twice, or you will
+			fail a handshake.
+		</p>
+		<p>
+			Be aware, that on macOS, you may find that one of these ports is
+			already in use. You can free up this port by turning off AirPlay
+			Receiver in your system preferences
+		</p>
+		<p>
+			The client code you are going to be running is in Python. I suggest
+			you set up a
+			<a href="https://docs.python.org/3/tutorial/venv.html"
+				>virtual environment</a
+			>
+			in order to test everything. Everything in this assignment will be
+			for <a href="https://pythonclock.org">Python 3</a>. You are going to
+			need the following packages: cffi and cryptography. They can be
+			installed as follows:
+		</p>
+		<pre class="shell"><code># Python Tor client dependencies
+pip install cffi cryptography  # Make sure you have these two libraries installed.</code></pre>
+		<p>
+			At this point you should be ready to start playing with your code.
+		</p>
+		<p>
+			Note: The first time you connect, it may take up to 10 seconds to
+			download the Tor consensus (table of routers) from the 3 nodes
+			serving as directory authorities. You can watch this full process
+			being logged within Nyx.
+		</p>
+		<!--We have noticed that occasionally there might be problems with the system properly configuring the ability to talk to the virtual environments. Below are some commands that will likely be helpful.
+
+```shell
+# Consensus troubleshooting
+# After a minute the local Tor network should have arrived at a consensus about the list of nodes
+docker-compose scale relay=5 exit=3
+docker-compose up -d client
+
+# You should be able to check that forwarding works by hitting the local proxy
+curl --socks5 127.0.0.1:9050 ifconfig.me
+
+# Restart Tor network
+docker-compose kill; docker-compose rm -fsv
+docker-compose up -d
+
+# Print the list of nodes
+python ./util/get_consensus.py
+```-->
+		<h2 id="tasks">Tasks</h2>
+		<h3 id="review-questions">Review Questions (10 pts)</h3>
+		<p>
+			In your own words, what is the difference between data and metadata?
+			What metadata do TLS and encrypted email leak? Give us an imagined
+			scenario for each of these protocols where this information leakages
+			could have serious ramifications.
+		</p>
+		<p>
+			List and explain 2 benefits of using three nodes in a Tor circuit
+			rather than simply using a single proxy server.
+		</p>
+		<h3 id="setting-up-a-tor-circuit">Setting up a Tor Circuit (40 pts)</h3>
+		<p>
+			Recall from class that Tor creates circuits in a telescoping
+			fashion: first the client creates a connection with the guard node
+			using the CREATE cell, then proxies through the guard node to
+			connect to the middle node with an EXTEND cell, and then finally
+			proxies through both to connect to the exit node with an EXTEND
+			cell. From there, it can initiate a TCP connection on the far side
+			of the circuit using the BEGIN cell. Finally, the client can start
+			sending traffic to the server using the RELAY cell.
+		</p>
+		<p>
+			In this task you are going to be implementing the client side logic
+			to get this all working. We have provided you skeleton code in
+			<code>telescoping_circuit.py</code>. There a bunch of helper
+			functions that will help you abstractions away some of the trickier
+			parts (eg. the detail of the actual crypto).
+		</p>
+		<p>
+			Concretely, you are expected to make your code do the following
+			things:
+		</p>
+		<ul>
+			<li>
+				Create a circuit through the virtual Tor network using the
+				CREATE cell and two EXTEND cells
+			</li>
+			<li>Open a new TCP stream using the BEGIN cell</li>
+			<li>
+				Send an HTTP GET to a url which specified as command line
+				parameter
+			</li>
+			<li>
+				Dump the HTML that you get in return to a file (name supplied on
+				the command line)
+			</li>
+		</ul>
+		<p>
+			You should be looking to fill in the contents of the following
+			functions:
+		</p>
+		<div class="sourceCode" id="cb3">
+			<pre
+				class="sourceCode python"
+			><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get(<span class="op">*</span>url, <span class="op">**</span>optional_addresses)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> circuit_from_guard(guard_router, circuit_id)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> circuit_build_hops(circuit, middle_router, exit_router)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extend(circuit, node_router)</span></code></pre>
+		</div>
+		<p>
+			We would like your code to be runnable in two modes: in the RANDOM
+			mode, it should generate a random circuit from the list of nodes
+			extracted from the directory service. In the SPECIFIC mode, we
+			should be able to give you a list of 3 node identifiers on the
+			command line, and your code should open a circuit through those
+			specific nodes.
+		</p>
+		<p>We will run your code with the following interfaces</p>
+		<pre
+			class="shell"
+		><code>python telescoping_circuit.py --mode random --url http://example.com --outfile filename.txt</code></pre>
+		<pre
+			class="shell"
+		><code>python telescoping_circuit.py --mode specific --guard 127.0.0.1:7001 --middle 127.0.0.1:7002 --exit 127.0.0.1:7003 --url http://example.com --outfile filename.txt</code></pre>
+		<p>
+			For <em>specific</em> mode, we will ensure that we are passing IP
+			addresses that are valid nodes in the virtual network.
+		</p>
+		<h3 id="connecting-to-a-hidden-service">
+			Connecting to a Hidden Service (40 pts)
+		</h3>
+		<p>
+			Now that you can make circuits, we are going to use them to build
+			connections to Tor hidden services in our virtual Tor network.
+			First, take the web server program we give you in a docker. This is
+			going to be the hidden service server, and when you run
+			<code>./start.sh</code> it will start accepting requests send to its
+			address:
+			<del><code>http://erppk6uy6eaxjbnx.onion</code></del>
+			http://72ex3lkllglnwpxi.onion. The rest of the network is set up the
+			same as the previous part. Note there is an added
+			<code>-hs</code> in <code>cs558tor23-hs</code> in the command for
+			the network with a hidden service.
+		</p>
+		<p>
+			<del
+				>docker run -p 5000-5005:5000-5005 -p 7000-7005:7000-7005 -it
+				gkaptchuk/cs558tor23-hs bash</del
+			>
+		</p>
+		<pre
+			class="shell"
+		><code>docker run -p 5000-5005:5000-5005 -p 7000-7005:7000-7005 -it gkaptchuk/cs558tor23b-hs bash</code></pre>
+		<p>To connect to our hidden service, you will need to do 4 things:</p>
+		<ul>
+			<li>
+				Take an already built 3-hop circuit (like you made in part 1)
+				and connect a TCP stream
+			</li>
+			<li>
+				Find out which nodes are designated as introduction points for
+				the hidden service
+			</li>
+			<li>
+				Implement the TAP handshake and use it at an introduction point
+				to agree upon a rendezvous point
+			</li>
+			<li>
+				Have the client connect the rendezvous point through the
+				extended circuit and request a web page from the hidden service
+			</li>
+		</ul>
+		<p>
+			We have set up all the hidden service code, so it will be ready to
+			go. All you have to do is fill in the appropriate functions in the
+			<code>hidden_service.py</code> file. Note that all the code for this
+			part is separate from the code from the part above — you don’t need
+			to re-use any code, and you may even begin part 2 before finishing
+			part 1 if you’d like. You should fill in code for
+		</p>
+		<div class="sourceCode" id="cb7">
+			<pre
+				class="sourceCode python"
+			><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get(hs_name, port, path, live)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extend_to_hidden(circuit, hidden_service)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_up_intro_point(base_circuit, introduction_point_router, rendezvous_point_router, hidden_service, rendezvous_cookie)</span></code></pre>
+		</div>
+		<!--These functions will be called automatically when you run the ```hidden_service.py ``` — don't worry about how the code gets called (its called from within the TorClient provided by Torpy).  Theres a comment in the code:
+
+```python
+#
+#  --- Part I functionalities ---
+#  (You can ignore from here on.)
+#
+```
+
+Everything after that deals with running the client and it will automatically call the code you provide in the two functions for which you need to add code.  As it notes, you can basically ignore all that stuff.-->
+		<p>
+			In the third function, you are interacting with the introduction
+			point. Follow the comments in the code and look at the spec (both
+			the full and rendezvous versions) to understand that process.<!--  This first function is a helper for the second to actually connect to the hidden service.-->
+		</p>
+		<p>
+			You can test you code by directing the client to
+			<del>erppk6uy6eaxjbnx.onion</del> 72ex3lkllglnwpxi.onion:
+		</p>
+		<p>
+			<del
+				>python hidden_service.py –mode random –url
+				http://erppk6uy6eaxjbnx.onion –outfile filename.txt</del
+			>
+		</p>
+		<pre
+			class="shell"
+		><code>python hidden_service.py --mode random --url http://72ex3lkllglnwpxi.onion --outfile filename.txt</code></pre>
+		<h3 id="point-your-code-at-live-tor">
+			Point your code at live Tor (10 pts)
+		</h3>
+		<p>
+			All the code that you have written in this assignment is real Tor
+			code – it will work with real Tor! To celebrate that, you will
+			actually be pointing your code at live Tor. To do you, you can
+			either generate a specific circuit through live Tor, or just get the
+			consensus from live Tor.
+		</p>
+		<p>
+			For this second option, just query
+			<code
+				>http://127.0.0.1:7001/tor/status-vote/current/consensus/</code
+			>
+			in <code>curl</code> or any web browser. IPs with ports 7000-7002 on
+			our virtual network are the directory authorities who form the
+			official consensus. You can find a copy of the real consensus at
+			<code
+				>http://128.31.0.34:9131/tor/status-vote/current/consensus</code
+			>
+			which is the Tor authority managed by MIT. TorPy handles this all
+			automatically. Take a quick look, but don’t worry about handling
+			this document in your code.
+		</p>
+		<p>
+			To go live, either pass the <code>--live</code> flag to
+			<code>telescoping_circuit.py</code>, or pass the parameter
+			<code>use_local_directories=True</code> to the
+			<code>TorClient</code> constructor in
+			<code>telescoping_circuit.py</code>.
+		</p>
+		<p>
+			Use <code>telescoping_circuit.py</code> to connect to example.com
+			through the real network. To get an idea of the overhead, please
+			time how long it takes to get a response (see the
+			<code>time</code> utility). Please send us in a zip your logs for
+			the 10 runs and the timing information you collected. Please include
+			the log for the i^th run in a file called
+			<code>log_i.log</code> (eg. <code>log_7.log</code>) and the timing
+			information in a file <code>time_i.txt</code> (eg.
+			<code>time_7.txt</code>)
+		</p>
+		<p>
+			Either modify <code>telescoping_circuit.py</code>, or run it
+			repeatedly to generate 10 or more circuits to
+			<code>example.com</code> on the live Tor network. Be sure to save
+			your log.
+		</p>
+		<p>
+			Unfortunately since we wrote this assignment two years ago, v2 onion
+			service have been deprecated. As such, we are not going to have you
+			use your code to connect to a live hidden service.
+		</p>
+		<!-- 
+Finally, use your code in `hidden_service.py` to request an onion service from the following list 10 times, and save the response html and header content into a file.  
+
+```
+http://darkfailllnkf4vf.onion
+http://ncidetf3j26mdtvf.onion
+http://politiepcvh42eav.onion
+http://fncuwbiisyh6ak3i.onion
+http://archivecaslytosk.onion
+http://xcln5hkbriyklr6n.onion
+http://localmonerogt7be.onion
+http://ijeeynrc6x2uy5ob.onion
+http://dwnewsvdyyiamwnp.onion
+http://bbcnewsv2vjtpsuy.onion
+
+```
+
+You may also try any of the v2 short urls from `https://dark.fail/` that are listed as being online
+
+Also, as before, time the interaction to see how long it took.  Please send us in a zip (1) your logs, (2) the html response you get back each time, and (3) the timing information you collected.  Please include the log for the i^th run in a file called ```log_i.log``` (eg. ```log_7.log```), the timing information in a file ```time_i.txt``` (eg. ```time_7.txt```), and the response you get as ```response_i.html``` (eg. ```response_7.html```)
+
+ -->
+		<h2 id="deliverables-checklist">Deliverables, Checklist</h2>
+		<h3 id="task-1">Task 1</h3>
+		<ul>
+			<li>PDF file with anwsers to the review questions.</li>
+		</ul>
+		<h3 id="task-2">Task 2</h3>
+		<ul>
+			<li>
+				<p>Python script <code>telescoping_circuit.py</code></p>
+			</li>
+			<li>
+				<p>
+					Brief writeup explaining your code (no more than 200 words)
+				</p>
+			</li>
+		</ul>
+		<h3 id="tasks-3">Tasks 3</h3>
+		<ul>
+			<li>
+				<p>Python script <code>hidden_service.py</code></p>
+			</li>
+			<li>
+				<p>
+					Brief writeup explaining your code (no more than 200 words)
+				</p>
+			</li>
+		</ul>
+		<h3 id="tasks-4">Tasks 4</h3>
+		<ul>
+			<li>
+				Zip drive containing your files for connecting to
+				<code>example.com</code>
+			</li>
+		</ul>
+		<!-- * Zip drive containing your files for connecting to `http://expyuzz4wqqyqhjn.onion` -->
+	</body>
+</html>
