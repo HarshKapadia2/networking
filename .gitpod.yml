@@ -6,3 +6,4 @@ vscode:
         - vscode-icons-team.vscode-icons
         - esbenp.prettier-vscode
         - redhat.vscode-yaml
+        - vscodevim.vim
