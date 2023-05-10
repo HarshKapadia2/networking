@@ -24,7 +24,8 @@ A collection of Linux internals, mostly geared towards Computer Networking.
 -   [SYN packet handling in the wild](https://blog.cloudflare.com/syn-packet-handling-in-the-wild)
 -   [Listening to Networks](https://www.youtube.com/watch?v=NGOD8VdyevM)
 -   [The Network Packet's Diary: A Kernel Journey](https://www.youtube.com/watch?v=T5TvPRQFNoM)
--   [NAPI](#napi)
+-   [Path of a Packet in the Linux Kernel Stack](https://www.cs.dartmouth.edu/~sergey/netreads/path-of-packet/Network_stack.pdf)
+-   [New API (NAPI)](#napi)
 
 ## Packet Handling
 
