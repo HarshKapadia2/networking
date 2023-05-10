@@ -5,6 +5,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 ## Articles
 
 -   [Homa (Data Center Transport Protocol)](homa.md)
+    -   [Final report (summary)](files/homa/report)
     -   [Problems with TCP](homa.md#problems-with-tcp)
     -   [Homa's Features](homa.md#features)
     -   [Homa's Message Sequence Scenarios](homa.md#message-sequence-scenarios)

@@ -35,6 +35,10 @@
     -   [How Messages Help](#how-messages-help)
 -   [API](#api)
 -   [Message Sequence Scenarios](#message-sequence-scenarios)
+    -   [Error-Free Communication](#error-free-communication)
+    -   [Scheduled Data Loss](#scheduled-data-loss)
+    -   [Aborted RPC](#aborted-rpc)
+    -   [Unscheduled Data Loss](#unscheduled-data-loss)
 -   [Algorithms](#algorithms)
     -   [Sorting Peers and RPCs](#sorting-rpcs-and-peers)
     -   [Calculating Scheduled Priorities](#calculating-scheduled-priorities)
@@ -45,6 +49,8 @@
 -   [Resources](#resources)
 
 ## Introduction
+
+> Final report/summary: [HTML](files/homa/report), [PDF](files/homa/report.pdf)
 
 -   The [Transmission Control Protocol (TCP)](tcp.md) is the most widely used transport protocol on the internet. It is well-designed, but just like any other protocol, it has its own issues. It is not suitable for every environment and faces [problems in a Data Center environment](#problems-with-tcp).
 -   **Homa** is transport protocol designed for the Data Centers. It aims to replace TCP as the transport protocol in Data Centers and claims to fix all of TCP's problems for the Data Center. It is not API-compatible with TCP.
@@ -93,7 +99,7 @@
 -   Mix of various flow types/sizes
     -   Application dependent
     -   Interactive flows (User-initiated queries like web searches) are time-sensitive, latency-sensitive and high priority flows.
-    -   Throughput-sensitive flows (like MapReduce parallel data computing jobs) are not delay-sensitive, but need consistent bandwidth.\
+    -   Throughput-sensitive flows (like MapReduce parallel data computing jobs) are not delay-sensitive, but need consistent bandwidth.
     -   Deadline-bound flows with soft or hard deadlines can be both Interactive or Throughput-sensitive flows.
 -   Traffic burstiness
     -   Traffic burstiness causes increased packet losses, increased buffer occupancy, increased queuing delay, decreased throughput, increased flow completion times
@@ -187,7 +193,7 @@ The following features of TCP cause it problems **in the Data Center**:
 
 ### In-Order Packet Delivery
 
--   In comparison to Homa, TCP has a lower out-of-order packet tolerance and prefers that packets are sent in-order and on the sane link (Flow-consistent Routing).
+-   In comparison to Homa, TCP has a lower out-of-order packet tolerance and prefers that packets are sent in-order and on the same link (Flow-consistent Routing).
 -   Asymmetries in packet delivery in a Data Center environment due to Packet Spraying (sending packets across multiple connections) can cause packet reordering beyond TCP's tolerance threshold and cause unnecessary retransmissions.
 -   If Packet Spraying is not used and Flow-consistent Routing is used, which fixes links for particular TCP flows, it can cause hot spots for the duration of the connection on particular links if multiple flows get hashed through the same links.
 -   Linux performs Load Balancing at the software level by routing packets through multiple cores for processing and to maintain the order or delivery, all packets have to pass through the same sequence of cores, which can lead to core hot spots as well, if multiple flows get hashed to the same cores. This also increases the tail latency of TCP.
@@ -216,7 +222,7 @@ Homa's packet types:
 ### `DATA`
 
 -   `DATA(rpc_id, data, offset, self_prio, m_len)`
--   Sent by the sender or receiver.
+-   Sent by the sender.
 -   Contains a contiguous range of bytes within a message, defined by an offset.
 -   Also indicates the total message length.
 -   It has the ability to acknowledge (`ACK`) one RPC, so future RPCs can be used to acknowledge one RPC, thus not requiring an explicit `ACK` packet to be sent.
@@ -247,7 +253,7 @@ Homa's packet types:
 ### `BUSY`
 
 -   `BUSY(rpc_id)`
--   Sent from sender to receiver.
+-   Sent by the sender.
 -   Indicates that a response to `RESEND` will be delayed.
     -   The sender might be busy transmitting higher priority messages or another RPC operation is still being executed.
 -   Used to prevent timeouts.
@@ -257,14 +263,14 @@ Homa's packet types:
 
 -   `CUTOFFS(rpc_id, exp_unsched_prio)`
 -   Sent by the receiver.
--   Indicates priority cutoff values that the sender should use for unscheduled packets.
+-   Indicates priority values that the sender should use for unscheduled packets.
 -   [When are `CUTOFFS` packets sent?](#unscheduled-priority-setting-and-transmission-timing)
 
 ### `ACK`
 
 -   `ACK(rpc_id)`
 -   Sent by the sender.
--   Explicitly acknowledges that receipt of a response message to **one or more RPCs**.
+-   Explicitly acknowledges the receipt of a response message to **one or more RPCs**.
     -   Aids the receiver to discard state for completed RPCs.
 
 ### `NEED_ACK`
@@ -339,7 +345,7 @@ Homa's features:
 
 ### Out-of-Order Packet Tolerance
 
--   Homa has a high tolerate for out-of-order packets.
+-   Homa has a high tolerance for out-of-order packets.
 -   Homa can tolerate Out-of-Order packets, so Packet Spraying works, which aids load balancing over multiple links, avoiding network traffic hot spot creation.
     -   Homa does not follow TCP's Flow Consistent Routing.
 
@@ -379,6 +385,7 @@ How Homa works in Linux:
 -   Receive (bottom): NIC ([RSS](<https://networking.harshkapadia.me/linux#:~:text=Scaling%20in%20the%20Linux%20Networking%20Stack%20(RSS%2C%20RPS%2C%20RFS%2C%20etc.)>)) -> Interrupt -> [NAPI](linux.md#napi) (GRO, SoftIRQ core choosing) -> SoftIRQ (network stack traversal) -> copy packets -> `homa_recv()`
 -   Research paper explanation: [Packet flow and batching (4.1)](https://networking.harshkapadia.me/files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf#page=5) from [A Linux Kernel Implementation of the Homa Transport Protocol](files/homa/research-papers/a-linux-kernel-implementation-of-the-homa-transport-protocol.pdf) ([USENIX](https://www.usenix.org/conference/atc21/presentation/ousterhout))
 -   Review article: [A Linux Kernel Implementation of the Homa Transport Protocol, Part II](https://www.micahlerner.com/2021/08/29/a-linux-kernel-implementation-of-the-homa-transport-protocol.html)
+-   [Linux-specific details](linux.md)
 
 ## Streaming vs Messages
 
@@ -389,6 +396,7 @@ How Homa works in Linux:
 -   TCP is not aware of the message size. It is only aware of the length of the current packet.
 -   TCP will break up (segment) whatever it receives from the application above it in the OSI stack into packets of 'Maximum Segment Size (MSS) bytes' and send it across. (Streaming)
     -   It might also wait for MSS to be fulfilled before sending (like in [Nagle's Algorithm](https://en.wikipedia.org/wiki/Nagle's_algorithm)), but that is a setting that can be toggled.
+    -   [does tcp/ip conveys complete messages?](https://stackoverflow.com/a/6473946/11958552)
 -   This streaming behaviour obviously adds buffering and packet ordering at the receiver, but more importantly the receiver has no knowledge of when it can start processing something or how much data it is going to receive. The sender is thus responsible to not overwhelm the receiver (Flow Control) and the network (Congestion Control).
 -   TCP streaming causes Load Balancing difficulties, because the path of sending data is usually consistent (Flow-consistent routing) and multiple flows on the same paths can cause congestion (hot spots) and HoLB.
 -   Causes an increase in tail latency due to HoLB, where short messages get delayed behind long messages on the same stream.
@@ -435,6 +443,8 @@ Homa's API:
 
 Homa's Message Sequence Scenarios:
 
+### Error-Free Communication
+
 <p align="center">
     <img src="files/img/homa/homa-message-sequence-diagram-1.png" alt="Homa message sequence diagram" loading="lazy" />
 </p>
@@ -444,21 +454,9 @@ Homa's Message Sequence Scenarios:
 -   Priority levels: `P0` (lowest) to `P7` (highest)
 -   It is important to note that `GRANT` packets are for 'RTT bytes' to keep link utilization at 100%, but `DATA` packets are of the size of the [Maximum Transmission Unit (MTU)](tcp.md#important-terms). So each `GRANT` packet might generate multiple `DATA` packets.
 
-<p align="center">
-	<br />
-	<br />
-    <img src="files/img/homa/homa-message-sequence-diagram-2.png" alt="Homa message sequence diagram" loading="lazy" />
-</p>
-
--   A RPC Request is shown in the image above.
--   The sender crashes after sending two of its three granted `DATA` packets. The first granted (scheduled) `DATA` packet is lost as well, which causes a timeout on the receiver, causing it to send a `RESEND` packet for the missing data.
--   After multiple `RESEND` packets not receiving responses, the receiver determines that the sender is non-responsive and discards all of the state related to that RPC ID.
--   On coming back online, the sender looks at its previous state and tries to resume by sending the last granted `DATA` packet that it had not sent, but the receiver sends an `UNKNOWN` packet, as it has already discarded all information related to that RPC ID.
--   The sender has to re-start the communication with the receiver.
+### Scheduled Data Loss
 
 <p align="center">
-	<br />
-	<br />
     <img src="files/img/homa/homa-message-sequence-diagram-3.png" alt="Homa message sequence diagram" loading="lazy" />
 </p>
 
@@ -466,9 +464,22 @@ Homa's Message Sequence Scenarios:
 -   Here, a `DATA` packet is lost and the `RESEND` packet for that missing data is lost as well, but the next `RESEND` packet makes it to the sender.
 -   The sender can either immediately respond with the missing data in a `DATA` packet or if it is busy transmitting other higher priority packets, then it can send a `BUSY` packet to the receiver to prevent a timeout (like a 'keep-alive' indicator) and can send the `DATA` packet once it is free.
 
+### Aborted RPC
+
 <p align="center">
-	<br />
-	<br />
+    <img src="files/img/homa/homa-message-sequence-diagram-2.png" alt="Homa message sequence diagram" loading="lazy" />
+</p>
+
+-   A RPC Request is shown in the image above.
+-   The sender crashes after sending two of its three granted `DATA` packets. The first granted (scheduled) `DATA` packet is lost as well, which causes a timeout on the receiver, causing it to send a `RESEND` packet for the missing data.
+-   As the sender has crashed, the `RESEND` packet does not get an expected `DATA` packet response, which leads to timeouts and more `RESEND` packets.
+-   After multiple `RESEND` packets not receiving responses, the receiver determines that the sender is non-responsive and discards all of the state related to that RPC ID.
+-   On coming back online, the sender looks at its previous state and tries to resume by sending the last granted `DATA` packet that it had not sent, but the receiver sends an `UNKNOWN` packet, as it has already discarded all information related to that RPC ID.
+-   The sender has to re-start the communication with the receiver.
+
+### Unscheduled Data Loss
+
+<p align="center">
     <img src="files/img/homa/homa-message-sequence-diagram-4.png" alt="Homa message sequence diagram" loading="lazy" />
 </p>
 
@@ -974,11 +985,12 @@ set_unscheduled_byte_offset(rpc) {
 
 ## Resources
 
+-   Final report ([HTML](files/homa/report), [PDF](files/homa/report.pdf))
 -   [Directed Study application](files/homa/directed-study-application.pdf)
 -   Presentations
     -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
     -   Homa 2 ([PDF](files/homa/presentations/homa-2.pdf), [Google Slides](https://docs.google.com/presentation/d/1NLEzvXmMS3w5n46XY8d2teHnPXZjphkSq9ZwmYnbkj8/edit?usp=sharing))
-    -   Homa 3([PDF](files/homa/presentations/homa-3.pdf), [Google Slides](https://docs.google.com/presentation/d/1kB7c8sRgYKVSuHNlrXui9zBhnMgzKAmiNcXMd3vAq8k/edit?usp=sharing))
+    -   Homa 3 ([PDF](files/homa/presentations/homa-3.pdf), [Google Slides](https://docs.google.com/presentation/d/1kB7c8sRgYKVSuHNlrXui9zBhnMgzKAmiNcXMd3vAq8k/edit?usp=sharing))
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
     -   [Homa: A Receiver-Driven Low-Latency Transport Protocol Using Network Priorities (Complete Version)](files/homa/research-papers/homa-a-receiver-driven-low-latency-transport-protocol-using-network-priorities-complete-version.pdf) ([arXiv](https://arxiv.org/abs/1803.09615))
