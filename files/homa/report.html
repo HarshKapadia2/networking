@@ -514,6 +514,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_conclusion">Conclusion</a></li>
+<li><a href="#_future_work">Future Work</a></li>
 <li><a href="#_acknowledgements">Acknowledgements</a></li>
 <li><a href="#_contact">Contact</a></li>
 <li><a href="#_references">References</a></li>
@@ -1617,10 +1618,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>In conclusion, Homa is wonderful a study in understanding the shortcomings of TCP, designing a protocol to fix those shortcomings to lead to better performance.</p>
+<p>In conclusion, Homa is a wonderful study in understanding the shortcomings of TCP, designing a protocol to fix those shortcomings to lead to better performance.</p>
 </li>
 <li>
 <p>TCP is one of the most widely used transport protocols in Data Centers and displacing it with Homa is a long way away, but in experiments, Homa has been able to achieve a significantly better performance than TCP, which can be an impetus to adopt it in Data Centers.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_future_work"><a class="anchor" href="#_future_work"></a>Future Work</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>It was a challenge to get the Homa Linux kernel module to compile, as it requires specific Linux kernel versions and packages. So making it easier to build, install and configure the module would be of great help.</p>
+</li>
+<li>
+<p>A thorough comparison of Homa with TCP CUBIC would be good to have.</p>
+</li>
+<li>
+<p>There are no FSM diagrams or mathematical formulae/proofs for Homa. Having those would aid in understanding the protocol.</p>
+</li>
+<li>
+<p>As of May 2023, the <a href="#_rttbytes">RTTbytes</a> value is a static configuration parameter, so implementing logic that makes it dynamically calculated (<a href="https://github.com/PlatformLab/HomaModule/blob/ee2d46cf238018703451a6a8b50b55951fac48e2/protocol.md?plain=1#L68-L72" target="_blank" rel="noopener">as it should be</a>) would be helpful.</p>
+</li>
+<li>
+<p><a href="https://web.stanford.edu/~ouster" target="_blank" rel="noopener">Prof. Dr. John Ousterhout</a>, one of the main people behind Homa, has a list of <a href="https://homa-transport.atlassian.net/wiki/spaces/HOMA/pages/262178/Homa+Projects" target="_blank" rel="noopener">Homa Projects</a> that can be worked upon, but they require considerable experience.</p>
 </li>
 </ul>
 </div>
@@ -1693,7 +1718,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-05-10 16:32:27 UTC
+Last updated 2023-05-11 01:18:12 UTC
 </div>
 </div>
 </body>

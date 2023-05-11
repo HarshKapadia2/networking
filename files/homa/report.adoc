@@ -408,8 +408,16 @@ image::homa-message-sequence-diagram-4.png[alt="Homa message sequence diagram", 
 
 == Conclusion
 
-* In conclusion, Homa is wonderful a study in understanding the shortcomings of TCP, designing a protocol to fix those shortcomings to lead to better performance.
+* In conclusion, Homa is a wonderful study in understanding the shortcomings of TCP, designing a protocol to fix those shortcomings to lead to better performance.
 * TCP is one of the most widely used transport protocols in Data Centers and displacing it with Homa is a long way away, but in experiments, Homa has been able to achieve a significantly better performance than TCP, which can be an impetus to adopt it in Data Centers.
+
+== Future Work
+
+* It was a challenge to get the Homa Linux kernel module to compile, as it requires specific Linux kernel versions and packages. So making it easier to build, install and configure the module would be of great help.
+* A thorough comparison of Homa with TCP CUBIC would be good to have.
+* There are no FSM diagrams or mathematical formulae/proofs for Homa. Having those would aid in understanding the protocol.
+* As of May 2023, the link:#_rttbytes[RTTbytes] value is a static configuration parameter, so implementing logic that makes it dynamically calculated (link:https://github.com/PlatformLab/HomaModule/blob/ee2d46cf238018703451a6a8b50b55951fac48e2/protocol.md?plain=1#L68-L72[as it should be^]) would be helpful.
+* link:https://web.stanford.edu/~ouster[Prof. Dr. John Ousterhout^], one of the main people behind Homa, has a list of link:https://homa-transport.atlassian.net/wiki/spaces/HOMA/pages/262178/Homa+Projects[Homa Projects^] that can be worked upon, but they require considerable experience.
 
 == Acknowledgements
 
