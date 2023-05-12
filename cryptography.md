@@ -31,6 +31,8 @@
 -   [Security Pitfalls in Cryptography](https://www.schneier.com/essays/archives/1998/01/security_pitfalls_in.html)
 -   [Why Cryptography Is Harder Than It Looks](https://www.schneier.com/essays/archives/1997/01/why_cryptography_is.html)
 
+> NOTE: When 'Sign and then Encrypt' or 'Encrypt and then Sign' are talked about, it is important to remember that both the encryption and signing key are from different hosts. The signing key is usually from the one sending the message and the encryption key is usually of the one the message is being sent to.
+
 ## Types of Cryptography
 
 <p align="center">
@@ -178,6 +180,7 @@
     -   [The Heartbleed Bug](tls.md#heartbleed)
     -   The Logjam TLS attack: [Imperfect Forward Secrecy: How Diffie-Hellman Fails in Practice](https://weakdh.org/imperfect-forward-secrecy-ccs15.pdf) ([weakdh.org](https://weakdh.org))
     -   [More about TLS](tls.md)
+-   Perfect Forward Secrecy (Forward Secrecy) is different from Post-Compromise Security (Backward Secrecy, Future Secrecy, Channel Healing).
 
 ## Resources
 
