@@ -1,7 +1,8 @@
-# Border Gateway Protocol (BGP)
+# Border Gateway Protocol
 
 ([Back to Home](README.md))
 
+-   BGP: Border Gateway Protocol
 -   Advertises the discoverability and reachability of a network between Autonomous Systems (ASs).
 -   Outages caused by BGP misconfigurations/issues
     -   The 2021 Facebook outage
@@ -12,6 +13,7 @@
         -   [The Virgin Media ISP outage - What happened? - YouTube](https://www.youtube.com/watch?v=6GWMJ42aY0w)
         -   [Cloudflare’s view of the Virgin Media outage in the UK](https://blog.cloudflare.com/virgin-media-outage-april-4-2023/)
 -   Resource Public Key Infrastructure (RPKI)
+    -   RPKI provides origin IP and IP prefix verification (protection against Sub-Prefix Hijacking Attack), while BGPSec provides AS path verification (protection against Shortest AS Path/One-Hop Attack). For full protection, both RPKI and BGPSec have to be implemented by all ASes along the path from the source to the destination.
     -   [RPKI - The required cryptographic upgrade to BGP routing](https://blog.cloudflare.com/rpki)
     -   [RPKI and BGP: our [Cloudflare's] path to securing Internet Routing](https://blog.cloudflare.com/rpki-details)
     -   [BGP leaks and cryptocurrencies](https://blog.cloudflare.com/bgp-leaks-and-crypto-currencies)
