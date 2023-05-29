@@ -325,5 +325,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
     -   [The second Wireshark SSH Trace file (`.pcapng`)](./files/ssh/ssh-wireshark-trace-2.pcapng)
 -   [SSH Keys](https://www.youtube.com/watch?v=dPAw4opzN9g)
 -   [GitHub SSH key is Leaked - How bad is this?](https://www.youtube.com/watch?v=WUNu24bM9sE)
+-   [Running SSH service on a server](https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04)
+-   [How to Remotely Open a GUI Application With PuTTY](https://www.howtogeek.com/428266/how-to-remotely-open-a-gui-application-with-putty)
 -   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
