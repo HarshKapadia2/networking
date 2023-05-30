@@ -321,6 +321,9 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [CAA Records](https://support.dnsimple.com/articles/caa-record)
 -   [What is a DNS SRV Record?](https://www.cloudflare.com/learning/dns/dns-records/dns-srv-record)
 -   [Do DHCP and DNS Servers Communicate? (With Wireshark)](https://www.youtube.com/watch?v=FYcO4ZshG8Q)
+-   Google introduced the TLDs `.zip`, `.mov`, `.foo` and more.
+    -   [The Dangers of Google’s `.zip` TLD](https://medium.com/@bobbyrsec/the-dangers-of-googles-zip-tld-5e1e675e59a5)
+    -   [New TLDs: Not Bad, Actually](https://textslashplain.com/2023/05/13/new-tlds-not-bad-actually)
 
 ## To Do
 
