@@ -194,3 +194,4 @@
 -   [Crypto 101](https://www.crypto101.io)
 -   [Cryptology, Cryptography, and Cryptanalysis – Get your Vocabulary Straight!](https://qvault.io/2019/12/16/cryptology-cryptography-and-cryptanalysis-get-your-vocabulary-straight)
 -   [Why Johnny Can’t Encrypt](https://people.eecs.berkeley.edu/~tygar/papers/Why_Johnny_Cant_Encrypt/OReilly.pdf)
+-   [How to Verify a Checksum on Windows (MD5 or SHA256)](https://windowsreport.com/checksum-on-windows)
