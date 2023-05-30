@@ -414,6 +414,7 @@ Why is Symmetric Key Encryption (Eg: AES) used for actual data communication rat
     -   [TLS assignment](files/bu-cas-cs-558/assignments/tls)
     -   [https://badssl.com](https://badssl.com)
     -   [http://neverssl.com](http://neverssl.com)
+    -   [See this page fetch itself, byte by byte, over TLS](https://subtls.pages.dev)
 -   [Application Layer Protocol Negotiation (ALPN)](https://www.youtube.com/watch?v=lR1uHVS7I-8)
 -   Server Name Indication
     -   [Server Name Indication (SNI and ESNI)](https://www.youtube.com/watch?v=t0zlO5-NWFU)
