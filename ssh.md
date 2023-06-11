@@ -326,6 +326,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [SSH Keys](https://www.youtube.com/watch?v=dPAw4opzN9g)
 -   [GitHub SSH key is Leaked - How bad is this?](https://www.youtube.com/watch?v=WUNu24bM9sE)
 -   [Running SSH service on a server](https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04)
+-   [How To Set up SSH Keys on a Linux/Unix System](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix)
 -   [How to Remotely Open a GUI Application With PuTTY](https://www.howtogeek.com/428266/how-to-remotely-open-a-gui-application-with-putty)
 -   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
