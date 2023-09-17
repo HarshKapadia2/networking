@@ -8,7 +8,7 @@ The journey of converting a laptop to a publicly available server.
     -   [Battery Life](#battery-life)
     -   [Dual Boot](#dual-boot)
     -   [Headless Operation](#headless-operation)
--   [SSh Setup](#ssh-setup)
+-   [SSH Setup](#ssh-setup)
     -   [Installation](#installation)
     -   [Security](#security)
 -   [Network Setup](#network-setup)
@@ -104,7 +104,7 @@ Example: The router can be configured to forward requests arriving at port 9723 
 
 Thus, clients are now not only able to reach the router, but by providing the appropriate port, can reach the server inside the router's network as well.
 
-NOTE: Port 22 was not opened on the router and rather a random port on the router was used to access the server. This is to provide some security through obscurity so that it is not trivial to figure out that there is a SSH service running at this public IP address. It is not much security, but is at least better than making the default port (22) accessible to the public internet, which invites brute force attacks and makes it easier to discover the server for attackers.
+> NOTE: Port 22 was not opened on the router and rather a random port on the router was used to access the server. This is to provide some security through obscurity so that it is not trivial to figure out that there is a SSH service running at this public IP address. It is not much security, but is at least better than making the default port (22) accessible to the public internet, which invites brute force attacks and makes it easier to discover the server for attackers.
 
 [How to Port Forward on Your Router](https://www.howtogeek.com/66214/how-to-forward-ports-on-your-router)
 
