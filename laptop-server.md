@@ -52,6 +52,8 @@ Once Linux was up and running, I installed the `openssh-server` package.
 
 [How to Enable SSH on Ubuntu 20.04](https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04)
 
+[More on SSH](ssh.md)
+
 ### Security
 
 As the server will eventually be publicly available, it had to have some security as well.
@@ -93,6 +95,8 @@ To store the server's public IP address and keep it up to date I built a utility
 [What Is Dynamic DNS (DDNS), and How Do You Set It Up?](https://www.howtogeek.com/866573/what-is-dynamic-dns-ddns-and-how-do-you-set-it-up)
 
 [Managing dynamic IP addresses on Cloudflare](https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses)
+
+[More on DNS](dns.md)
 
 #### Port Forwarding
 

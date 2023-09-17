@@ -330,6 +330,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [How to Remotely Open a GUI Application With PuTTY](https://www.howtogeek.com/428266/how-to-remotely-open-a-gui-application-with-putty)
 -   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
+-   [Turning a Laptop into a Server](laptop-server.md)
 -   Securing SSH service
     -   [How do I disable remote SSH login as root from a server?](https://askubuntu.com/questions/27559/how-do-i-disable-remote-ssh-login-as-root-from-a-server)
     -   [The Best Ways to Secure Your SSH Server](https://www.howtogeek.com/443156/the-best-ways-to-secure-your-ssh-server)
