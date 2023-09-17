@@ -66,7 +66,10 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
     -   [Computer Networking: Principles, Protocols and Practice, by Olivier Bonaventure](https://www.computer-networking.info)
 -   Tools
     -   [Wireshark](https://www.wireshark.org)
-    -   [tcpdump](https://wizardzines.com/zines/tcpdump)
+    -   [tcpdump](https://www.tcpdump.org)
+        -   [Crash course](https://wizardzines.com/zines/tcpdump)
+    -   [Curl](https://curl.se)
+        -   [Mastering the Curl Command Line](https://daniel.haxx.se/blog/2023/08/08/mastering-the-curl-command-line)
 -   RFCs
     -   [RFC Editor](https://www.rfc-editor.org)
     -   [Datatracker](https://datatracker.ietf.org)
