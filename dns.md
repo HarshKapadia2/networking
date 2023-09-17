@@ -28,6 +28,7 @@
 -   [(Distributed) Denial of Service](#distributed-denial-of-service)
 -   [DNS Cache Poisoning/DNS Spoofing](#dns-cache-poisoningdns-spoofing)
 -   [DNSSEC](#dnssec)
+-   [Dynamic DNS](#dynamic-dns)
 -   [DNS-0x20 Encoding](#dns-0x20-encoding)
 -   [Resources](#resources)
 -   [To Do](#to-do)
@@ -295,6 +296,11 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 -   [RFC 4033: DNS Security Introduction and Requirements](https://datatracker.ietf.org/doc/html/rfc4033)
 -   [RFC 4034: Resource Records for the DNS Security Extensions](https://datatracker.ietf.org/doc/html/rfc4034)
 -   [DNSViz](https://dnsviz.net): A resource for understanding and troubleshooting deployment of the DNS Security Extensions (DNSSEC).
+
+## Dynamic DNS
+
+-   [What Is Dynamic DNS (DDNS), and How Do You Set It Up?](https://www.howtogeek.com/866573/what-is-dynamic-dns-ddns-and-how-do-you-set-it-up)
+-   [github.com/HarshKapadia2/dynamic-dns](https://github.com/HarshKapadia2/dynamic-dns)
 
 ## DNS-0x20 Encoding
 
