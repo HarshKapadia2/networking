@@ -2,7 +2,7 @@
 
 ([Back to Home](README.md))
 
-Abbr. | Name | Default Port(s) | TCP/UDP (Default) | OSI Layer | Remarks
+Abbr. | Name | Default Port(s) | TCP/UDP/QUIC (Default) | OSI Layer | Remarks
 ----- | ---- | ---- | ------- | --------- | -------
 AH | Authentication Header | | | Network Layer | [Learn more](ipsec.md#ah)
 ALPN | Application Layer Protocol Negotiation | | | Transport Layer | TLS extention.
@@ -12,8 +12,8 @@ DHCP | Dynamic Host Configuration Protocol | | | Data Link Layer
 DNS | Domain Name System | 53 | [Mainly UDP, but can be TCP](https://stackoverflow.com/a/40063445/11958552) | Application Layer | [Learn more.](dns.md) DNSSEC and [DOH](https://www.youtube.com/watch?v=SudCPE1Cn6U) are enhancements.
 EIGRP | Enhanced Interior Gateway Routing Protocol | | | Network Layer
 ESP | Encapsulating Security Payload | | | Network Layer | [Learn more](ipsec.md#esp)
-HTTP | Hyper Text Transfer Protocol | 80 | | Application Layer | [Learn more](http.md)
-HTTPS | Hyper Text Transfer Protocol Secure | 443 | | Application Layer | [Learn more.](http.md) Also called 'HTTP over TLS (or SSL)'
+HTTP | Hyper Text Transfer Protocol | 80 | TCP (QUIC for HTTP/3) | Application Layer | [Learn more](http.md)
+HTTPS | Hyper Text Transfer Protocol Secure | 443 | TCP (QUIC for HTTP/3) | Application Layer | [Learn more.](http.md) Also called 'HTTP over TLS (or SSL)'
 ICMP | Internet Control Message Protocol | | | Network Layer
 IGRP | Interior Gateway Routing Protocol | | | Network Layer
 IKE | Internet Key Exchange | 500 (w/o NAT) & 4500 (with NAT) | UDP | Network Layer | [Learn more](ipsec.md#ike)
@@ -28,7 +28,7 @@ OSPF | Open Shortest Path First | | | Network Layer
 POP3 | Post Office Protocol 3 | 110 (insecure) & 995 (secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#pop3)
 RIP | Routing Information Protocol | | | Network Layer
 SCP | Secure Copy | 22
-SFTP | Secure/SSH File Transfer Protocol | 22
+SFTP | Secure/SSH File Transfer Protocol | 22 | | | [SFTP vs FTPS vs TFTP](https://www.cbtnuggets.com/blog/technology/networking/ftp-ftps-vs-sftp-vs-tftp-when-are-they-used), [FTPS vs SFTP](https://www.howtogeek.com/194740/what-is-the-difference-between-ftps-and-sftp)
 SMTP | Simple Mail Transfer Protocol | 25 (default, insecure), 2525 (insecure), 587 (secure with TLS) & 465 (deprecated, secure with TLS) | TCP | Application Layer | [Learn more](e-mail.md#smtp)
 SNI | Server Name Indication | | | Transport Layer | TLS extension.
 SSH | Secure Shell | 22 | TCP | Application Layer | [Learn more](./ssh.md)
