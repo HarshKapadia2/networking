@@ -301,6 +301,7 @@ In the Absolute FQDN, why is there a period (`.`) after the domain name?
 
 -   [What Is Dynamic DNS (DDNS), and How Do You Set It Up?](https://www.howtogeek.com/866573/what-is-dynamic-dns-ddns-and-how-do-you-set-it-up)
 -   [github.com/HarshKapadia2/dynamic-dns](https://github.com/HarshKapadia2/dynamic-dns)
+-   [Managing dynamic IP addresses on Cloudflare](https://developers.cloudflare.com/dns/manage-dns-records/how-to/managing-dynamic-ip-addresses)
 
 ## DNS-0x20 Encoding
 

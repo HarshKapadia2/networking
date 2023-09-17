@@ -332,7 +332,8 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
 -   Securing SSH service
     -   [How do I disable remote SSH login as root from a server?](https://askubuntu.com/questions/27559/how-do-i-disable-remote-ssh-login-as-root-from-a-server)
-    -   [The Best Ways to Secure Your SSH Server](https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-ubuntu-20-04)
+    -   [The Best Ways to Secure Your SSH Server](https://www.howtogeek.com/443156/the-best-ways-to-secure-your-ssh-server)
+    -   [A good explanation of Port Forwarding and general SSH security practices](https://unix.stackexchange.com/a/19624)
     -   Fail2Ban
         -   [How To Protect SSH with Fail2Ban on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04)
         -   [How Fail2Ban Works to Protect Services on a Linux Server](https://www.digitalocean.com/community/tutorials/how-fail2ban-works-to-protect-services-on-a-linux-server)
