@@ -46,6 +46,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 -   [OSI layers](osi-layers.md)
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network-cycle.md)
+-   [What port does `ping` work on?](https://superuser.com/questions/1664768/what-port-does-ping-work-on)
 -   [Hardware](hardware.md)
     -   [Routers vs Switches vs Hubs vs Modems vs Access Points vs Gateways](hardware.md#routers-vs-switches-vs-hubs-vs-modems-vs-access-points-vs-gateways)
 -   [Tor](tor.md)
