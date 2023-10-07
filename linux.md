@@ -31,7 +31,7 @@ A collection of Linux internals, mostly geared towards Computer Networking.
 
 -   Socket
     -   [socket(7)](https://man7.org/linux/man-pages/man7/socket.7.html) describes the Linux networking socket layer user interface and [socket(2)](https://man7.org/linux/man-pages/man2/socket.2.html) creates an endpoint for communication and returns a file descriptor that refers to that endpoint.
-        -   What the numbers `2` and `7` mean: [The Linux man-pages project](https://www.kernel.org/doc/man-pages)
+        -   What the numbers `2` and `7` mean: [The Linux man-pages project (check 'intro' pages)](https://man7.org/linux/man-pages/index.html)
     -   [Socket/Address family (`AF_INET`, `AF_INET6`, etc.)](https://man7.org/linux/man-pages/man7/address_families.7.html)
     -   [Socket type (`SOCK_STREAM`, `SOCK_DGRAM`, etc.)](https://man7.org/linux/man-pages/man2/socket.2.html#:~:text=Currently%20defined%20types%20are%3A)
 -   [bind(2)](https://man7.org/linux/man-pages/man2/bind.2.html)
