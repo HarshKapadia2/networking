@@ -48,6 +48,8 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 -   [Protocols](protocols.md)
 -   [What happens on hitting enter on a link in the browser?](network-cycle.md)
 -   [What port does `ping` work on?](https://superuser.com/questions/1664768/what-port-does-ping-work-on)
+-   [Where does my computer get the time from?](https://dotat.at/@/2023-05-26-whence-time.html)
+    -   Talk on tracing back in history to find out how we know that the time we're using is accurate!
 -   [Hardware](hardware.md)
     -   [Routers vs Switches vs Hubs vs Modems vs Access Points vs Gateways](hardware.md#routers-vs-switches-vs-hubs-vs-modems-vs-access-points-vs-gateways)
 -   [Tor](tor.md)
