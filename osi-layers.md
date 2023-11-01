@@ -23,6 +23,7 @@ No. | Name | Protocol(s) | Remarks
 ## Resources
 
 -   [The OSI Model](https://www.youtube.com/watch?v=7IS7gigunyI)
+-	[What the Session, Presentation and Application Layers actually do](https://www.youtube.com/watch?v=2iFFRqzX3yE)
 -   [The Internet that Wasn't](files/research-papers/the-internet-that-wasnt.pdf) (OSI)
 -   [Encapsulation explained and why Ping (part of ICMP) doesn't work at layer three](https://www.youtube.com/watch?v=2shvrp0-yHw) and even then [ICMP is considered as a layer three protocol](https://serverfault.com/questions/511965/why-is-icmp-categorized-as-a-layer-3-protocol).
 -   [Protocols](./protocols.md)
