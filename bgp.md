@@ -4,6 +4,9 @@
 
 -   BGP: Border Gateway Protocol
 -   Advertises the discoverability and reachability of a network between Autonomous Systems (ASs).
+    -   [Autonomous Systems (ASs)](https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system)
+    -   [Internet Exchange Points (IXPs)](https://www.linkedin.com/pulse/focus-subsea-network-architecture-ixps-maxie-reynolds)
+    -   [How ASs peer with each other at IXPs](https://www.cloudflare.com/learning/network-layer/what-is-an-autonomous-system/#:~:text=How%20do%20autonomous%20systems%20connect%20with%20each%20other%3F)
 -   Outages caused by BGP misconfigurations/issues
     -   The 2021 Facebook outage
         -   [Understanding how Facebook disappeared from the Internet](https://blog.cloudflare.com/october-2021-facebook-outage)
