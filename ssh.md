@@ -338,3 +338,6 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
     -   Fail2Ban
         -   [How To Protect SSH with Fail2Ban on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04)
         -   [How Fail2Ban Works to Protect Services on a Linux Server](https://www.digitalocean.com/community/tutorials/how-fail2ban-works-to-protect-services-on-a-linux-server)
+-   Virtual Network Computing (VNC) over SSH
+    -   [How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
+    -   [Connecting using VNC from a Windows computer to a Linux system](https://cat.pdx.edu/platforms/windows/remote-access/vnc-to-linux)

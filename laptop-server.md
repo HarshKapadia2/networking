@@ -18,6 +18,7 @@ The journey of converting a laptop to a publicly available server.
         -   [Port Forwarding](#port-forwarding)
         -   [Uncomplicated Firewall](#uncomplicated-firewall)
         -   [Accessing the Server](#accessing-the-server)
+    -   [VNC over SSH](#vnc-over-ssh)
 -   [Conclusion](#conclusion)
 
 ## Laptop Preparation
@@ -129,6 +130,14 @@ Finally, to access the server from outside the local network, one needs to know 
 ```
 ssh username@subdomain.domain.tld -p <port_number>
 ```
+
+### VNC over SSH
+
+To access the server's desktop GUI over the network, Virtual Network Computing (VNC) clients and servers can be used over SSH.
+
+[How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
+
+[Connecting using VNC from a Windows computer to a Linux system](https://cat.pdx.edu/platforms/windows/remote-access/vnc-to-linux)
 
 ## Conclusion
 
