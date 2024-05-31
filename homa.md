@@ -988,9 +988,9 @@ set_unscheduled_byte_offset(rpc) {
 -   Final report ([HTML](files/homa/report), [PDF](files/homa/report.pdf))
 -   [Directed Study application](files/homa/directed-study-application.pdf)
 -   Presentations
-    -   Homa 1 ([PDF](files/homa/presentations/homa-1.pdf), [Google Slides](https://docs.google.com/presentation/d/1uryO-L3TkBjBTeEFQAh6cAy9x4VJwpEGIUIOZRuAf5E/edit?usp=sharing))
-    -   Homa 2 ([PDF](files/homa/presentations/homa-2.pdf), [Google Slides](https://docs.google.com/presentation/d/1NLEzvXmMS3w5n46XY8d2teHnPXZjphkSq9ZwmYnbkj8/edit?usp=sharing))
-    -   Homa 3 ([PDF](files/homa/presentations/homa-3.pdf), [Google Slides](https://docs.google.com/presentation/d/1kB7c8sRgYKVSuHNlrXui9zBhnMgzKAmiNcXMd3vAq8k/edit?usp=sharing))
+    -   Homa 1: [PDF](files/homa/presentations/homa-1.pdf), [PPTX](files/homa/presentations/homa-1.pptx)
+    -   Homa 2: [PDF](files/homa/presentations/homa-2.pdf), [PPTX](files/homa/presentations/homa-2.pptx)
+    -   Homa 3: [PDF](files/homa/presentations/homa-3.pdf), [PPTX](files/homa/presentations/homa-3.pptx)
 -   [Experimentation instructions](https://github.com/HarshKapadia2/homa-perf)
 -   Research papers
     -   [It's Time to Replace TCP in the Datacenter (v2)](files/homa/research-papers/its-time-to-replace-tcp-in-the-datacenter-v2.pdf) ([arXiv](https://arxiv.org/abs/2210.00714v2))
