@@ -310,6 +310,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [SSH Crash Course](https://www.youtube.com/watch?v=hQWRp-FdTpc)
 -   [How Secure Shell Works](https://www.youtube.com/watch?v=ORcvSkgdA58)
 -   [Wiresharking Secure Shell](https://www.youtube.com/watch?v=HVWlMNTNcF4)
+-   [How SSH port became 22](https://www.ssh.com/academy/ssh/port)
 -   [How SSH Password-less Key-based Authentication Works](https://www.youtube.com/watch?v=RfolgB-rVe8)
 -   [Cryptography Basics - SSH Protocol Explained](https://www.youtube.com/watch?v=0Sffl7YO0aY&list=PL7d8iOq_0_CWAfs_z4oQnCuVc6yr7W5Fp&index=9)
 -   [Understanding the SSH Encryption and Connection Process](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process)
