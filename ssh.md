@@ -7,6 +7,13 @@
 -   [Introduction](#introduction)
 -   [Authentication Methods](#authentication-methods)
 -   [The Need for SSH](#the-need-for-ssh)
+-   [SSH Commands](#ssh-commands)
+    -   [`ssh`](#ssh)
+    -   [`ssh-keygen`](#ssh-keygen)
+    -   [`ssh-copy-id`](#ssh-copy-id)
+    -   [`ssh-import-id`](#ssh-import-id)
+    -   [`ssh-agent`](#ssh-agent)
+    -   [`ssh-add`](#ssh-add)
 -   [Generating Keys](#generating-keys)
     -   [Sharing Keys with the Server](#sharing-keys-with-the-server)
 -   [Building Blocks of SSH](#building-blocks-of-ssh)
@@ -45,7 +52,7 @@
     -   The server usually sends the client a challenge ciphertext encrypted under the client's public key that the client has to decrypt using their secret key, do some processing and send back to the server to authenticate itself.
     -   Refer to the [Sharing Keys with the Server](#sharing-keys-with-the-server) section to figure out how the server knows the client's public key.
 
--   Host-based (`known_host` file)
+-   There are many more authentication methods, but the above are the most common ones.
 
 ## The Need for SSH
 
@@ -55,6 +62,113 @@
 -   Over time SSH has been used for tunnelling, [forwarding TCP ports](https://www.youtube.com/watch?v=92b-jjBURkw), creating X11 connections, being used as the underlying security protocol for SFTP and SCP, etc.
 -   [OpenSSH features](https://www.openbsd.org/openssh/features.html)
 -   [A brief history of SSH and remote access](https://www.jeffgeerling.com/blog/brief-history-ssh-and-remote-access) (Telnet, rlogin, rsh, rcp, etc.)
+
+## SSH Commands
+
+### `ssh`
+
+Connect to a remote machine and forward ports.
+
+Usually provided by the `openssh-client` package.
+
+[`ssh` man(ual) page](https://www.man7.org/linux/man-pages/man1/ssh.1.html)
+
+```shell
+$ ssh username@hostname
+$ ssh username@hostname -p 22
+$ ssh username@hostname -i ~/.ssh/private_key_file
+
+# Local port forwarding
+$ ssh -L <local_ip_optional>:<local_port>:<remote_ip>:<remote_port> username@hostname
+
+# Remote port forwarding
+$ ssh -R <remote_ip_optional>:<remote_port>:<local_or_destination_ip>:<local_or_destination_port>
+```
+
+### `ssh-keygen`
+
+Generate keypairs (public and private keys) and get the fingerprint of keys.
+
+[`ssh-keygen` man(ual) page](https://www.man7.org/linux/man-pages/man1/ssh-keygen.1.html)
+
+```shell
+$ ssh-keygen
+
+# `-b` is the bit length of the key
+$ ssh-keygen -t rsa -b 4096 -C "comment/e-mail"
+
+# `-a` is the number of rounds
+$ ssh-keygen -t ed25519 -a 32
+
+# Get public key from private key
+$ ssh-keygen -y -f /path/to/private/key
+
+# Get the fingerprint of a key
+# NOTE: In a keypair, both keys (the public and private keys) will produce the same fingerprint
+$ ssh-keygen -l -E sha256 -f /path/to/public/key
+$ ssh-keygen -l -E sha256 -f /path/to/private/key
+```
+
+### `ssh-copy-id`
+
+Appends public keys to the `~/.ssh/authorized_keys` file on the server. The client can then log in without a password.
+
+NOTE: Unless a public key was installed on the server during OS installation and that key pair is being used to add more public keys to the server using this command, a password (or some other form of authentication) will be required.
+
+[`ssh-copy-id` man(ual) page](https://www.man7.org/linux/man-pages/man1/ssh-copy-id.1.html)
+
+```shell
+# Copying all local public keys to the server
+$ ssh-copy-id username@hostname
+
+# Copying only a specific local public key to the server
+$ ssh-copy-id -i /path/to/public/key.pub username@hostname
+```
+
+### `ssh-import-id`
+
+Import public keys from GitHub (`gh`) or Launchpad (`lp`) and append them to the `~/.ssh/authorized_keys` file on the server. The client can then log in without a password.
+
+[Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+
+[`ssh-import-id` man(ual) page](https://manpages.ubuntu.com/manpages/bionic/man1/ssh-import-id.1.html)
+
+```shell
+$ ssh-import-id gh:<github_username>
+$ ssh-import-id lp:<launchpad_username>
+```
+
+### `ssh-agent`
+
+Stores SSH private keys and if keys have a passphrase, i.e., are password-protected, it remembers that and doesn't prompt the user for it after the first time.
+
+[`ssh-agent` man(ual) page](https://www.man7.org/linux/man-pages/man1/ssh-agent.1.html)
+
+```shell
+# To populate the SSH_AUTH_SOCK env var, so that ssh-add can communicate with ssh-agent
+$ eval "$(ssh-agent)"
+```
+
+### `ssh-add`
+
+Adds, lists and removes private keys from the `ssh-agent` utility. Removing/deleting a key does not delete the actual key file from the system.
+
+[`ssh-add` man(ual) page](https://www.man7.org/linux/man-pages/man1/ssh-add.1.html)
+
+```shell
+# To populate the SSH_AUTH_SOCK env var, so that ssh-add can communicate with ssh-agent
+$ eval "$(ssh-agent)"
+
+# List private keys managed by ssh-agent
+$ ssh-add -l
+
+# Add a private key to ssh-agent
+$ ssh-add /path/to/private/key
+
+# Delete a private key from ssh-agent
+# Does not delete private key file from `~/.ssh`
+$ ssh-add -d /path/to/private/key
+```
 
 ## Generating Keys
 
@@ -99,6 +213,24 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   SSH Connection Protocol
     -   It multiplexes a single SSH encrypted tunnel into multiple logical communication channels (session channel, [Port Forwarding](https://www.youtube.com/watch?v=92b-jjBURkw) channel, etc.).
     -   It runs on top of the SSH User Authentication Protocol.
+
+## SSH Config Files
+
+-   SSH client
+    -   In order of overriding behaviour from top to bottom
+        -   Command-line options
+            -   Eg: `ssh -o PasswordAuthentication=yes -o PubkeyAuthentication=no -o PreferredAuthentications=password username@hostname`
+        -   User-specific config: `~/.ssh/config`
+        -   If present (and included above all config lines in the global config mentioned in the next point): `/etc/ssh/ssh_config.d/*.conf`
+        -   Global config: `/etc/ssh/ssh_config`
+-   SSH server
+    -   The SSH server runs a daemon called `sshd`.
+    -   In order of overriding behaviour from top to bottom
+        -   If present (and included above all config lines in the global config mentioned in the next point): `/etc/ssh/sshd_config.d/*.conf`
+        -   Global config: `/etc/ssh/sshd_config`
+            -   Note the difference in the SSH client and server config files: `ssh_config` vs `sshd_config` (`d` = daemon)
+
+NOTE: If any changes are made to any configuration files, please [restart the SSH and/or SSHD service](https://www.cyberciti.biz/faq/how-do-i-restart-sshd-daemon-on-linux-or-unix) or reboot the machine.
 
 ## A SSH Connection
 
@@ -264,7 +396,32 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 ### Subsequent Encrypted Communication
 
 -   After this, all the communication between the client and server are encrypted. (Thus data payload is not visible in the encrypted packets that Wireshark captures.)
--   The client authenticates itself to the server here. (`SSH_MSG_USERAUTH_REQUEST`)
+-   The server sends its fingerprint for the user to verify its identity.
+
+    -   The SSH client will ask the user to manually verify the identity of the server by presenting the fingerprint of one of the server's public key located at `/etc/ssh/*.pub`.
+        -   These are generally not manually-generated, but are initially set up by SSH itself.
+    -   If the user approves of the fingerprint, then SSH will store the public key(s) of the server in the `~/.ssh/known_hosts` file.
+    -   The advantage of storing the server's public key in the file is that the next time the user connects to the server, the SSH client will not ask the user to approve the server's fingerprint, but will automatically verify it with the server's public key stored in the `known_hosts` file.
+    -   Fingerprinting demo: The server presents its fingerprint to the client.
+
+        -   On the server
+
+            -   The server's public key(s) for identifying itself can be found at `/etc/ssh`
+
+                ```shell
+                $ ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+                256 SHA256:EPvxjioRUt/Non2BGcrwIgN5i19uvpuOQ7WbpU8HzPU root@Vostro-3525 (ED25519)
+                ```
+
+            -   The output of the above command is what is presented to the client. This is the fingerprint of the public key.
+
+        -   On the client
+            -   When connecting to the server for the first time, the above fingerprint is what is presented to the client.
+            -   If the client wants to check the fingerprint, they can do so in a few ways (non-exhaustive list):
+                -   Have physical access to the server they want to connect to via SSH and run the above fingerprinting command and manually compare the fingerprints.
+                -   If the client does not have physical access to the server, some out-of-band system that is trusted by the user (e.g. the automation software that installed the OS on the serber) should provide the fingerprint to the client after recording it by running the above `ssh-keygen` command.
+
+-   Now that the user knows that they are talking to the correct server, the SSH client authenticates itself to the server here. (`SSH_MSG_USERAUTH_REQUEST`)
     -   The client authenticates itself during this encrypted communication phase rather than before so that it is able to securely transmit passwords and other sensitive data to the server securely.
     -   The client has different [authentication methods](#authentication-methods) that it can choose from.
 -   What can be interesting about packets of information that are encrypted? Well, SSH does something clever here and a similar behaviour is observed in Telnet as well.
@@ -308,17 +465,29 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 ## Resources
 
 -   [SSH Crash Course](https://www.youtube.com/watch?v=hQWRp-FdTpc)
+-   [An Excruciatingly Detailed Guide To SSH (But Only The Things I Actually Find Useful)](https://web.archive.org/web/20231226210942/https://grahamhelton.com/blog/ssh-cheatsheet)
 -   [How Secure Shell Works](https://www.youtube.com/watch?v=ORcvSkgdA58)
--   [Wiresharking Secure Shell](https://www.youtube.com/watch?v=HVWlMNTNcF4)
--   [How SSH port became 22](https://www.ssh.com/academy/ssh/port)
+-   Tunneling and port forwarding
+    -   [Visual guide to SSH tunneling and port forwarding](https://ittavern.com/visual-guide-to-ssh-tunneling-and-port-forwarding)
+    -   [How to Set up SSH Tunneling (Port Forwarding)](https://linuxize.com/post/how-to-setup-ssh-tunneling)
+-   Virtual Network Computing (VNC) over SSH
+    -   [How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
+    -   [Connecting using VNC from a Windows computer to a Linux system](https://cat.pdx.edu/platforms/windows/remote-access/vnc-to-linux)
 -   [How SSH Password-less Key-based Authentication Works](https://www.youtube.com/watch?v=RfolgB-rVe8)
+-   `known_hosts` and `authorized_keys`
+    -   [What is the difference between authorized_keys and known_hosts file for SSH?](https://security.stackexchange.com/questions/20706/what-is-the-difference-between-authorized-keys-and-known-hosts-file-for-ssh/20710#20710)
+    -   [What is actually in known_hosts?](https://stackoverflow.com/questions/33243393/what-is-actually-in-known-hosts)
+    -   [SSH `known_hosts` file format](https://www.ibm.com/docs/en/zos/3.1.0?topic=SSLTBW_3.1.0/com.ibm.zos.v3r1.foto100/sshknow.html)
 -   [Cryptography Basics - SSH Protocol Explained](https://www.youtube.com/watch?v=0Sffl7YO0aY&list=PL7d8iOq_0_CWAfs_z4oQnCuVc6yr7W5Fp&index=9)
 -   [Understanding the SSH Encryption and Connection Process](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process)
 -   [A brief history of SSH and remote access](https://www.jeffgeerling.com/blog/brief-history-ssh-and-remote-access)
+-   [Wiresharking Secure Shell](https://www.youtube.com/watch?v=HVWlMNTNcF4)
+-   [How SSH port became 22](https://www.ssh.com/academy/ssh/port)
 -   [RFC 4251: The Secure Shell (SSH) Protocol Architecture](https://datatracker.ietf.org/doc/html/rfc4251)
 -   [SSH uses four TCP segments for each character you type](http://blog.hyfather.com/blog/2013/04/18/ssh-uses-four-tcp-segments-for-each-character)
     -   [Interesting sub-discussion on this on Hacker News](https://news.ycombinator.com/item?id=5792334)
 -   [OpenSSH](https://www.openssh.com)
+    -   [OpenSSH utilities](https://en.wikibooks.org/wiki/OpenSSH/Utilities)
 -   Wireshark SSH Trace files
     -   These are the Wireshark Network Trace files used to analyse the SSH protocol packets.
     -   Please use the filter `ip.addr == 128.197.11.45` to view the entire SSH communication being talked about in this article.
@@ -332,6 +501,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
 -   [Cryptography](cryptography.md)
 -   [CLI commands & info](https://harshkapadia2.github.io/cli)
 -   [Turning a Laptop into a Server](laptop-server.md)
+-   [SSH file permissions: Why am I still getting a password prompt with ssh with public key authentication?](https://unix.stackexchange.com/questions/36540/why-am-i-still-getting-a-password-prompt-with-ssh-with-public-key-authentication)
 -   Securing SSH service
     -   [How do I disable remote SSH login as root from a server?](https://askubuntu.com/questions/27559/how-do-i-disable-remote-ssh-login-as-root-from-a-server)
     -   [The Best Ways to Secure Your SSH Server](https://www.howtogeek.com/443156/the-best-ways-to-secure-your-ssh-server)
@@ -339,6 +509,7 @@ On top of TCP, SSH has three parts, namely the SSH Transport Layer Protocol, the
     -   Fail2Ban
         -   [How To Protect SSH with Fail2Ban on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-20-04)
         -   [How Fail2Ban Works to Protect Services on a Linux Server](https://www.digitalocean.com/community/tutorials/how-fail2ban-works-to-protect-services-on-a-linux-server)
--   Virtual Network Computing (VNC) over SSH
-    -   [How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
-    -   [Connecting using VNC from a Windows computer to a Linux system](https://cat.pdx.edu/platforms/windows/remote-access/vnc-to-linux)
+-   SSH obfuscation
+    -   Chaff
+    -   [SSH Keystroke Obfuscation Bypass](https://crzphil.github.io/posts/ssh-obfuscation-bypass)
+    -   [Random chaff insertion in ssh session](https://serverfault.com/questions/759138/random-chaff-insertion-in-ssh-session)
