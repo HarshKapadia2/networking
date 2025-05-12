@@ -77,6 +77,7 @@ Usually provided by the `openssh-client` package.
 $ ssh username@hostname
 $ ssh username@hostname -p 22
 $ ssh username@hostname -i ~/.ssh/private_key_file
+$ ssh username@hostname -o PasswordAuthentication=yes -o PubkeyAuthentication=no -o PreferredAuthentications=password
 
 # Local port forwarding
 $ ssh -L <local_ip_optional>:<local_port>:<remote_ip>:<remote_port> username@hostname
@@ -102,6 +103,9 @@ $ ssh-keygen -t ed25519 -a 32
 
 # Get public key from private key
 $ ssh-keygen -y -f /path/to/private/key
+
+# Remove a key from the known_hosts file (which stores public keys of machines previously connected to)
+$ ssh-keygen -R "<hostname_or_ip>:<optional_port>" -f /path/to/known_hosts/file
 
 # Get the fingerprint of a key
 # NOTE: In a keypair, both keys (the public and private keys) will produce the same fingerprint
