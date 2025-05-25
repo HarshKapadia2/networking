@@ -473,6 +473,7 @@ NOTE: If any changes are made to any configuration files, please [restart the SS
 -   [How Secure Shell Works](https://www.youtube.com/watch?v=ORcvSkgdA58)
 -   Tunneling and port forwarding
     -   [Visual guide to SSH tunneling and port forwarding](https://ittavern.com/visual-guide-to-ssh-tunneling-and-port-forwarding)
+    -   [A Visual Guide to SSH Tunnels: Local and Remote Port Forwarding](https://iximiuz.com/en/posts/ssh-tunnels) ([bastion hosts](https://en.wikipedia.org/wiki/Bastion_host), etc.)
     -   [How to Set up SSH Tunneling (Port Forwarding)](https://linuxize.com/post/how-to-setup-ssh-tunneling)
 -   Virtual Network Computing (VNC) over SSH
     -   [How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
