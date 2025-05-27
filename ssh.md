@@ -67,7 +67,7 @@
 
 ### `ssh`
 
-Connect to a remote machine and forward ports.
+Connect to a remote machine and forward ports. For more on port forwarding and its types, look at the 'Tunneling and port forwarding' bullet point in the [Resources](#resources) section below.
 
 Usually provided by the `openssh-client` package.
 
@@ -95,7 +95,7 @@ Generate keypairs (public and private keys) and get the fingerprint of keys.
 ```shell
 $ ssh-keygen
 
-# `-b` is the bit length of the key
+# `-b` is the bit-length of the key (This is NOT the length of the generated text output of the key.)
 $ ssh-keygen -t rsa -b 4096 -C "comment/e-mail"
 
 # `-a` is the number of rounds
