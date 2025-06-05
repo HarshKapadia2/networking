@@ -38,6 +38,7 @@ Computer Networking is something that caught [my](https://harshkapadia.me) inter
 -   [HTTP](http.md)
 -   [IP](ip.md)
 -   [e-mail](e-mail.md)
+-   [Linux networking](linux.md)
 -   [ARP Spoofing](files/bu-cas-cs-558/assignments/e-mail-arp/index.html#_arp_spoofing)
 -   [Cryptography](cryptography.md)
     -   [PGP](cryptography.md#pgp)
