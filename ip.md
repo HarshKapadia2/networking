@@ -21,4 +21,7 @@
 -   [GENI/Cloudlab: Designing Subnets](https://witestlab.poly.edu/blog/designing-subnets)
 -   Summary: [How IP Addresses work](https://www.youtube.com/watch?v=ANZJkxiOSRg)
 -   [Do DHCP and DNS Servers Communicate? (With Wireshark)](https://www.youtube.com/watch?v=FYcO4ZshG8Q)
+-   Virtual IP (VIP) addresses
+    -   [Virtual IP Address - Wikipedia](https://en.wikipedia.org/wiki/Virtual_IP_address)
+    -   [What is a Virtual IP?](https://infotracer.com/reverse-ip-lookup/virtual-ip-address)
 -   [IPSec](./ipsec.md)
