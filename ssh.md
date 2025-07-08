@@ -1,5 +1,9 @@
 # Secure Shell (SSH)
 
+Published on: 16th October 2022
+
+Last updated: 7th July 2025
+
 ([Back to Home](README.md))
 
 ## Table of Contents
@@ -85,6 +89,8 @@ $ ssh -L <local_ip_optional>:<local_port>:<remote_ip>:<remote_port> username@hos
 # Remote port forwarding
 $ ssh -R <remote_ip_optional>:<remote_port>:<local_or_destination_ip>:<local_or_destination_port>
 ```
+
+NOTE: When it comes to automatically trying keys on a user's system while connecting to a server, SSH only auto-tries keys of the format `id_<algorithm_name>` (E.g.: `id_rsa`, `id_ed25519`, etc.). It will not auto-try keys with names not in the format mentioned before. Such keys have to be manually specified to SSH using the `-i` flag as shown in the codeblock above.
 
 ### `ssh-keygen`
 
