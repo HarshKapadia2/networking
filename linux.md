@@ -54,6 +54,8 @@ A collection of Linux internals, mostly geared towards Computer Networking.
 
 ## Miscellaneous
 
+-   [Understanding the IP routing table on Linux using `ip route`](https://www.baeldung.com/linux/route-traffic-to-interface)
+    -   [Bridging vs Forwarding](https://stackoverflow.com/a/17599363/11958552)
 -   [Linux networking references](https://linux-kernel-labs.github.io/refs/heads/master/labs/networking.html#further-reading)
 -   [Scaling in the Linux Networking Stack](https://docs.kernel.org/networking/scaling.html) (RSS, RPS, RFS, etc.)
 -   [Networking in a Linux Container in Docker](https://harshkapadia2.github.io/docker/linux-networking)
