@@ -485,6 +485,7 @@ NOTE: If any changes are made to any configuration files, please [restart the SS
     -   [How To Install and Configure TigerVNC server on Ubuntu](https://www.cyberciti.biz/faq/install-and-configure-tigervnc-server-on-ubuntu-18-04)
     -   [Connecting using VNC from a Windows computer to a Linux system](https://cat.pdx.edu/platforms/windows/remote-access/vnc-to-linux)
 -   [How SSH Password-less Key-based Authentication Works](https://www.youtube.com/watch?v=RfolgB-rVe8)
+-   [SSH public key format and regex strings](https://github.com/nemchik/ssh-key-regex)
 -   `known_hosts` and `authorized_keys`
     -   [What is the difference between authorized_keys and known_hosts file for SSH?](https://security.stackexchange.com/questions/20706/what-is-the-difference-between-authorized-keys-and-known-hosts-file-for-ssh/20710#20710)
     -   [What is actually in known_hosts?](https://stackoverflow.com/questions/33243393/what-is-actually-in-known-hosts)
