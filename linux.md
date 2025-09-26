@@ -3,6 +3,7 @@
 ## Table of Contents
 
 -   [Introduction](#introduction)
+-   [Basics of Linux Networking](#basics-of-linux-networking)
 -   [Packet Processing](#packet-processing)
 -   [Packet Handling](#packet-handling)
 -   [Traffic Control](#traffic-control)
@@ -11,9 +12,15 @@
 
 ## Introduction
 
-A collection of Linux internals, mostly geared towards Computer Networking.
+A collection of Linux networking basics and internals.
 
 > [C programming resources](https://dev.harshkapadia.me/resources#c)
+
+## Basics of Linux Networking
+
+-   [A Beginner's Guide to Linux Networking Fundamentals](https://dev.to/iaadidev/a-beginners-guide-to-linux-networking-fundamentals-dev-ops-prerequisite-7-434o)
+-   [How exactly are NetworkManager, networkd, netplan, ifupdown2, and iproute2 interacting?](https://unix.stackexchange.com/a/752664)
+-   [Ubuntu Networkd vs NetworkManager: Which One Should You Use?](https://hatchjs.com/ubuntu-networkd-vs-networkmanager)
 
 ## Packet Processing
 
