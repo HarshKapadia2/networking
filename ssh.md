@@ -211,6 +211,8 @@ There are usually two ways to do this:
 
 SSH requires specific file and directory owner and access permissions to be met for security purposes.
 
+Ensure the following **on the server being SSHed into**:
+
 -   Make sure `PubkeyAuthentication yes` is uncommented in `/etc/ssh/sshd_config` (not `/etc/ssh/ssh_config`).
     -   Reload the SSH daemon post any config change
 -   File/directory ownership permissions
