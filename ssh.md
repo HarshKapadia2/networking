@@ -2,7 +2,7 @@
 
 Published on: 16th October 2022
 
-Last updated: 7th July 2025
+Last updated: 5th November 2025
 
 ([Back to Home](README.md))
 
@@ -20,6 +20,7 @@ Last updated: 7th July 2025
     -   [`ssh-add`](#ssh-add)
 -   [Generating Keys](#generating-keys)
     -   [Sharing Keys with the Server](#sharing-keys-with-the-server)
+-   [File and Directory Permissions](#file-and-directory-permissions)
 -   [Building Blocks of SSH](#building-blocks-of-ssh)
 -   [A SSH Connection](#a-ssh-connection)
     -   [Initialization](#initialization)
@@ -205,6 +206,21 @@ There are usually two ways to do this:
     -   Eg: [AWS](https://aws.amazon.com), [GENI](https://www.geni.net), etc.
     -   The service obviously uses the first method to configure it for the user to reduce the hassle for them and to improve the service's security as well, so that their infrastructure is not vulnerable due to the user's miscalculations (if any).
     -   If these pre-configured keys are lost though, then it usually results in a permanent loss.
+
+## File and Directory Permissions
+
+SSH requires specific file and directory owner and access permissions to be met for security purposes.
+
+-   Make sure `PubkeyAuthentication yes` is uncommented in `/etc/ssh/sshd_config` (not `/etc/ssh/ssh_config`).
+    -   Reload the SSH daemon post any config change
+-   File/directory ownership permissions
+    -   Make sure the `/path/to/user_name/home` and the `/path/to/user_name/home/.ssh` directory (and all its contents) of the user being logged in as, are owned by that same user and their default group.
+        -   `sudo chown -R user_name:group_name /path/to/user_name/home`
+-   File/directory access permissions
+    -   Make sure the home directory (`/path/to/user_name/home`) of the user has the correct permissions: [SSH and home directory permissions](https://unix.stackexchange.com/a/37166/778694)
+    -   Make sure the `/path/to/user_name/home/.ssh` directory itself and all the files in it as well have the correct individual permissions set: [Correct .ssh file and directory permissions](https://help.quickhost.uk/index.php/knowledge-base/correct-ssh-file-and-directory-permissions-linux)
+        -   Use `chmod` to change permissions.
+-   Make sure a firewall (like UFW on Ubuntu) is not blocking SSH
 
 ## Building Blocks of SSH
 
